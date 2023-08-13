@@ -1,0 +1,2 @@
+link resources
+pyside6-rcc icons.qrc -o rc_icons.py

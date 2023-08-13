@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>base</class>
+ <widget class="QMainWindow" name="base">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1433</width>
+    <height>817</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#centralwidget{
+	background-image: url(:/imagenes/img/fondo.jpg);
+}
+
+QPushButton{
+	border-radius:15px;
+  	border-style: solid;
+    border-width: 1.5px;
+	color: rgb(0, 73, 113);
+	background-color: rgb(255, 255, 255);
+}
+
+#center{
+	border-image: url(:/imagenes/img/fondo_sin.jpg);
+	border-radius: 40px;
+}
+
+#btn1{
+	color: rgba(0, 73, 113, 220);
+	border-color: rgba(0, 73, 113,30);
+}
+
+#btn2{
+	color: rgba(157, 19, 45,220);
+	
+	border-color: rgba(95, 12, 28, 30);
+}
+
+#btn1:pressed{
+	background-color: rgb(223, 223, 223);
+	color: rgba(0, 73, 113, 240);
+  	border-style: solid;
+    border-width: 4px;
+	border-color: rgba(0, 73, 113,20);
+}
+
+#btn2:pressed{
+	background-color: rgb(223, 223, 223);
+	color: rgba(157, 19, 45,240);
+  	border-style: solid;
+    border-width: 4px;
+	border-color: rgba(95, 12, 28, 20);
+
+}
+
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>60</number>
+       </property>
+       <property name="topMargin">
+        <number>100</number>
+       </property>
+       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+        <widget class="QWidget" name="center" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>900</width>
+           <height>500</height>
+          </size>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QWidget" name="cont1" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+              <widget class="QPushButton" name="btn1">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>280</width>
+                 <height>280</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>40</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>CON 
+ TURNO</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="cont2" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="btn2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>280</width>
+                 <height>280</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>40</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>SIN 
+ TURNO</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="pantalla1.qrc"/>
+ </resources>
+ <connections/>
+</ui>

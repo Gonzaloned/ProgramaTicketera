@@ -1,0 +1,24 @@
+rojo
+rgba(156,25,42,255)
+
+bordo
+rgba(59,22,66,255)
+
+bordo-rojizo (web)
+rgb(170, 65, 81)
+
+azul (web)
+rgb(48, 111, 144)
+
+azul fuerte
+rgb(0, 38, 83)
+
+
+gradient      
+background-color: qlineargradient(spread:pad, x1:0.091, y1:0, x2:1, y2:0, stop:0 rgba(59,22,66,255), stop:1 rgba(156,25,42,255))
+	
+marco blanco
+border-style: solid;
+border-width: 2px;
+border-color: rgb(255, 255, 255);
+
