@@ -1,0 +1,4 @@
+GITBASH_TOKEN=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
+
+git config --global credential.helper cache        ENABLE SAVE PASS
+git config --global --unset credential.helper      UNABLE
