@@ -29,23 +29,26 @@
 	border-radius:9px;
 }
 #access_btn{
-
-	border: 2px solid rgb(179, 179, 179);
+	color: rgba(0, 73, 113,255);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:9px;
 	background-color: rgb(255, 255, 255);
 }
 #access_btn:pressed{
+	color: rgba(0, 73, 113,225);
 	background-color: rgb(223, 223, 223);
-	border: 2px solid rgba(179, 179, 179,100);
+	border: 1px solid rgba(179, 179, 179,100);
 }
 #register_btn{
-	border: 2px solid rgb(179, 179, 179);
+	color: rgba(0, 73, 113,255);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:9px;
 	background-color: rgb(255, 255, 255);
 }
 #register_btn:pressed{
+	color: rgba(0, 73, 113,225);
 	background-color: rgb(223, 223, 223);
-	border: 2px solid rgba(179, 179, 179,100);
+	border: 1px solid rgba(179, 179, 179,100);
 }
 QLabel{
 	color: rgb(179, 179, 179);
@@ -59,7 +62,11 @@ QLineEdit{
 }
 
 QComboBox{
-	color: rgb(179, 179, 179);
+	color: rgba(0, 73, 113,255);
+}
+QComboBox:hover{
+	
+	color: rgb(0, 0, 0);
 }
 
 #pag_login{
@@ -145,7 +152,7 @@ border-radius:30px;
           <item>
            <widget class="QStackedWidget" name="stack">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="pag_login">
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -367,9 +374,13 @@ border-radius:30px;
                   <widget class="QComboBox" name="selectorCaja">
                    <property name="font">
                     <font>
-                     <pointsize>9</pointsize>
+                     <family>Arial Black</family>
+                     <pointsize>10</pointsize>
                      <bold>true</bold>
                     </font>
+                   </property>
+                   <property name="sizeAdjustPolicy">
+                    <enum>QComboBox::AdjustToContents</enum>
                    </property>
                    <item>
                     <property name="text">
@@ -433,6 +444,12 @@ border-radius:30px;
                      <width>190</width>
                      <height>36</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                     <bold>true</bold>
+                    </font>
                    </property>
                    <property name="text">
                     <string>Ingresar</string>
@@ -700,6 +717,12 @@ border-radius:30px;
                      <width>190</width>
                      <height>36</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                     <bold>true</bold>
+                    </font>
                    </property>
                    <property name="text">
                     <string>Registrar</string>

@@ -29,13 +29,19 @@ border-radius: 20px;
 }
 
 QPushButton{
-	background-color: rgb(141, 23, 38);
+	background-color: rgba(141, 23, 40,255);
 	color: rgba(255, 255, 255,200);
     border-style: outset;
     padding: 2px;
     font: 50px Arial Black;
     border-width: 2px;
-	border-color: rgb(148, 75, 77);
+	border-color: rgba(148, 75, 77,255);
+}
+
+QPushButton:pressed{
+	background-color: rgba(141, 23, 40,200);
+	color: rgba(255, 255, 255,100);
+	border-color: rgb(148, 75, 77,255);
 }
 
 #texto{
