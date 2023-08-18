@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1201</width>
-    <height>1049</height>
+    <width>899</width>
+    <height>678</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,11 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#top {
-	background-color: rgb(157, 19, 45);
+	background-color: rgba(157, 19, 45,100);
+	border-radius:2px;
 }
 
-#fondo{
+#widget{
 	background-image: url(:/img/src/img/fondotransparente.jpg);
 }
 
@@ -40,7 +41,7 @@ border-image: url(:/img/src/img/fondo_sin.jpg);
 
 #borde_turnos{
 	
-background-color: rgb(157, 19, 45);
+
 	border-radius:10px;
 	
 }
@@ -48,6 +49,18 @@ background-color: rgb(157, 19, 45);
 #base_turnos{
 background-color: white;
 
+}
+
+#base_nums{
+
+}
+#base_titulo{
+
+}
+QLabel{
+background-color: rgb(157, 19, 45);
+color:white;
+border-radius:2px;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -86,7 +99,7 @@ background-color: white;
         <number>0</number>
        </property>
        <item>
-        <widget class="QWidget" name="top" native="true">
+        <widget class="QWidget" name="top_box" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -99,6 +112,91 @@ background-color: white;
            <height>50</height>
           </size>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_12">
+          <property name="leftMargin">
+           <number>40</number>
+          </property>
+          <property name="topMargin">
+           <number>30</number>
+          </property>
+          <property name="rightMargin">
+           <number>600</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="top" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>400</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Buenos Aires, La Plata</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="font">
+                <font>
+                 <pointsize>20</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>22:30</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -129,7 +227,7 @@ background-color: white;
               <number>40</number>
              </property>
              <property name="topMargin">
-              <number>100</number>
+              <number>0</number>
              </property>
              <property name="rightMargin">
               <number>40</number>
@@ -174,7 +272,7 @@ background-color: white;
               <number>20</number>
              </property>
              <property name="topMargin">
-              <number>60</number>
+              <number>0</number>
              </property>
              <property name="rightMargin">
               <number>60</number>
@@ -185,11 +283,14 @@ background-color: white;
              <item>
               <widget class="QWidget" name="borde_turnos" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_5">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
                 <property name="leftMargin">
                  <number>20</number>
                 </property>
                 <property name="topMargin">
-                 <number>20</number>
+                 <number>0</number>
                 </property>
                 <property name="rightMargin">
                  <number>20</number>
@@ -216,7 +317,7 @@ background-color: white;
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QWidget" name="widget_2" native="true">
+                    <widget class="QWidget" name="base_titulo" native="true">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -230,10 +331,31 @@ background-color: white;
                       </size>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_10">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>5</number>
+                      </property>
                       <item>
                        <widget class="QLabel" name="label">
+                        <property name="font">
+                         <font>
+                          <pointsize>25</pointsize>
+                          <bold>true</bold>
+                         </font>
+                        </property>
                         <property name="text">
-                         <string>TextLabel</string>
+                         <string>LLAMADO TURNOS</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -241,10 +363,22 @@ background-color: white;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QWidget" name="widget_3" native="true">
+                    <widget class="QWidget" name="base_nums" native="true">
                      <layout class="QHBoxLayout" name="horizontalLayout_3">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
                       <item>
-                       <widget class="QWidget" name="widget_4" native="true">
+                       <widget class="QWidget" name="nums" native="true">
                         <layout class="QVBoxLayout" name="verticalLayout_7">
                          <property name="leftMargin">
                           <number>0</number>
@@ -259,7 +393,13 @@ background-color: white;
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QWidget" name="widget_7" native="true">
+                          <widget class="QWidget" name="box_titulo" native="true">
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>80</height>
+                            </size>
+                           </property>
                            <layout class="QHBoxLayout" name="horizontalLayout_4">
                             <property name="leftMargin">
                              <number>0</number>
@@ -274,12 +414,30 @@ background-color: white;
                              <number>0</number>
                             </property>
                             <item>
-                             <widget class="QWidget" name="widget_13" native="true">
+                             <widget class="QWidget" name="box_num" native="true">
                               <layout class="QVBoxLayout" name="verticalLayout_8">
+                               <property name="spacing">
+                                <number>0</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
                                <item>
-                                <widget class="QLabel" name="label_2">
+                                <widget class="QLabel" name="label_num">
                                  <property name="text">
-                                  <string>TextLabel</string>
+                                  <string>NUM</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
                                  </property>
                                 </widget>
                                </item>
@@ -287,12 +445,27 @@ background-color: white;
                              </widget>
                             </item>
                             <item>
-                             <widget class="QWidget" name="widget_14" native="true">
+                             <widget class="QWidget" name="box_caja" native="true">
                               <layout class="QVBoxLayout" name="verticalLayout_9">
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
                                <item>
-                                <widget class="QLabel" name="label_3">
+                                <widget class="QLabel" name="label_caja">
                                  <property name="text">
-                                  <string>TextLabel</string>
+                                  <string>CAJA</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
                                  </property>
                                 </widget>
                                </item>
@@ -303,19 +476,37 @@ background-color: white;
                           </widget>
                          </item>
                          <item>
-                          <widget class="QWidget" name="widget_8" native="true">
+                          <widget class="QWidget" name="box_1" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_5">
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
                             <item>
-                             <widget class="QLabel" name="label_4">
+                             <widget class="QLabel" name="num1">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="label_5">
+                             <widget class="QLabel" name="caja1">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
@@ -323,19 +514,37 @@ background-color: white;
                           </widget>
                          </item>
                          <item>
-                          <widget class="QWidget" name="widget_12" native="true">
+                          <widget class="QWidget" name="box_2" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_6">
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
                             <item>
-                             <widget class="QLabel" name="label_6">
+                             <widget class="QLabel" name="num2">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="label_7">
+                             <widget class="QLabel" name="caja2">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
@@ -343,19 +552,37 @@ background-color: white;
                           </widget>
                          </item>
                          <item>
-                          <widget class="QWidget" name="widget_9" native="true">
+                          <widget class="QWidget" name="box_3" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_7">
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
                             <item>
-                             <widget class="QLabel" name="label_8">
+                             <widget class="QLabel" name="num3">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="label_9">
+                             <widget class="QLabel" name="caja3">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
@@ -363,19 +590,37 @@ background-color: white;
                           </widget>
                          </item>
                          <item>
-                          <widget class="QWidget" name="widget_11" native="true">
+                          <widget class="QWidget" name="box_4" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_8">
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
                             <item>
-                             <widget class="QLabel" name="label_10">
+                             <widget class="QLabel" name="num4">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="label_11">
+                             <widget class="QLabel" name="caja4">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
@@ -383,19 +628,37 @@ background-color: white;
                           </widget>
                          </item>
                          <item>
-                          <widget class="QWidget" name="widget_10" native="true">
+                          <widget class="QWidget" name="box_5" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_9">
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
                             <item>
-                             <widget class="QLabel" name="label_12">
+                             <widget class="QLabel" name="num5">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="label_13">
+                             <widget class="QLabel" name="caja5">
                               <property name="text">
-                               <string>TextLabel</string>
+                               <string>1</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
                               </property>
                              </widget>
                             </item>
@@ -434,6 +697,15 @@ background-color: white;
            <height>50</height>
           </size>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>LABEL DESPLAZABLE</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
