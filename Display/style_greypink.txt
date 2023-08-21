@@ -1,0 +1,52 @@
+#borde_top {
+	background-color: rgb(81, 80, 89);
+	border-radius:2px;
+}
+#borde_top QLabel{
+	color:white;
+}
+
+#widget{
+	background-image: url(:/img/src/img/fondotransparente.jpg);
+}
+
+
+
+#borde_imagen{
+	background-color: rgb(81, 80, 89);
+	border-radius:10px;
+}
+
+#imagen{
+	
+	border-image: url(:/img/src/img/logo.jpeg);
+	
+}
+#titulo_llamado{
+	background-color: rgb(81, 80, 89);
+	color:white;
+	border-radius:2px;
+}
+#borde_turnos{
+	
+
+	border-radius:10px;
+	
+}
+
+#nums QLabel{
+
+	background-color: rgb(197, 195, 216);
+	color:white;
+	border-radius:2px;
+
+}
+
+#borde_bottom{
+	background-color: rgb(81, 80, 89);
+	color:white;
+}
+#borde_bottom QLabel{
+	background-color: rgb(81, 80, 89);
+	color:white;
+}

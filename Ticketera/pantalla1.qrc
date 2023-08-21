@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="img">
+    <file>src/img/iconWhite.png</file>
+    <file>src/img/grisSinFondo.jpg</file>
     <file>src/img/acceso.png</file>
     <file>src/img/fondo(rot).jpg</file>
     <file>src/img/fondo.jpg</file>

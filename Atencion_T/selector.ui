@@ -21,14 +21,14 @@
 }
 QPushButton{
 	border-radius:30px;
-	border: 1px solid rgba(255, 255, 255, 130);
-	background-color: rgba(255, 255, 255, 130);
+	border: 0.1px solid white;
+	background-color: rgba(255, 255, 255, 160);
 	
 }
 QPushButton:pressed{
 	
 	background-color: rgba(66, 66, 66, 150);
-	border: 1px solid rgba(255, 255, 255, 80);
+	border: 0.5px solid white;
 }</string>
   </property>
   <widget class="QWidget" name="main">

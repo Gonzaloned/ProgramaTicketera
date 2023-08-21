@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>899</width>
+    <width>940</width>
     <height>678</height>
    </rect>
   </property>
@@ -14,31 +14,35 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#top {
-	background-color: rgba(157, 19, 45,100);
+   <string notr="true">#borde_top {
+	background-color: qlineargradient(spread:pad, x1:0.977, y1:0.636409, x2:0.125, y2:0.636636, stop:0 rgba(4, 42, 79,255), stop:1 rgba(0, 73, 113,255));
 	border-radius:2px;
+}
+#borde_top QLabel{
+	color:white;
 }
 
 #widget{
-	background-image: url(:/img/src/img/fondotransparente.jpg);
+	background-image: url(:/img/src/img/grisSinFondo.jpg);
 }
 
-#bottom{
-background-color: rgb(157, 19, 45);
-}
+
 
 #borde_imagen{
-border-image: url(:/img/src/img/fondo_sin.jpg);
+	border-image: url(:/img/src/img/fondo_sin.jpg);
 	border-radius:10px;
 }
 
 #imagen{
 	
-	border-image: url(:/img/src/img/fondo.jpg);
-	
+	border-image: url(:/img/src/img/logo.jpeg);
 	
 }
-
+#titulo_llamado{
+	background-color: rgb(4, 42, 79);
+	color:white;
+	border-radius:2px;
+}
 #borde_turnos{
 	
 
@@ -46,22 +50,24 @@ border-image: url(:/img/src/img/fondo_sin.jpg);
 	
 }
 
-#base_turnos{
-background-color: white;
+#nums QLabel{
+	background-color: rgb(204, 204, 204);
+
+	color:	rgb(4, 42, 79);
+	border-radius:2px;
 
 }
 
-#base_nums{
-
+#borde_bottom{
+	background-color: rgb(4, 42, 79);
+	color:white;
 }
-#base_titulo{
-
+#borde_bottom QLabel{
+	background-color: rgb(4, 42, 79);
+	color:white;
 }
-QLabel{
-background-color: rgb(157, 19, 45);
-color:white;
-border-radius:2px;
-}</string>
+
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -126,7 +132,7 @@ border-radius:2px;
            <number>10</number>
           </property>
           <item>
-           <widget class="QWidget" name="top" native="true">
+           <widget class="QWidget" name="borde_top" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -147,16 +153,16 @@ border-radius:2px;
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <property name="spacing">
-              <number>10</number>
+              <number>0</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>10</number>
              </property>
              <property name="topMargin">
               <number>0</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>10</number>
              </property>
              <property name="bottomMargin">
               <number>0</number>
@@ -189,7 +195,23 @@ border-radius:2px;
                 <string>22:30</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="font">
+                <font>
+                 <pointsize>20</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>32`C</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -242,16 +264,16 @@ border-radius:2px;
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_4">
                 <property name="leftMargin">
-                 <number>20</number>
+                 <number>15</number>
                 </property>
                 <property name="topMargin">
-                 <number>20</number>
+                 <number>25</number>
                 </property>
                 <property name="rightMargin">
-                 <number>20</number>
+                 <number>15</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>20</number>
+                 <number>25</number>
                 </property>
                 <item>
                  <widget class="QWidget" name="imagen" native="true"/>
@@ -344,7 +366,7 @@ border-radius:2px;
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label">
+                       <widget class="QLabel" name="titulo_llamado">
                         <property name="font">
                          <font>
                           <pointsize>25</pointsize>
@@ -365,6 +387,9 @@ border-radius:2px;
                    <item>
                     <widget class="QWidget" name="base_nums" native="true">
                      <layout class="QHBoxLayout" name="horizontalLayout_3">
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
                       <property name="leftMargin">
                        <number>0</number>
                       </property>
@@ -379,7 +404,15 @@ border-radius:2px;
                       </property>
                       <item>
                        <widget class="QWidget" name="nums" native="true">
+                        <property name="font">
+                         <font>
+                          <pointsize>20</pointsize>
+                         </font>
+                        </property>
                         <layout class="QVBoxLayout" name="verticalLayout_7">
+                         <property name="spacing">
+                          <number>1</number>
+                         </property>
                          <property name="leftMargin">
                           <number>0</number>
                          </property>
@@ -401,6 +434,9 @@ border-radius:2px;
                             </size>
                            </property>
                            <layout class="QHBoxLayout" name="horizontalLayout_4">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
                              <number>0</number>
                             </property>
@@ -433,6 +469,12 @@ border-radius:2px;
                                </property>
                                <item>
                                 <widget class="QLabel" name="label_num">
+                                 <property name="font">
+                                  <font>
+                                   <pointsize>30</pointsize>
+                                   <bold>true</bold>
+                                  </font>
+                                 </property>
                                  <property name="text">
                                   <string>NUM</string>
                                  </property>
@@ -461,6 +503,12 @@ border-radius:2px;
                                </property>
                                <item>
                                 <widget class="QLabel" name="label_caja">
+                                 <property name="font">
+                                  <font>
+                                   <pointsize>30</pointsize>
+                                   <bold>true</bold>
+                                  </font>
+                                 </property>
                                  <property name="text">
                                   <string>CAJA</string>
                                  </property>
@@ -478,6 +526,9 @@ border-radius:2px;
                          <item>
                           <widget class="QWidget" name="box_1" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_5">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
                              <number>0</number>
                             </property>
@@ -492,8 +543,13 @@ border-radius:2px;
                             </property>
                             <item>
                              <widget class="QLabel" name="num1">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>B3</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -502,8 +558,14 @@ border-radius:2px;
                             </item>
                             <item>
                              <widget class="QLabel" name="caja1">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                                <bold>false</bold>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>BOX 1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -516,6 +578,9 @@ border-radius:2px;
                          <item>
                           <widget class="QWidget" name="box_2" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_6">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
                              <number>0</number>
                             </property>
@@ -530,8 +595,13 @@ border-radius:2px;
                             </property>
                             <item>
                              <widget class="QLabel" name="num2">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>B2</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -540,8 +610,13 @@ border-radius:2px;
                             </item>
                             <item>
                              <widget class="QLabel" name="caja2">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>BOX 1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -554,6 +629,9 @@ border-radius:2px;
                          <item>
                           <widget class="QWidget" name="box_3" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_7">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
                              <number>0</number>
                             </property>
@@ -568,8 +646,13 @@ border-radius:2px;
                             </property>
                             <item>
                              <widget class="QLabel" name="num3">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>B1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -578,8 +661,13 @@ border-radius:2px;
                             </item>
                             <item>
                              <widget class="QLabel" name="caja3">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>BOX 1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -592,6 +680,9 @@ border-radius:2px;
                          <item>
                           <widget class="QWidget" name="box_4" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_8">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
                              <number>0</number>
                             </property>
@@ -606,8 +697,13 @@ border-radius:2px;
                             </property>
                             <item>
                              <widget class="QLabel" name="num4">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>A2</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -616,8 +712,13 @@ border-radius:2px;
                             </item>
                             <item>
                              <widget class="QLabel" name="caja4">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>BOX 1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -630,6 +731,9 @@ border-radius:2px;
                          <item>
                           <widget class="QWidget" name="box_5" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_9">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
                              <number>0</number>
                             </property>
@@ -644,8 +748,13 @@ border-radius:2px;
                             </property>
                             <item>
                              <widget class="QLabel" name="num5">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>A1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -654,8 +763,13 @@ border-radius:2px;
                             </item>
                             <item>
                              <widget class="QLabel" name="caja5">
+                              <property name="font">
+                               <font>
+                                <pointsize>20</pointsize>
+                               </font>
+                              </property>
                               <property name="text">
-                               <string>1</string>
+                               <string>BOX 1</string>
                               </property>
                               <property name="alignment">
                                <set>Qt::AlignCenter</set>
@@ -684,7 +798,7 @@ border-radius:2px;
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="bottom" native="true">
+        <widget class="QWidget" name="borde_bottom" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -700,8 +814,17 @@ border-radius:2px;
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <item>
            <widget class="QLabel" name="label_14">
+            <property name="font">
+             <font>
+              <pointsize>25</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
              <string>LABEL DESPLAZABLE</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
