@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">
 #frame{
-	border-image: url(:/fondos/img/fondo_sin.jpg);
+	border-image: url(:/fondos/img/fondos/fondo_sin.jpg);
 	border-radius:20px;
 }
 QPushButton{
@@ -120,7 +120,7 @@ QPushButton:pressed{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="iconos.qrc">
+             <iconset>
               <normaloff>:/iconosWhite/iconsAtencion/bell-2-32.png</normaloff>:/iconosWhite/iconsAtencion/bell-2-32.png</iconset>
             </property>
             <property name="iconSize">
@@ -167,7 +167,7 @@ QPushButton:pressed{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="iconos.qrc">
+             <iconset>
               <normaloff>:/iconosWhite/iconsAtencion/check-mark-7-32.png</normaloff>:/iconosWhite/iconsAtencion/check-mark-7-32.png</iconset>
             </property>
             <property name="iconSize">
@@ -214,7 +214,7 @@ QPushButton:pressed{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="iconos.qrc">
+             <iconset>
               <normaloff>:/iconosWhite/iconsAtencion/letter-t-24.png</normaloff>:/iconosWhite/iconsAtencion/letter-t-24.png</iconset>
             </property>
             <property name="iconSize">
@@ -255,7 +255,7 @@ QPushButton:pressed{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="iconos.qrc">
+             <iconset>
               <normaloff>:/iconosWhite/iconsAtencion/settings-5-32.png</normaloff>:/iconosWhite/iconsAtencion/settings-5-32.png</iconset>
             </property>
             <property name="iconSize">
@@ -279,7 +279,7 @@ QPushButton:pressed{
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QPushButton" name="reset">
+           <widget class="QPushButton" name="exit">
             <property name="minimumSize">
              <size>
               <width>60</width>
@@ -296,13 +296,13 @@ QPushButton:pressed{
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="iconos.qrc">
-              <normaloff>:/iconosWhite/iconsAtencion/x-mark-3-32.png</normaloff>:/iconosWhite/iconsAtencion/x-mark-3-32.png</iconset>
+             <iconset resource="../src/fondos.qrc">
+              <normaloff>:/iconosWhite/img/iconsAtencion/x-mark-3-32.png</normaloff>:/iconosWhite/img/iconsAtencion/x-mark-3-32.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>26</width>
-              <height>26</height>
+              <width>32</width>
+              <height>32</height>
              </size>
             </property>
            </widget>
@@ -317,8 +317,7 @@ QPushButton:pressed{
   </widget>
  </widget>
  <resources>
-  <include location="iconos.qrc"/>
-  <include location="fondos.qrc"/>
+  <include location="../src/fondos.qrc"/>
  </resources>
  <connections/>
 </ui>

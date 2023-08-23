@@ -20,7 +20,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#base{
-	background-image: url(:/fondos/img/fondo.jpg);
+	background-image: url(:/fondos/img/fondos/fondo.jpg);
 }
 #widget{
 	border-radius:9px;
@@ -70,15 +70,25 @@ QComboBox:hover{
 }
 
 #pag_login{
-	border-image: url(:/fondos/img/fondo_sin.jpg);
+	border-image: url(:/fondos/img/fondos/fondo_sin.jpg);
 border-radius:30px;
 }
 
 #pag_registro{
-	border-image: url(:/fondos/img/fondo_sin.jpg);
+
+	border-image: url(:/fondos/img/fondos/fondo_sin.jpg);
 border-radius:30px;
 }
 
+#logToReg{
+	border: none;
+	color: rgb(179, 179, 179);
+}
+
+#regToLogin{
+	border: none;
+	color: rgb(179, 179, 179);
+}
 #selector{
 	
 	color: rgb(255, 255, 255);
@@ -165,7 +175,7 @@ border-radius:30px;
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="iconos.qrc">:/iconosWhite/iconsAtencion/key-3-64.ico</pixmap>
+                    <pixmap resource="../src/fondos.qrc">:/iconosWhite/img/iconsAtencion/key-3-64.ico</pixmap>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -252,7 +262,7 @@ border-radius:30px;
                    <property name="font">
                     <font>
                      <pointsize>12</pointsize>
-                     <bold>true</bold>
+                     <bold>false</bold>
                     </font>
                    </property>
                    <property name="alignment">
@@ -313,8 +323,11 @@ border-radius:30px;
                    </property>
                    <property name="font">
                     <font>
-                     <pointsize>11</pointsize>
+                     <pointsize>12</pointsize>
                     </font>
+                   </property>
+                   <property name="echoMode">
+                    <enum>QLineEdit::Password</enum>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -457,7 +470,7 @@ border-radius:30px;
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="loginToRegister">
+                  <widget class="QPushButton" name="logToReg">
                    <property name="font">
                     <font>
                      <pointsize>12</pointsize>
@@ -466,9 +479,6 @@ border-radius:30px;
                    </property>
                    <property name="text">
                     <string>No tienes usuario? Registrarse</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -504,7 +514,7 @@ border-radius:30px;
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="iconos.qrc">:/iconosWhite/iconsAtencion/checked-user-64.ico</pixmap>
+                    <pixmap resource="../src/fondos.qrc">:/iconosWhite/img/iconsAtencion/checked-user-64.ico</pixmap>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -590,6 +600,14 @@ border-radius:30px;
                      <height>22</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -621,6 +639,14 @@ border-radius:30px;
                      <width>200</width>
                      <height>22</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -674,6 +700,20 @@ border-radius:30px;
                      <width>200</width>
                      <height>22</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="inputMethodHints">
+                    <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+                   </property>
+                   <property name="echoMode">
+                    <enum>QLineEdit::Password</enum>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -730,7 +770,7 @@ border-radius:30px;
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="registerToLogin">
+                  <widget class="QPushButton" name="regToLogin">
                    <property name="font">
                     <font>
                      <pointsize>12</pointsize>
@@ -738,10 +778,7 @@ border-radius:30px;
                     </font>
                    </property>
                    <property name="text">
-                    <string>Ya tienes usuario? Ingresar</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
+                    <string>Ya tienes usuario? Acceder</string>
                    </property>
                   </widget>
                  </item>
@@ -772,8 +809,7 @@ border-radius:30px;
   </widget>
  </widget>
  <resources>
-  <include location="fondos.qrc"/>
-  <include location="iconos.qrc"/>
+  <include location="../src/fondos.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -20,7 +20,6 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
     QStackedWidget, QVBoxLayout, QWidget)
 from connection import Connection
 import fondos_rc
-import iconos_rc
 from ui_selector import Selector
 
 class QLabelClickable(QLabel):
@@ -67,7 +66,7 @@ class Login(object):
         font.setPointSize(12)
         MainWindow.setFont(font)
         MainWindow.setStyleSheet(u"#base{\n"
-"	background-image: url(:/fondos/img/fondo.jpg);\n"
+"	background-image: url(:/fondos/img/fondos/fondo.jpg);\n"
 "}\n"
 "#widget{\n"
 "	border-radius:9px;\n"
@@ -76,23 +75,26 @@ class Login(object):
 "	border-radius:9px;\n"
 "}\n"
 "#access_btn{\n"
-"\n"
-"	border: 2px solid rgb(179, 179, 179);\n"
+"	color: rgba(0, 73, 113,255);\n"
+"	border: 1px solid rgb(179, 179, 179);\n"
 "	border-radius:9px;\n"
 "	background-color: rgb(255, 255, 255);\n"
 "}\n"
 "#access_btn:pressed{\n"
+"	color: rgba(0, 73, 113,225);\n"
 "	background-color: rgb(223, 223, 223);\n"
-"	border: 2px solid rgba(179, 179, 179,100);\n"
+"	border: 1px solid rgba(179, 179, 179,100);\n"
 "}\n"
 "#register_btn{\n"
-"	border: 2px solid rgb(179, 179, 179);\n"
+"	color: rgba(0, 73, 113,255);\n"
+"	border: 1px solid rgb(179, 179, 179);\n"
 "	border-radius:9px;\n"
 "	background-color: rgb(255, 255, 255);\n"
 "}\n"
 "#register_btn:pressed{\n"
+"	color: rgba(0, 73, 113,225);\n"
 "	background-color: rgb(223, 223, 223);\n"
-"	border: 2px solid rgba(179, 179, 179,100);\n"
+"	border: 1px solid rgba(179, 179, 179,100);\n"
 "}\n"
 "QLabel{\n"
 "	color: rgb(179, 179, 179);\n"
@@ -102,24 +104,38 @@ class Login(object):
 "	color: rgb(179, 179, 179);\n"
 "	border: 1px solid rgb(179, 179, 179);\n"
 "	background-color: rgba(255, 255, 255, 100);\n"
-"	border-radius: 3px;\n"
+"	border-radius: "
+                        "3px;\n"
 "}\n"
 "\n"
 "QComboBox{\n"
-"	color: rgb(179, 179, 179);\n"
+"	color: rgba(0, 73, 113,255);\n"
+"}\n"
+"QComboBox:hover{\n"
+"	\n"
+"	color: rgb(0, 0, 0);\n"
 "}\n"
 "\n"
 "#pag_login{\n"
-"	border-image: url(:/fondos/img/fondo_sin.jp"
-                        "g);\n"
+"	border-image: url(:/fondos/img/fondos/fondo_sin.jpg);\n"
 "border-radius:30px;\n"
 "}\n"
 "\n"
 "#pag_registro{\n"
-"	border-image: url(:/fondos/img/fondo_sin.jpg);\n"
+"\n"
+"	border-image: url(:/fondos/img/fondos/fondo_sin.jpg);\n"
 "border-radius:30px;\n"
 "}\n"
 "\n"
+"#logToReg{\n"
+"	border: none;\n"
+"	color: rgb(179, 179, 179);\n"
+"}\n"
+"\n"
+"#regToLogin{\n"
+"	border: none;\n"
+"	color: rgb(179, 179, 179);\n"
+"}\n"
 "#selector{\n"
 "	\n"
 "	color: rgb(255, 255, 255);\n"
@@ -159,7 +175,7 @@ class Login(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_16 = QLabel(self.widget_15)
         self.label_16.setObjectName(u"label_16")
-        self.label_16.setPixmap(QPixmap(u":/iconosWhite/iconsAtencion/key-3-64.ico"))
+        self.label_16.setPixmap(QPixmap(u":/iconosWhite/img/iconsAtencion/key-3-64.ico"))
         self.label_16.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_6.addWidget(self.label_16)
@@ -211,7 +227,7 @@ class Login(object):
         self.userLogin.setMinimumSize(QSize(200, 24))
         font3 = QFont()
         font3.setPointSize(12)
-        font3.setBold(True)
+        font3.setBold(False)
         self.userLogin.setFont(font3)
         self.userLogin.setAlignment(Qt.AlignCenter)
 
@@ -241,9 +257,8 @@ class Login(object):
         sizePolicy1.setHeightForWidth(self.passLogin.sizePolicy().hasHeightForWidth())
         self.passLogin.setSizePolicy(sizePolicy1)
         self.passLogin.setMinimumSize(QSize(200, 24))
-        font4 = QFont()
-        font4.setPointSize(11)
-        self.passLogin.setFont(font4)
+        self.passLogin.setFont(font)
+        self.passLogin.setEchoMode(QLineEdit.Password)
         self.passLogin.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_15.addWidget(self.passLogin, 0, Qt.AlignHCenter)
@@ -265,10 +280,10 @@ class Login(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 26, 0)
         self.label_2 = QLabel(self.w_selector)
         self.label_2.setObjectName(u"label_2")
-        font5 = QFont()
-        font5.setPointSize(11)
-        font5.setBold(True)
-        self.label_2.setFont(font5)
+        font4 = QFont()
+        font4.setPointSize(11)
+        font4.setBold(True)
+        self.label_2.setFont(font4)
         self.label_2.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_2.addWidget(self.label_2)
@@ -279,10 +294,12 @@ class Login(object):
         self.selectorCaja.addItem("")
         self.selectorCaja.addItem("")
         self.selectorCaja.setObjectName(u"selectorCaja")
-        font6 = QFont()
-        font6.setPointSize(9)
-        font6.setBold(True)
-        self.selectorCaja.setFont(font6)
+        font5 = QFont()
+        font5.setFamilies([u"Arial Black"])
+        font5.setPointSize(10)
+        font5.setBold(True)
+        self.selectorCaja.setFont(font5)
+        self.selectorCaja.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
         self.horizontalLayout_2.addWidget(self.selectorCaja)
 
@@ -301,18 +318,18 @@ class Login(object):
         sizePolicy.setHeightForWidth(self.access_btn.sizePolicy().hasHeightForWidth())
         self.access_btn.setSizePolicy(sizePolicy)
         self.access_btn.setMinimumSize(QSize(190, 36))
+        self.access_btn.setFont(font4)
 
         self.verticalLayout_12.addWidget(self.access_btn, 0, Qt.AlignHCenter)
 
-        self.loginToRegister = QLabel(self.widget_13)
-        self.loginToRegister.setObjectName(u"loginToRegister")
-        font7 = QFont()
-        font7.setPointSize(12)
-        font7.setUnderline(True)
-        self.loginToRegister.setFont(font7)
-        self.loginToRegister.setAlignment(Qt.AlignCenter)
+        self.logToReg = QPushButton(self.widget_13)
+        self.logToReg.setObjectName(u"logToReg")
+        font6 = QFont()
+        font6.setPointSize(12)
+        font6.setUnderline(True)
+        self.logToReg.setFont(font6)
 
-        self.verticalLayout_12.addWidget(self.loginToRegister)
+        self.verticalLayout_12.addWidget(self.logToReg)
 
         self.label_14 = QLabel(self.widget_13)
         self.label_14.setObjectName(u"label_14")
@@ -336,7 +353,7 @@ class Login(object):
         self.horizontalLayout_5.setContentsMargins(22, -1, -1, -1)
         self.label_10 = QLabel(self.widget_9)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setPixmap(QPixmap(u":/iconosWhite/iconsAtencion/checked-user-64.ico"))
+        self.label_10.setPixmap(QPixmap(u":/iconosWhite/img/iconsAtencion/checked-user-64.ico"))
         self.label_10.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_5.addWidget(self.label_10)
@@ -351,17 +368,20 @@ class Login(object):
         self.verticalLayout_9.setContentsMargins(-1, 0, -1, 0)
         self.label_11 = QLabel(self.widget_10)
         self.label_11.setObjectName(u"label_11")
-        font8 = QFont()
-        font8.setPointSize(16)
-        font8.setBold(True)
-        self.label_11.setFont(font8)
+        font7 = QFont()
+        font7.setPointSize(16)
+        font7.setBold(True)
+        self.label_11.setFont(font7)
         self.label_11.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
 
         self.verticalLayout_9.addWidget(self.label_11)
 
         self.label = QLabel(self.widget_10)
         self.label.setObjectName(u"label")
-        self.label.setFont(font3)
+        font8 = QFont()
+        font8.setPointSize(12)
+        font8.setBold(True)
+        self.label.setFont(font8)
         self.label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_9.addWidget(self.label)
@@ -380,12 +400,14 @@ class Login(object):
         sizePolicy.setHeightForWidth(self.fullName.sizePolicy().hasHeightForWidth())
         self.fullName.setSizePolicy(sizePolicy)
         self.fullName.setMinimumSize(QSize(200, 22))
+        self.fullName.setFont(font)
+        self.fullName.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_10.addWidget(self.fullName, 0, Qt.AlignHCenter)
 
         self.label_12 = QLabel(self.widget_11)
         self.label_12.setObjectName(u"label_12")
-        self.label_12.setFont(font3)
+        self.label_12.setFont(font8)
         self.label_12.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_10.addWidget(self.label_12)
@@ -395,6 +417,8 @@ class Login(object):
         sizePolicy.setHeightForWidth(self.userRegister.sizePolicy().hasHeightForWidth())
         self.userRegister.setSizePolicy(sizePolicy)
         self.userRegister.setMinimumSize(QSize(200, 22))
+        self.userRegister.setFont(font)
+        self.userRegister.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_10.addWidget(self.userRegister, 0, Qt.AlignHCenter)
 
@@ -409,7 +433,7 @@ class Login(object):
         self.verticalLayout_8.setContentsMargins(10, 0, 10, 14)
         self.label_9 = QLabel(self.widget_8)
         self.label_9.setObjectName(u"label_9")
-        self.label_9.setFont(font3)
+        self.label_9.setFont(font8)
         self.label_9.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.label_9)
@@ -419,6 +443,10 @@ class Login(object):
         sizePolicy1.setHeightForWidth(self.passRegister.sizePolicy().hasHeightForWidth())
         self.passRegister.setSizePolicy(sizePolicy1)
         self.passRegister.setMinimumSize(QSize(200, 22))
+        self.passRegister.setFont(font)
+        self.passRegister.setInputMethodHints(Qt.ImhHiddenText|Qt.ImhNoAutoUppercase|Qt.ImhNoPredictiveText|Qt.ImhSensitiveData)
+        self.passRegister.setEchoMode(QLineEdit.Password)
+        self.passRegister.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.passRegister, 0, Qt.AlignHCenter)
 
@@ -437,15 +465,15 @@ class Login(object):
         sizePolicy.setHeightForWidth(self.register_btn.sizePolicy().hasHeightForWidth())
         self.register_btn.setSizePolicy(sizePolicy)
         self.register_btn.setMinimumSize(QSize(190, 36))
+        self.register_btn.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.register_btn, 0, Qt.AlignHCenter)
 
-        self.registerToLogin = QLabel(self.widget_12)
-        self.registerToLogin.setObjectName(u"registerToLogin")
-        self.registerToLogin.setFont(font7)
-        self.registerToLogin.setAlignment(Qt.AlignCenter)
+        self.regToLogin = QPushButton(self.widget_12)
+        self.regToLogin.setObjectName(u"regToLogin")
+        self.regToLogin.setFont(font6)
 
-        self.verticalLayout_7.addWidget(self.registerToLogin)
+        self.verticalLayout_7.addWidget(self.regToLogin)
 
         self.label_8 = QLabel(self.widget_12)
         self.label_8.setObjectName(u"label_8")
@@ -470,14 +498,13 @@ class Login(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stack.setCurrentIndex(1)
+        self.stack.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
 
-        self.loginToRegister.mousePressEvent = self.stack.setCurrentWidget(self.pag_registro)
-        self.registerToLogin.mousePressEvent = self.stack.setCurrentWidget(self.pag_login)
-        self.access_btn.clicked.connect(lambda: self.stack.setCurrentWidget(self.pag_registro))
+        self.logToReg.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_registro))
+        self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -494,7 +521,7 @@ class Login(object):
         self.selectorCaja.setItemText(3, QCoreApplication.translate("MainWindow", u"4", None))
 
         self.access_btn.setText(QCoreApplication.translate("MainWindow", u"Ingresar", None))
-        self.loginToRegister.setText(QCoreApplication.translate("MainWindow", u"No tienes usuario? Registrarse", None))
+        self.logToReg.setText(QCoreApplication.translate("MainWindow", u"No tienes usuario? Registrarse", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Hospital Sudamericano 2023", None))
         self.label_10.setText("")
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"Registro nuevo usuario", None))
@@ -502,7 +529,7 @@ class Login(object):
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Usuario", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Constrase\u00f1a", None))
         self.register_btn.setText(QCoreApplication.translate("MainWindow", u"Registrar", None))
-        self.registerToLogin.setText(QCoreApplication.translate("MainWindow", u"Ya tienes usuario? Ingresar", None))
+        self.regToLogin.setText(QCoreApplication.translate("MainWindow", u"Ya tienes usuario? Acceder", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Hospital Sudamericano 2023", None))
     # retranslateUi
 

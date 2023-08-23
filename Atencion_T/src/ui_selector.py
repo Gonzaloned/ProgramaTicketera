@@ -11,7 +11,6 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
     QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
-import iconos_rc
 import fondos_rc
 
 class Selector(object):
