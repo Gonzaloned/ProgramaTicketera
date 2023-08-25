@@ -1,12 +1,4 @@
-# -*- coding: utf-8 -*-
 
-################################################################################
-## Form generated from reading UI file 'NewLoginsVkXkB.ui'
-##
-## Created by: Qt User Interface Compiler version 6.4.3
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -18,9 +10,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
     QLineEdit, QMainWindow, QPushButton, QSizePolicy,
     QStackedWidget, QVBoxLayout, QWidget)
+from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import fondos_rc
 from ui_selector import Selector
+
+import crypt
 
 class QLabelClickable(QLabel):
     clicked = Signal()
@@ -41,13 +36,24 @@ class Login(object):
     
     
 
-    def registerUser(self):
-        pass
+    def checkCredential(self):
+        username = self.userLogin.text() #Get the qlineEdit username text
+        password = self.passLogin.text() #Get the qlineEdit password text
+
+        query= QSqlQuery()
+        query.prepare(f'SELECT * FROM Persona WHERE username:{username}')
+        
+        if query.first(): # if user exists 
+            if (query.value('pass')== password): #If password equals to input, start nuew window
+                pass
+            else:
+                pass
+        else:
+            #Crear ventana not exists
+            pass
 
 
-    def loginUser(self):
-        pass
-
+    #Start a new program       
     def startProgram(self):
         vent= QMainWindow()
         ui= Selector()
@@ -57,6 +63,22 @@ class Login(object):
         ui.location_on_the_screen()  #set the Position
         vent.show() #Show
 
+    def registerUser(self):
+        name='asd'
+        user='asd'
+        password= crypt.crypt('assd')
+
+        QUERY= f'''BEGIN TRANSACTION
+            --REGISTRAR USUARIO
+            INSERT INTO Persona(nombre,usuario,pass) VALUES('{name}','{user}','{password}');
+            COMMIT TRANSACTION'''
+        
+        if(name.__len__()>10):
+            #pop usuario supera 10 char
+            pass
+        if(user.__len__()>30):
+            pass
+        #register
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -505,6 +527,7 @@ class Login(object):
 
         self.logToReg.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_registro))
         self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
+        self.access_btn.clicked.connect( lambda: self.startProgram())
     # setupUi
 
     def retranslateUi(self, MainWindow):

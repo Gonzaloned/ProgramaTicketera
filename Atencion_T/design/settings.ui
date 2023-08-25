@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#fondo{
-border-image: url(:/fondos/img/fondo_sin.jpg);
+border-image: url(:/fondos/img/fondos/fondo_sin.jpg);
 
 }
 
@@ -182,7 +182,7 @@ color: white;
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="iconos.qrc">
+                   <iconset>
                     <normaloff>:/iconosWhite/iconsAtencion/bell-2-32.png</normaloff>:/iconosWhite/iconsAtencion/bell-2-32.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -261,7 +261,7 @@ color: white;
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="iconos.qrc">
+                   <iconset>
                     <normaloff>:/iconosWhite/iconsAtencion/check-mark-7-32.png</normaloff>:/iconosWhite/iconsAtencion/check-mark-7-32.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -340,7 +340,7 @@ TURNOS</string>
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="iconos.qrc">
+                   <iconset>
                     <normaloff>:/iconosWhite/iconsAtencion/letter-t-24.png</normaloff>:/iconosWhite/iconsAtencion/letter-t-24.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -413,7 +413,7 @@ TURNOS</string>
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="iconos.qrc">
+                   <iconset>
                     <normaloff>:/iconosWhite/iconsAtencion/info-2-32.ico</normaloff>:/iconosWhite/iconsAtencion/info-2-32.ico</iconset>
                   </property>
                   <property name="iconSize">
@@ -456,8 +456,8 @@ TURNOS</string>
   </widget>
  </widget>
  <resources>
-  <include location="iconos.qrc"/>
-  <include location="fondos.qrc"/>
+  <include location="../src/fondos.qrc"/>
+  <include location="../src/fondos.qrc"/>
  </resources>
  <connections/>
 </ui>

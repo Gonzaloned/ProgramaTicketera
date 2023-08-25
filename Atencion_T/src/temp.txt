@@ -1,91 +1,4 @@
 
-
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform, QGuiApplication)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
-from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
-from connection import Connection
-import fondos_rc
-
-class Selector(object):
-
-###########################################################################################
-    ###FUNCTIONS CALLED BY THE BUTTONS
-###########################################################################################
-
-    #bells ring again
-    def notificar(self):
-        self.db.executeQuery()
-
-    #Calls next shift
-    def llamarProximo(self, tipo:int):
-        self.db= Connection()
-        #f'SELECT TOP (1) num FROM turnos_actual WHERE tipo={tipo} ORDER BY hora'
-        transaction=\
-        f'''BEGIN TRANSACTION;
-
-        DECLARE @proximo_turno INT;
-
-        -- Obtener el próximo turno disponible
-
-        SELECT TOP 1 @proximo_turno = id
-        FROM turnos_global
-        WHERE estado = 'esperando'
-        ORDER BY fecha_hora_llegada;
-
-        -- Asignar el turno a una persona específica (supongamos que la persona tiene el ID 1)
-        
-        UPDATE turnos_global
-        SET estado = 'atendido', persona_id = 1
-        WHERE id = @proximo_turno;
-
-        -- Actualizar el turno actual que se muestra en pantalla
-        UPDATE turnos_actual
-        SET turno_actual_id = @proximo_turno;
-
-        COMMIT TRANSACTION;'''
-
-
-        #if (self.db.executeQuery(query_proximo)):
-            #qry= QSqlQuery(query_proximo)
-            #print(qry.nextResult())
-
-    #Opens the options    
-    def abrirOpciones(self):
-        options= QMainWindow()
-        ui= Selector()
-        ui.setupUi(vent) #Paso la ventana para configuraciones
-        vent.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
-        vent.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
-        ui.location_on_the_screen()  #set the Position
-        vent.show() #Show
-    #cerrar programa
-    def cerrarSelectora(self):
-        self.ventana.close()
-
-
-    #  This function calculates the position in the screen
-    def location_on_the_screen(self):    
-        screen = QGuiApplication.primaryScreen().availableGeometry()
-        #print(f' screen: {screen.width()}  {screen.height()}')
-        
-        widget = self.ventana.geometry()
-        #print(f' widget: {widget.width()}  {widget.height()}')
-
-        x = screen.width() - widget.width()
-        y = screen.height() - widget.height()
-
-        #print(f' X: {x} Y: {y}')
-        self.ventana.move(x, y)
-
-
-
     def setupUi(self, MainWindow):
         self.ventana=MainWindow
         if not MainWindow.objectName():
@@ -241,7 +154,7 @@ class Selector(object):
         self.sinTurno.clicked.connect(lambda: self.llamarProximo(1))
         self.conTurno.clicked.connect(lambda: self.llamarProximo(2))
         self.settings.clicked.connect(lambda: self.abrirOpciones())
-        self.exit.clicked.connect(lambda: self.cerrarSelectora())
+        self.reset.clicked.connect(lambda: self.cerrarSelectora())
     # setupUi
 
     def retranslateUi(self, MainWindow):
