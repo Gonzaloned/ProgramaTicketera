@@ -1,8 +1,6 @@
 
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt, Signal)
+from PySide6.QtCore import *
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
@@ -13,18 +11,10 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
 from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import fondos_rc
+from popOk import popOk
 from ui_selector import Selector
 
-import crypt
 
-class QLabelClickable(QLabel):
-    clicked = Signal()
-    
-    def __init__(self, *args):
-        QLabel.__init__(self, *args)
-   
-    def mouseReleaseEvent(self, ev):
-        self.clicked.emit()
 
 class Login(object):
 
@@ -62,25 +52,51 @@ class Login(object):
         vent.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
         ui.location_on_the_screen()  #set the Position
         vent.show() #Show
+        self.window.close()
 
     def registerUser(self):
-        name='asd'
-        user='asd'
-        password= crypt.crypt('assd')
+
+        #Save the field values to local vars
+        name= self.fullName.text()
+        user= self.userRegister.text()
+        pass1= self.passRegister.text()
+        pass2= self.pass2Register.text()
+
 
         QUERY= f'''BEGIN TRANSACTION
             --REGISTRAR USUARIO
-            INSERT INTO Persona(nombre,usuario,pass) VALUES('{name}','{user}','{password}');
+            INSERT INTO Persona(nombre,usuario,pass) VALUES('{name}','{user}','{pass1}');
             COMMIT TRANSACTION'''
         
-        if(name.__len__()>10):
-            #pop usuario supera 10 char
-            pass
-        if(user.__len__()>30):
-            pass
-        #register
+        if (pass1==pass2): #if passwds match
+            if(user.__len__()>10): #If user< 10char
+                print('pop PassIncorrect')
+                if(name.__len__()>30): #if name< 30 char
+                    print('ok')
+
+
+
+                else:  #name +30 char PopAdvice
+                    self.popAdvice('El nombre debe ser menor a\n 30 caracteres')
+            else: #User +10 char PopAdvice
+                self.popAdvice('El usuario no puede tener mas de\n 10 caracteres')
+        else: #If passwords doesnt match popAdvice
+            self.popAdvice('Las constraseñas no coinciden')
+        
+
+    def popAdvice(self,text):  #Create a window of advice
+        self.pop= QMainWindow()
+        self.ui= popOk()
+        self.ui.setupUi(self.pop,text) #Paso la ventana para configuraciones
+        self.pop.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        self.pop.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+        self.pop.show() #Show
+        QTimer.singleShot(30000, lambda: self.pop.close())
 
     def setupUi(self, MainWindow):
+
+        self.window= MainWindow #Pass the window to close
+
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(896, 905)
@@ -450,9 +466,9 @@ class Login(object):
         self.widget_8 = QWidget(self.pag_registro)
         self.widget_8.setObjectName(u"widget_8")
         self.verticalLayout_8 = QVBoxLayout(self.widget_8)
-        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setSpacing(2)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.verticalLayout_8.setContentsMargins(10, 0, 10, 14)
+        self.verticalLayout_8.setContentsMargins(10, 0, 10, 6)
         self.label_9 = QLabel(self.widget_8)
         self.label_9.setObjectName(u"label_9")
         self.label_9.setFont(font8)
@@ -471,6 +487,25 @@ class Login(object):
         self.passRegister.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.passRegister, 0, Qt.AlignHCenter)
+
+        self.label_3 = QLabel(self.widget_8)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font8)
+        self.label_3.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_8.addWidget(self.label_3)
+
+        self.pass2Register = QLineEdit(self.widget_8)
+        self.pass2Register.setObjectName(u"pass2Register")
+        sizePolicy.setHeightForWidth(self.pass2Register.sizePolicy().hasHeightForWidth())
+        self.pass2Register.setSizePolicy(sizePolicy)
+        self.pass2Register.setMinimumSize(QSize(200, 22))
+        self.pass2Register.setMaximumSize(QSize(16777215, 16777215))
+        self.pass2Register.setFont(font)
+        self.pass2Register.setEchoMode(QLineEdit.Password)
+        self.pass2Register.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_8.addWidget(self.pass2Register, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout_11.addWidget(self.widget_8)
@@ -520,14 +555,17 @@ class Login(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stack.setCurrentIndex(0)
+        self.stack.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
 
+        #BUTTONS CONF
         self.logToReg.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_registro))
         self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
         self.access_btn.clicked.connect( lambda: self.startProgram())
+        self.register_btn.clicked.connect( lambda: self.registerUser())
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -551,6 +589,7 @@ class Login(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Nombre Completo", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Usuario", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Constrase\u00f1a", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Confirmar Contrase\u00f1a", None))
         self.register_btn.setText(QCoreApplication.translate("MainWindow", u"Registrar", None))
         self.regToLogin.setText(QCoreApplication.translate("MainWindow", u"Ya tienes usuario? Acceder", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Hospital Sudamericano 2023", None))

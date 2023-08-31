@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">#fondo{
 
-	border-image: url(:/fondos/img/fondo_sin.jpg);
+	border-image: url(:/fondos/img/fondos/fondo_sin.jpg);
 
 }
 
@@ -97,7 +97,7 @@ color: white;
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="text">
             <property name="font">
              <font>
               <pointsize>13</pointsize>
@@ -105,8 +105,7 @@ color: white;
              </font>
             </property>
             <property name="text">
-             <string>Seguro que quiere borrar el historial de turnos actual?
-Se comenzara a contar nuevamente</string>
+             <string>CLEAN</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -185,7 +184,7 @@ Se comenzara a contar nuevamente</string>
   </widget>
  </widget>
  <resources>
-  <include location="fondos.qrc"/>
+  <include location="../src/fondos.qrc"/>
   <include location="iconos.qrc"/>
  </resources>
  <connections/>

@@ -303,6 +303,7 @@
     <file>img/icons/zoom-out.svg</file>
   </qresource>
   <qresource prefix="iconosWhite">
+    <file>img/iconsAtencion/iconWhite.png</file>
     <file>img/iconsAtencion/letter-s-32.ico</file>
     <file>img/iconsAtencion/bell-2-24.png</file>
     <file>img/iconsAtencion/bell-2-32.png</file>

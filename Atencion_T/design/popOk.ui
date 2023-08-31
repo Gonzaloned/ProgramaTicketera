@@ -48,10 +48,16 @@ color: rgb(255, 255, 255);
    <item>
     <widget class="QWidget" name="fondo" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="topMargin">
        <number>0</number>
       </property>
-      <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
+      <property name="bottomMargin">
+       <number>40</number>
+      </property>
+      <item alignment="Qt::AlignBottom">
        <widget class="QLabel" name="texto">
         <property name="font">
          <font>
@@ -60,8 +66,7 @@ color: rgb(255, 255, 255);
          </font>
         </property>
         <property name="text">
-         <string>Se ha reseteado los turnos
- correctamente</string>
+         <string>CLEAN</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -70,14 +75,20 @@ color: rgb(255, 255, 255);
       </item>
       <item alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="imagen">
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>200</height>
+         </size>
+        </property>
         <property name="text">
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>:/iconos/img/fondo.png</pixmap>
+         <pixmap resource="../src/fondos.qrc">:/iconosWhite/img/iconsAtencion/iconWhite.png</pixmap>
         </property>
         <property name="scaledContents">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -87,7 +98,7 @@ color: rgb(255, 255, 255);
   </layout>
  </widget>
  <resources>
-  <include location="../Ticketera/pantalla1.qrc"/>
+  <include location="../src/fondos.qrc"/>
  </resources>
  <connections/>
 </ui>

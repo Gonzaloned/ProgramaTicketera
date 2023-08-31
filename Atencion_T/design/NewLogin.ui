@@ -162,7 +162,7 @@ border-radius:30px;
           <item>
            <widget class="QStackedWidget" name="stack">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="pag_login">
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -657,7 +657,7 @@ border-radius:30px;
                <widget class="QWidget" name="widget_8" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_8">
                  <property name="spacing">
-                  <number>0</number>
+                  <number>2</number>
                  </property>
                  <property name="leftMargin">
                   <number>10</number>
@@ -669,7 +669,7 @@ border-radius:30px;
                   <number>10</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>14</number>
+                  <number>6</number>
                  </property>
                  <item>
                   <widget class="QLabel" name="label_9">
@@ -708,6 +708,55 @@ border-radius:30px;
                    </property>
                    <property name="inputMethodHints">
                     <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+                   </property>
+                   <property name="echoMode">
+                    <enum>QLineEdit::Password</enum>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Confirmar Contraseña</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignHCenter">
+                  <widget class="QLineEdit" name="pass2Register">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>200</width>
+                     <height>22</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
                    </property>
                    <property name="echoMode">
                     <enum>QLineEdit::Password</enum>
