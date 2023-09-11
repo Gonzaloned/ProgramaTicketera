@@ -1,13 +1,13 @@
-
-
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
+from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+from PyQt6.QtSql import *
 import pantalla1_rc
 import sys
-from PyQt6.QtSql import *
-import datetime
 
+import datetime
+import requests
 
 class Pantalla(object):
 
@@ -77,33 +77,120 @@ class Pantalla(object):
                 proximo=query_proximo.value(0)
                 self.prox.setText(f'PROXIMO NUMERO {proximo}')
 
+    def refreshTime(self):
+        time_now=datetime.datetime.now().strftime('%H:%M')
+        print(f'hour {time_now}')
+
+    def refreshWeather(self):
+        #Uses an api to get the temp in kelvin, using a connector with lat, lon and account key
+        #That request retrieves a json with all the data
+        lat= "-34.90407623790362"
+        lon= "-57.94973360159151"
+        key= 'b8674863bb11fe6782c8e7b8183a3a47'
+        url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}'
+        res= requests.get(url)
+        data= res.json()
+        temp=data['main']['temp']
+        print(f'temp {temp-273.15}')
 
     def animationColor(self, elem:QWidget):
         #BLUE
-        elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;")
+        elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
+        #azul	background-color: rgb(4, 42, 79);color:white;
+        #blanco 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
+        QTimer.singleShot(1000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
+
+        QTimer.singleShot(2000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
+
+        QTimer.singleShot(3000,lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
+
+        QTimer.singleShot(4000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
+
+        QTimer.singleShot(5000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
+
+        QTimer.singleShot(6000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
+
+        QTimer.singleShot(7000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
+
+        QTimer.singleShot(8000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
+
+        QTimer.singleShot(9000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
+
+        QTimer.singleShot(10000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
+
+        QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
+
+
+    def showNew(self, num:int, caj:int):
         
-        QTimer.singleShot(1000, lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+        #Create a new layout
+        newLayout= QVBoxLayout(self.nums)
 
-        QTimer.singleShot(2000, lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+        #Add last and rename
+        newLayout.addWidget(self.list_box[4])
+        #self.list_box[4].findChildren
+        for i in range(0,4):
+            newLayout.addWidget(self.list_box[i])
+        '''QTimer.singleShot(500, lambda: self.verticalLayout_7.addLayout(newLayout))
+        QTimer.singleShot(500, lambda: self.animationColor(self.list_box[4]))
+        QTimer.singleShot(1500, lambda: self.setActualBoxList())'''
+        self.verticalLayout_7.addLayout(newLayout)
+        self.animationColor(self.list_box[4])
+        QTimer.singleShot(500, lambda: self.setActualBoxList())
 
-        QTimer.singleShot(3000,lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+    def setActualBoxList(self):
+        #Paso el puntero del ultimo label al primero
+        respaldo=self.list_box[0]
+        self.list_box[0] = self.list_box[4]
+        self.list_box[4] = respaldo
 
-        QTimer.singleShot(4000, lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+    '''def playSound(self):
+        #QMediaPlayer
+        #https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html
+        filename = "timbrecasa.mp3"
+        player = QMediaPlayer()
+        audioOutput = QAudioOutput()
+        player.setAudioOutput(audioOutput)
+        #connect(player, SIGNAL(positionChanged(qint64)), self, SLOT(positionChanged(qint64)))
+        player.setSource(QUrl.fromLocalFile("C:/Users/gon/Desktop/Proyecto Ticketera/Display/timbrecasa.mp3"))
+        audioOutput.setVolume(50)
+        player.play()'''
 
-        QTimer.singleShot(5000,lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+    def playSound(self):
+        # Crear una instancia de QMediaPlayer
+        self.player = QMediaPlayer()
+        
+        # Crear una instancia de QAudioOutput
+        self.audioOutput = QAudioOutput()
+        
+        # Asignar el QAudioOutput al QMediaPlayer
+        self.player.setAudioOutput(self.audioOutput)
+        
+        # Especificar la ubicación del archivo de sonido
+        filename = "C:/Users/gon/Desktop/Proyecto Ticketera/Display/timbrecasa.mp3"
+        self.player.setSource(QUrl('file:timbrecasa.mp3'))
 
-        QTimer.singleShot(600, lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+        # Establecer el volumen del sonido (0-100)
+        self.audioOutput.setVolume(50)
+        
+        # Reproducir el sonido
+        self.player.play()
 
-        QTimer.singleShot(7000,lambda: elem.setStyleSheet(u"background-color:rgb(0,73,113); color:white;border-radius:2px;"))
+    def playVideo(self):
+        #QMediaPlayer
+        #https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html
+        filename = "sound.mp3"
+        player = QMediaPlayer()
+        audio_output = QAudioOutput()
+        player.setAudioOutput(audio_output)
+        player.setSource(QUrl.fromLocalFile(filename))
+        audio_output.setVolume(50)
+        player.play()
 
 
 
-
-
-    
-    
     def animationListGenerator(self, listBox: [QWidget]):#, listNum: [QLabel], listCaja: [QLabel]): 
-                #https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QGraphicsEffect.html
+        #https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QGraphicsEffect.html
         self.animationList = []
         for elem in listBox:
             act=QGraphicsColorizeEffect(elem) #Create a new QGraphicsOpacityEffect with the Qobject
@@ -547,16 +634,24 @@ class Pantalla(object):
         QMetaObject.connectSlotsByName(MainWindow)
 
         #vars
-        boxList=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
-        self.animationListGenerator(boxList)
+        self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
+
 		#FUNCTIONS
         self.footerBarAnimation()
         self.timer1 = QTimer() #Create a timer
         self.timer1.timeout.connect(lambda: self.footerBarAnimation()) # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
         self.timer1.start(10000)
 
-        print(boxList[0])
-        self.animationColor(boxList[0])
+        #Show new
+        self.timer2 = QTimer()
+        self.timer2.timeout.connect(lambda: self.showNew(1,1))
+        self.timer2.start(2000)
+
+        self.playSound()
+
+        self.refreshTime()
+        self.refreshWeather()
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
