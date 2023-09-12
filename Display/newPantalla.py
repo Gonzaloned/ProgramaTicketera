@@ -1,13 +1,14 @@
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+from PyQt6.QtMultimedia import *
 from PyQt6.QtSql import *
 import pantalla1_rc
 import sys
 
 import datetime
 import requests
+
 
 class Pantalla(object):
 
@@ -157,29 +158,18 @@ class Pantalla(object):
         player.play()'''
 
     def playSound(self):
-        # Crear una instancia de QMediaPlayer
-        self.player = QMediaPlayer()
-        
-        # Crear una instancia de QAudioOutput
-        self.audioOutput = QAudioOutput()
-        
-        # Asignar el QAudioOutput al QMediaPlayer
-        self.player.setAudioOutput(self.audioOutput)
-        
-        # Especificar la ubicación del archivo de sonido
-        filename = "C:/Users/gon/Desktop/Proyecto Ticketera/Display/timbrecasa.mp3"
-        self.player.setSource(QUrl('file:timbrecasa.mp3'))
-
-        # Establecer el volumen del sonido (0-100)
-        self.audioOutput.setVolume(50)
-        
-        # Reproducir el sonido
-        self.player.play()
+        filename = "timbrecasa.mp3"
+        player = QMediaPlayer()
+        audio_output = QAudioOutput()
+        player.setAudioOutput(audio_output)
+        player.setSource(QUrl.fromLocalFile(filename))
+        audio_output.setVolume(50)
+        player.play()
 
     def playVideo(self):
         #QMediaPlayer
         #https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html
-        filename = "sound.mp3"
+        filename = "src/2.mp3"
         player = QMediaPlayer()
         audio_output = QAudioOutput()
         player.setAudioOutput(audio_output)
@@ -189,7 +179,9 @@ class Pantalla(object):
 
 
 
-    def animationListGenerator(self, listBox: [QWidget]):#, listNum: [QLabel], listCaja: [QLabel]): 
+
+
+    '''def animationListGenerator(self, listBox: [QWidget]):#, listNum: [QLabel], listCaja: [QLabel]): 
         #https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QGraphicsEffect.html
         self.animationList = []
         for elem in listBox:
@@ -203,7 +195,7 @@ class Pantalla(object):
             anim.setEndValue(1)
             self.animationList.append(anim)  #Add the effect to the temporal list            
 
-
+    '''
     def footerBarAnimation(self):
         print('footer starts')
         self.animation = QPropertyAnimation(self.labelDesplazable,b'geometry')
@@ -216,6 +208,7 @@ class Pantalla(object):
         self.animation.setEndValue(rect) #Set the end geo value
         self.animation.start()  #Start
 
+        
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -647,7 +640,7 @@ class Pantalla(object):
         self.timer2.timeout.connect(lambda: self.showNew(1,1))
         self.timer2.start(2000)
 
-        self.playSound()
+        #QTimer.singleShot(2000, lambda: test.play())
 
         self.refreshTime()
         self.refreshWeather()
