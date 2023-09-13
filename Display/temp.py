@@ -1,13 +1,30 @@
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'newDisplayVMIssl.ui'
+##
+## Created by: Qt User Interface Compiler version 6.4.3
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
 from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
+    QSizePolicy, QVBoxLayout, QWidget)
 from PyQt6.QtSql import *
 
+import pantalla1_rc
 import pantalla1_rc
 import sys
 
 import datetime
 import requests
+
+from soundplayer import SoundPlayer
 
 def deleteItemsOfLayout(layout):
     if layout is not None:
@@ -132,24 +149,22 @@ class Pantalla(object):
 
 
     def showNew(self, num:int, caj:int):
-        
+        mp3_player = SoundPlayer()
+        path_mp3='timbrecasa.wav'
+        #mp3_player.play(path_mp3)
+
         #Create a new layout
         newLayout= QVBoxLayout(self.nums)
 
-        #Add last and rename
+        #Add all the nums and box
         newLayout.addWidget(self.list_box[4])
-        #self.list_box[4].findChildren
         for i in range(0,4):
             newLayout.addWidget(self.list_box[i])
-        '''QTimer.singleShot(500, lambda: self.verticalLayout_7.addLayout(newLayout))
-        QTimer.singleShot(500, lambda: self.animationColor(self.list_box[4]))
-        QTimer.singleShot(1500, lambda: self.setActualBoxList())'''
+
         self.verticalLayout_7.addLayout(newLayout)
         self.animationColor(self.list_box[4])
         QTimer.singleShot(500, lambda: self.setActualBoxList())
-        print(f'cantidad de layouts {self.verticalLayout_7.count()}')
-        self.verticalLayout_7.takeAt(0)
-        print(f'cantidad de layouts {self.verticalLayout_7.count()}')
+
 
     def setActualBoxList(self):
         #Paso el puntero del ultimo label al primero
@@ -182,7 +197,7 @@ class Pantalla(object):
         self.animation.setEndValue(rect) #Set the end geo value
         self.animation.start()  #Start
 
-        
+
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -223,6 +238,14 @@ class Pantalla(object):
 "	\n"
 "}\n"
 "\n"
+"#box_titulo QLabel{\n"
+"	background-color: rgb(204, 204, 204);\n"
+"\n"
+"	color:	rgb(4, 42, 79);\n"
+"	border-radius:2px;\n"
+"\n"
+"}\n"
+"\n"
 "#nums QLabel{\n"
 "	background-color: rgb(204, 204, 204);\n"
 "\n"
@@ -232,7 +255,8 @@ class Pantalla(object):
 "}\n"
 "\n"
 "#borde_bottom{\n"
-"	background-color: rgb(4, 42, 79);\n"
+"	background-colo"
+                        "r: rgb(4, 42, 79);\n"
 "	color:white;\n"
 "}\n"
 "#borde_bottom QLabel{\n"
@@ -363,8 +387,9 @@ class Pantalla(object):
         self.base_titulo.setSizePolicy(sizePolicy)
         self.base_titulo.setMinimumSize(QSize(0, 50))
         self.verticalLayout_10 = QVBoxLayout(self.base_titulo)
+        self.verticalLayout_10.setSpacing(1)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.verticalLayout_10.setContentsMargins(0, 0, 0, 5)
+        self.verticalLayout_10.setContentsMargins(0, 0, 0, 1)
         self.titulo_llamado = QLabel(self.base_titulo)
         self.titulo_llamado.setObjectName(u"titulo_llamado")
         font2 = QFont()
@@ -375,25 +400,7 @@ class Pantalla(object):
 
         self.verticalLayout_10.addWidget(self.titulo_llamado)
 
-
-        self.verticalLayout_6.addWidget(self.base_titulo)
-
-        self.base_nums = QWidget(self.base_turnos)
-        self.base_nums.setObjectName(u"base_nums")
-        self.horizontalLayout_3 = QHBoxLayout(self.base_nums)
-        self.horizontalLayout_3.setSpacing(0)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.nums = QWidget(self.base_nums)
-        self.nums.setObjectName(u"nums")
-        font3 = QFont()
-        font3.setPointSize(20)
-        self.nums.setFont(font3)
-        self.verticalLayout_7 = QVBoxLayout(self.nums)
-        self.verticalLayout_7.setSpacing(1)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.box_titulo = QWidget(self.nums)
+        self.box_titulo = QWidget(self.base_titulo)
         self.box_titulo.setObjectName(u"box_titulo")
         self.box_titulo.setMinimumSize(QSize(0, 80))
         self.horizontalLayout_4 = QHBoxLayout(self.box_titulo)
@@ -408,10 +415,10 @@ class Pantalla(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.label_num = QLabel(self.box_num)
         self.label_num.setObjectName(u"label_num")
-        font4 = QFont()
-        font4.setPointSize(30)
-        font4.setBold(True)
-        self.label_num.setFont(font4)
+        font3 = QFont()
+        font3.setPointSize(30)
+        font3.setBold(True)
+        self.label_num.setFont(font3)
         self.label_num.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.label_num)
@@ -426,7 +433,7 @@ class Pantalla(object):
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.label_caja = QLabel(self.box_caja)
         self.label_caja.setObjectName(u"label_caja")
-        self.label_caja.setFont(font4)
+        self.label_caja.setFont(font3)
         self.label_caja.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_9.addWidget(self.label_caja)
@@ -435,8 +442,26 @@ class Pantalla(object):
         self.horizontalLayout_4.addWidget(self.box_caja)
 
 
-        self.verticalLayout_7.addWidget(self.box_titulo)
+        self.verticalLayout_10.addWidget(self.box_titulo)
 
+
+        self.verticalLayout_6.addWidget(self.base_titulo)
+
+        self.base_nums = QWidget(self.base_turnos)
+        self.base_nums.setObjectName(u"base_nums")
+        self.horizontalLayout_3 = QHBoxLayout(self.base_nums)
+        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.nums = QWidget(self.base_nums)
+        self.nums.setObjectName(u"nums")
+        font4 = QFont()
+        font4.setPointSize(20)
+        self.nums.setFont(font4)
+        self.verticalLayout_7 = QVBoxLayout(self.nums)
+        self.verticalLayout_7.setSpacing(1)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.box_1 = QWidget(self.nums)
         self.box_1.setObjectName(u"box_1")
         self.horizontalLayout_5 = QHBoxLayout(self.box_1)
@@ -445,7 +470,7 @@ class Pantalla(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.num1 = QLabel(self.box_1)
         self.num1.setObjectName(u"num1")
-        self.num1.setFont(font3)
+        self.num1.setFont(font4)
         self.num1.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_5.addWidget(self.num1)
@@ -471,14 +496,14 @@ class Pantalla(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.num2 = QLabel(self.box_2)
         self.num2.setObjectName(u"num2")
-        self.num2.setFont(font3)
+        self.num2.setFont(font4)
         self.num2.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_6.addWidget(self.num2)
 
         self.caja2 = QLabel(self.box_2)
         self.caja2.setObjectName(u"caja2")
-        self.caja2.setFont(font3)
+        self.caja2.setFont(font4)
         self.caja2.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_6.addWidget(self.caja2)
@@ -494,14 +519,14 @@ class Pantalla(object):
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.num3 = QLabel(self.box_3)
         self.num3.setObjectName(u"num3")
-        self.num3.setFont(font3)
+        self.num3.setFont(font4)
         self.num3.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_7.addWidget(self.num3)
 
         self.caja3 = QLabel(self.box_3)
         self.caja3.setObjectName(u"caja3")
-        self.caja3.setFont(font3)
+        self.caja3.setFont(font4)
         self.caja3.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_7.addWidget(self.caja3)
@@ -517,14 +542,14 @@ class Pantalla(object):
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.num4 = QLabel(self.box_4)
         self.num4.setObjectName(u"num4")
-        self.num4.setFont(font3)
+        self.num4.setFont(font4)
         self.num4.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_8.addWidget(self.num4)
 
         self.caja4 = QLabel(self.box_4)
         self.caja4.setObjectName(u"caja4")
-        self.caja4.setFont(font3)
+        self.caja4.setFont(font4)
         self.caja4.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_8.addWidget(self.caja4)
@@ -540,14 +565,14 @@ class Pantalla(object):
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.num5 = QLabel(self.box_5)
         self.num5.setObjectName(u"num5")
-        self.num5.setFont(font3)
+        self.num5.setFont(font4)
         self.num5.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_9.addWidget(self.num5)
 
         self.caja5 = QLabel(self.box_5)
         self.caja5.setObjectName(u"caja5")
-        self.caja5.setFont(font3)
+        self.caja5.setFont(font4)
         self.caja5.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_9.addWidget(self.caja5)
@@ -580,13 +605,12 @@ class Pantalla(object):
         self.borde_bottom.setMinimumSize(QSize(0, 50))
         self.verticalLayout_11 = QVBoxLayout(self.borde_bottom)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.verticalLayout_11.setContentsMargins(0, -1, 0, -1)
         self.labelDesplazable = QLabel(self.borde_bottom)
         self.labelDesplazable.setObjectName(u"labelDesplazable")
         self.labelDesplazable.setFont(font2)
         self.labelDesplazable.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_11.addWidget(self.labelDesplazable, 0, Qt.AlignLeft)
+        self.verticalLayout_11.addWidget(self.labelDesplazable)
 
 
         self.verticalLayout_2.addWidget(self.borde_bottom)
@@ -600,6 +624,7 @@ class Pantalla(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
+        
         #vars
         self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
 
@@ -615,7 +640,8 @@ class Pantalla(object):
 
         self.timer2.start(2000)
         QTimer.singleShot(5000,lambda: deleteItemsOfLayout(self.verticalLayout_7))
-        QTimer.singleShot(9000, lambda: self.showNew(1,1))
+        QTimer.singleShot(5050, lambda: self.showNew(1,1))
+        
         #QTimer.singleShot(2000, lambda: test.play())
 
         self.refreshTime()
@@ -643,6 +669,7 @@ class Pantalla(object):
         self.caja5.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
         self.labelDesplazable.setText(QCoreApplication.translate("MainWindow", u"LABEL DESPLAZABLE", None))
     # retranslateUi
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
