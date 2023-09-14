@@ -1,13 +1,4 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'newDisplayVMIssl.ui'
-##
-## Created by: Qt User Interface Compiler version 6.4.3
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
+import datetime
 from PySide6.QtCore import *
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
@@ -21,12 +12,13 @@ import pantalla1_rc
 import pantalla1_rc
 import sys
 
-import datetime
+
 import requests
 
 from soundplayer import SoundPlayer
 
-def deleteItemsOfLayout(layout):
+#Global f to delete layout widget
+def deleteItemsOfLayout(layout:QVBoxLayout):
     if layout is not None:
         while layout.count():
             item = layout.takeAt(0)
@@ -35,10 +27,11 @@ def deleteItemsOfLayout(layout):
                 widget.setParent(None)
             else:
                 deleteItemsOfLayout(item.layout())
+    print('termine')
 
 class Pantalla(object):
 
-    def consultarProximos(self): #exececute a query of bring on the last num called by BOX and actualize displa
+    def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
         
         #sound= PySide6.QtMultimedia.QSoundEffect()
         
@@ -105,8 +98,12 @@ class Pantalla(object):
                 self.prox.setText(f'PROXIMO NUMERO {proximo}')
 
     def refreshTime(self):
+        #Get the actual time in HH:MM
         time_now=datetime.datetime.now().strftime('%H:%M')
-        print(f'hour {time_now}')
+
+        #Put the time in the label
+        self.time.setText(time_now)
+
 
     def refreshWeather(self):
         #Uses an api to get the temp in kelvin, using a connector with lat, lon and account key
@@ -114,17 +111,31 @@ class Pantalla(object):
         lat= "-34.90407623790362"
         lon= "-57.94973360159151"
         key= 'b8674863bb11fe6782c8e7b8183a3a47'
+
+        #URL To request the data
         url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}'
+
+        #Request -> gets a json
         res= requests.get(url)
+
+        #Open the json
         data= res.json()
+        
+        #Save the temp data of the json (In kelvin)
         temp=data['main']['temp']
-        print(f'temp {temp-273.15}')
+
+        #Pass Kelvin to Celsius
+        tempC=temp-273.15
+
+        #Put temp in label
+        self.temp.setText(f'{str(round(tempC))}C')
+
 
     def animationColor(self, elem:QWidget):
-        #BLUE
+        #Change the color between blue and white
         elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
-        #azul	background-color: rgb(4, 42, 79);color:white;
-        #blanco 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
+        #blue	background-color: rgb(4, 42, 79);color:white;
+        #white 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
         QTimer.singleShot(1000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
         QTimer.singleShot(2000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
@@ -147,30 +158,61 @@ class Pantalla(object):
 
         QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
+    def setActualBoxList(self):
+        #This method actualizes the box list order to the actual
+        #Last to the first
+        respaldo=self.list_box[0]
+        self.list_box[0] = self.list_box[4]
+        self.list_box[4] = respaldo
+
 
     def showNew(self, num:int, caj:int):
+
+     
+        #Create a MP3 Sound player (Import)
         mp3_player = SoundPlayer()
+
+        #Path of MP3
         path_mp3='timbrecasa.wav'
-        #mp3_player.play(path_mp3)
 
         #Create a new layout
         newLayout= QVBoxLayout(self.nums)
 
-        #Add all the nums and box
+        #Add all the boxes to the layout
         newLayout.addWidget(self.list_box[4])
         for i in range(0,4):
             newLayout.addWidget(self.list_box[i])
 
+        #delete actual layout
+        deleteItemsOfLayout(self.verticalLayout_7)
+
+        #numbersNext=(0,0)
+        #self.databaseNext(numbersNext)
+
+        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+        childs= self.list_box[4].children()
+
+        #Save num and caja labels
+        num:QLabel = childs[1]
+        caja:QLabel = childs[2]
+
+        num.setText('gon')
+        caja.setText('DATABASE')
+
+        #Set new layout
         self.verticalLayout_7.addLayout(newLayout)
+
+        #Play mp3 file (Search how to play parallel)
+        #mp3_player.play(path_mp3)
+
+        #Execute color animation on new number
         self.animationColor(self.list_box[4])
+
+        #Refresh the order of boxes in list
         QTimer.singleShot(500, lambda: self.setActualBoxList())
 
 
-    def setActualBoxList(self):
-        #Paso el puntero del ultimo label al primero
-        respaldo=self.list_box[0]
-        self.list_box[0] = self.list_box[4]
-        self.list_box[4] = respaldo
+
 
 
                     
@@ -311,22 +353,22 @@ class Pantalla(object):
 
         self.horizontalLayout_10.addWidget(self.label_3)
 
-        self.label_2 = QLabel(self.borde_top)
-        self.label_2.setObjectName(u"label_2")
+        self.time = QLabel(self.borde_top)
+        self.time.setObjectName(u"time")
         font1 = QFont()
         font1.setPointSize(20)
         font1.setBold(True)
-        self.label_2.setFont(font1)
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.time.setFont(font1)
+        self.time.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.label_2)
+        self.horizontalLayout_10.addWidget(self.time)
 
-        self.label_4 = QLabel(self.borde_top)
-        self.label_4.setObjectName(u"label_4")
-        self.label_4.setFont(font1)
-        self.label_4.setAlignment(Qt.AlignCenter)
+        self.temp = QLabel(self.borde_top)
+        self.temp.setObjectName(u"temp")
+        self.temp.setFont(font1)
+        self.temp.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.label_4)
+        self.horizontalLayout_10.addWidget(self.temp)
 
 
         self.verticalLayout_12.addWidget(self.borde_top)
@@ -625,13 +667,17 @@ class Pantalla(object):
         QMetaObject.connectSlotsByName(MainWindow)
 
         
-        #vars
+        #Box list BOX:QWidget[num:QLabel,caja:Qlabel]
         self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
 
 		#FUNCTIONS
         self.footerBarAnimation()
-        self.timer1 = QTimer() #Create a timer
-        self.timer1.timeout.connect(lambda: self.footerBarAnimation()) # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
+
+        #Create footer reset timer
+        self.timer1 = QTimer() 
+
+        # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
+        self.timer1.timeout.connect(lambda: self.footerBarAnimation()) 
         self.timer1.start(10000)
 
         #Show new
@@ -639,10 +685,10 @@ class Pantalla(object):
         #self.timer2.timeout.connect(lambda: self.showNew(1,1))
 
         self.timer2.start(2000)
-        QTimer.singleShot(5000,lambda: deleteItemsOfLayout(self.verticalLayout_7))
-        QTimer.singleShot(5050, lambda: self.showNew(1,1))
         
-        #QTimer.singleShot(2000, lambda: test.play())
+        QTimer.singleShot(5000, lambda: self.showNew(1,1))
+        QTimer.singleShot(11000, lambda: self.showNew(1,1))
+
 
         self.refreshTime()
         self.refreshWeather()
@@ -652,8 +698,8 @@ class Pantalla(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Buenos Aires, La Plata", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
+        self.time.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
+        self.temp.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
         self.titulo_llamado.setText(QCoreApplication.translate("MainWindow", u"LLAMADO TURNOS", None))
         self.label_num.setText(QCoreApplication.translate("MainWindow", u"NUM", None))
         self.label_caja.setText(QCoreApplication.translate("MainWindow", u"CAJA", None))
