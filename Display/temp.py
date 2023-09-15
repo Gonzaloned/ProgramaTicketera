@@ -8,10 +8,15 @@ from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
     QSizePolicy, QVBoxLayout, QWidget)
 from PyQt6.QtSql import *
 
+from PyQt6.QtMultimediaWidgets import *
+from PyQt6.QtMultimedia import *
+
 import pantalla1_rc
 import pantalla1_rc
 import sys
 
+
+from multiprocessing import Process
 
 import requests
 
@@ -130,7 +135,27 @@ class Pantalla(object):
         #Put temp in label
         self.temp.setText(f'{str(round(tempC))}C')
 
+    def setupVideo(self):
+        self.videoOutput= self.makeVideoWidget()
+        self.mediaPlayer= self.makeMediaPlayer()
 
+    def makeMediaPlayer(self):
+        mediaPlayer= QMediaPlayer()
+        mediaPlayer.setVideoOutput(self.videoOutput)
+        return mediaPlayer
+    
+    def makeVideoWidget(self):
+        videoOutput= QVideoWidget()
+        vbox =QVBoxLayout()
+        vbox.addWidget(videoOutput)
+        self.videoWidget.setLayout(vbox)
+        return videoOutput
+        #layout4
+
+    def iniciarVideo(self):
+        self.mediaPlayer.set
+
+        
     def animationColor(self, elem:QWidget):
         #Change the color between blue and white
         elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
@@ -258,12 +283,12 @@ class Pantalla(object):
 "\n"
 "\n"
 "\n"
-"#borde_imagen{\n"
+"#borde_video{\n"
 "	border-image: url(:/img/src/img/fondo_sin.jpg);\n"
 "	border-radius:10px;\n"
 "}\n"
 "\n"
-"#imagen{\n"
+"#videoWidget{\n"
 "	\n"
 "	border-image: url(:/img/src/img/logo.jpeg);\n"
 "	\n"
@@ -388,19 +413,19 @@ class Pantalla(object):
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(40, 0, 40, 100)
-        self.borde_imagen = QWidget(self.widget_5)
-        self.borde_imagen.setObjectName(u"borde_imagen")
-        self.borde_imagen.setStyleSheet(u"")
-        self.verticalLayout_4 = QVBoxLayout(self.borde_imagen)
+        self.borde_video = QWidget(self.widget_5)
+        self.borde_video.setObjectName(u"borde_video")
+        self.borde_video.setStyleSheet(u"")
+        self.verticalLayout_4 = QVBoxLayout(self.borde_video)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(15, 25, 15, 25)
-        self.imagen = QWidget(self.borde_imagen)
-        self.imagen.setObjectName(u"imagen")
+        self.videoWidget = QWidget(self.borde_video)
+        self.videoWidget.setObjectName(u"videoWidget")
 
-        self.verticalLayout_4.addWidget(self.imagen)
+        self.verticalLayout_4.addWidget(self.videoWidget)
 
 
-        self.verticalLayout_3.addWidget(self.borde_imagen)
+        self.verticalLayout_3.addWidget(self.borde_video)
 
 
         self.horizontalLayout.addWidget(self.widget_5)
