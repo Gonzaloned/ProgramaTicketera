@@ -6,23 +6,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QSizePolicy, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QSizePolicy,
+    QVBoxLayout, QWidget)
 import fondos_rc
+import fondos_rc
+import sys
 
-class popOk(object):
-    def setupUi(self, base,text):  #Get the text to create a pop
-        if not base.objectName():
-            base.setObjectName(u"base")
-        base.resize(500, 400)
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(base.sizePolicy().hasHeightForWidth())
-        base.setSizePolicy(sizePolicy)
-        base.setMinimumSize(QSize(500, 400))
-        base.setMaximumSize(QSize(636, 720))
-        base.setStyleSheet(u"#fondo{\n"
+class Pop2(object):
+    def setupUi(self, MainWindow, text:str):
+        if not MainWindow.objectName():
+            MainWindow.setObjectName(u"MainWindow")
+        MainWindow.resize(430, 369)
+        MainWindow.setMaximumSize(QSize(430, 380))
+        MainWindow.setStyleSheet(u"#fondo{\n"
 "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:0, stop:0.295455 rgba(157, 19, 45, 255), stop:1 rgba(0, 73, 113, 255));\n"
 "\n"
 "	border-radius: 20px;\n"
@@ -33,9 +29,13 @@ class popOk(object):
 "color: rgb(255, 255, 255);\n"
 "}\n"
 "")
-        self.verticalLayout = QVBoxLayout(base)
+        self.centralwidget = QWidget(MainWindow)
+        self.centralwidget.setObjectName(u"centralwidget")
+        self.verticalLayout = QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.fondo = QWidget(base)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.fondo = QWidget(self.centralwidget)
         self.fondo.setObjectName(u"fondo")
         self.verticalLayout_2 = QVBoxLayout(self.fondo)
         self.verticalLayout_2.setSpacing(0)
@@ -62,11 +62,17 @@ class popOk(object):
 
         self.verticalLayout.addWidget(self.fondo)
 
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(base)
+        self.retranslateUi(MainWindow)
 
-        QMetaObject.connectSlotsByName(base)
+        QMetaObject.connectSlotsByName(MainWindow)
+        
+        #SET TEXT
+        self.texto.setText(text)
 
+        '''
+        #SPECIAL FONT
         id = QFontDatabase.addApplicationFont("./fonts/Central W01 Light.ttf")
         print (f"the id is{id}")
 
@@ -76,12 +82,19 @@ class popOk(object):
         #print(families)
 
         #self.texto.setFont(QFont(families[0], 30))
-        self.texto.setText(text)
+        '''
     # setupUi
 
-    def retranslateUi(self, base):
-        base.setWindowTitle(QCoreApplication.translate("base", u"Form", None))
-        
-        self.imagen.setText("")
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
     # retranslateUi
 
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    vent=QMainWindow()
+    popW= Pop2() #Creo la ventana login
+    popW.setupUi(vent, 'mensaje') #Paso la ventana y mensaje
+    vent.show() #Show
+    sys.exit(app.exec())

@@ -11,8 +11,8 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
 from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import fondos_rc
-from popOk import popOk
 from ui_selector import Selector
+from ui_popWarning import PopWarning
 
 
 
@@ -26,21 +26,6 @@ class Login(object):
     
     
 
-    def checkCredential(self):
-        username = self.userLogin.text() #Get the qlineEdit username text
-        password = self.passLogin.text() #Get the qlineEdit password text
-
-        query= QSqlQuery()
-        query.prepare(f'SELECT * FROM Persona WHERE username:{username}')
-        
-        if query.first(): # if user exists 
-            if (query.value('pass')== password): #If password equals to input, start nuew window
-                pass
-            else:
-                pass
-        else:
-            #Crear ventana not exists
-            pass
 
 
     #Start a new program       
@@ -62,6 +47,8 @@ class Login(object):
         pass1= self.passRegister.text()
         pass2= self.pass2Register.text()
 
+        print(user.__len__())
+        print(name.__len__())
 
         QUERY= f'''BEGIN TRANSACTION
             --REGISTRAR USUARIO
@@ -69,29 +56,44 @@ class Login(object):
             COMMIT TRANSACTION'''
         
         if (pass1==pass2): #if passwds match
-            if(user.__len__()>10): #If user< 10char
-                print('pop PassIncorrect')
-                if(name.__len__()>30): #if name< 30 char
-                    print('ok')
-
-
+            print('passwords match')
+            if(user.__len__() >= 4) and (user.__len__() <= 10): #If user > 10char
+                print('user lenght is ok')
+                if(name.__len__() >= 4) and (name.__len__() < 30): #if name< 30 char
+                    print('name lenght is ok')
+                    #execute query
 
                 else:  #name +30 char PopAdvice
-                    self.popAdvice('El nombre debe ser menor a\n 30 caracteres')
+                    self.popAdvice('El nombre debe tener\n entre 5 y 30 caracteres')
             else: #User +10 char PopAdvice
-                self.popAdvice('El usuario no puede tener mas de\n 10 caracteres')
+                self.popAdvice('El usuario debe tener\n entre 4 y 10 caracteres')
         else: #If passwords doesnt match popAdvice
             self.popAdvice('Las constraseñas no coinciden')
+         
+    def loginUser(self):
+        username = self.userLogin.text() #Get the qlineEdit username text
+        password = self.passLogin.text() #Get the qlineEdit password text
+
+        query= QSqlQuery()
+        query.prepare(f'SELECT * FROM Persona WHERE username:{username}')
         
+        if query.first(): # if user exists 
+            if (query.value('pass')== password): #If password equals to input, start nuew window
+                pass
+            else:
+                pass
+        else:
+            #Crear ventana not exists
+            pass
 
     def popAdvice(self,text):  #Create a window of advice
         self.pop= QMainWindow()
-        self.ui= popOk()
+        self.ui= PopWarning()
         self.ui.setupUi(self.pop,text) #Paso la ventana para configuraciones
         self.pop.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
         self.pop.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
         self.pop.show() #Show
-        QTimer.singleShot(30000, lambda: self.pop.close())
+        QTimer.singleShot(3000, lambda: self.pop.close())
 
     def setupUi(self, MainWindow):
 
