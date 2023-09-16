@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
 from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import fondos_rc
+from ui_options import Settings
 
 class Selector(object):
 
@@ -58,13 +59,13 @@ class Selector(object):
 
     #Opens the options    
     def abrirOpciones(self):
-        options= QMainWindow()
-        ui= Selector()
-        ui.setupUi(vent) #Paso la ventana para configuraciones
-        vent.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
-        vent.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
-        ui.location_on_the_screen()  #set the Position
-        vent.show() #Show
+        options_window= QMainWindow()
+        ui= Settings()
+        ui.setupUi(options_window) #Paso la ventana para configuraciones
+        #options_window.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        options_window.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+        #ui.location_on_the_screen()  #set the Position
+        options_window.show() #Show
     #cerrar programa
     def cerrarSelectora(self):
         self.ventana.close()

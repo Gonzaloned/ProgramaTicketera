@@ -24,9 +24,9 @@ class Login(object):
 
     #Start the main program
     
-    
-
-
+    def createCon(self):
+        self.creator= Connection() 
+        self.db= self.creator.createConnection()        
 
     #Start a new program       
     def startProgram(self):
@@ -55,14 +55,18 @@ class Login(object):
             INSERT INTO Persona(nombre,usuario,pass) VALUES('{name}','{user}','{pass1}');
             COMMIT TRANSACTION'''
         
+        
         if (pass1==pass2): #if passwds match
             print('passwords match')
             if(user.__len__() >= 4) and (user.__len__() <= 10): #If user > 10char
                 print('user lenght is ok')
                 if(name.__len__() >= 4) and (name.__len__() < 30): #if name< 30 char
                     print('name lenght is ok')
-                    #execute query
-
+                    if(self.creator.executeQuery(QUERY)): #Create the user
+                        self.popAdvice(f'Se ha creado correctamente el usuario {user}\n para {name}')
+                    else:
+                        self.popAdvice(f'Ha ocurrido un error en la creacion del usuario')
+                   
                 else:  #name +30 char PopAdvice
                     self.popAdvice('El nombre debe tener\n entre 5 y 30 caracteres')
             else: #User +10 char PopAdvice
@@ -71,20 +75,26 @@ class Login(object):
             self.popAdvice('Las constraseñas no coinciden')
          
     def loginUser(self):
-        username = self.userLogin.text() #Get the qlineEdit username text
-        password = self.passLogin.text() #Get the qlineEdit password text
+        #https://doc.qt.io/qtforpython-5/PySide2/QtSql/QSqlQuery.html
 
-        query= QSqlQuery()
-        query.prepare(f'SELECT * FROM Persona WHERE username:{username}')
-        
-        if query.first(): # if user exists 
-            if (query.value('pass')== password): #If password equals to input, start nuew window
-                pass
+        username = self.userLogin.text() #Get the Username
+        password = self.passLogin.text() #Get the Password
+
+        QUERY=f"SELECT usuario,password FROM Persona WHERE usuario='{username}'"
+
+
+        query_data:QSqlQuery= self.creator.returnQuery(QUERY) 
+
+        if (query_data.value('usuario') == username):
+            print('ok usuario')
+            if (query_data.value('pass')== password): #If password equals to input
+                print('ok contrasenia')
+                self.startProgram() #Start the program
             else:
-                pass
+                self.popAdvice('Error en usuario o contraseña') #Password error, show advice            
         else:
-            #Crear ventana not exists
-            pass
+            self.popAdvice('Error en usuario o contraseña') #User error, show advice
+
 
     def popAdvice(self,text):  #Create a window of advice
         self.pop= QMainWindow()
@@ -563,9 +573,10 @@ class Login(object):
         QMetaObject.connectSlotsByName(MainWindow)
 
         #BUTTONS CONF
+        self.createCon()
         self.logToReg.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_registro))
         self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
-        self.access_btn.clicked.connect( lambda: self.startProgram())
+        self.access_btn.clicked.connect( lambda: self.loginUser())
         self.register_btn.clicked.connect( lambda: self.registerUser())
 
     # setupUi
