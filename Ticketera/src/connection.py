@@ -52,10 +52,9 @@ class Connection():
 
         #Prepare the query to execute
         qry.prepare(query)
-        if (qry.exec()):
-            print('Query realizada exitosamente')
+        if (qry.exec()):    
             return True
         else:
             return False
 
-
+    

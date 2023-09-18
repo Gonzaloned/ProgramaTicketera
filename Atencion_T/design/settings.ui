@@ -81,7 +81,28 @@ color: white;
            </widget>
           </item>
           <item>
-           <widget class="QTableWidget" name="tableWidget"/>
+           <widget class="QTableWidget" name="tableWidget">
+            <column>
+             <property name="text">
+              <string>Numero</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Hora</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>DNI</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Atiende</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -159,7 +180,7 @@ color: white;
                  <number>5</number>
                 </property>
                 <item alignment="Qt::AlignHCenter">
-                 <widget class="QPushButton" name="llamar">
+                 <widget class="QPushButton" name="video_selector">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                     <horstretch>0</horstretch>
@@ -238,7 +259,7 @@ color: white;
                  <number>5</number>
                 </property>
                 <item alignment="Qt::AlignHCenter">
-                 <widget class="QPushButton" name="sinTurno">
+                 <widget class="QPushButton" name="reset_turnos">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                     <horstretch>0</horstretch>
@@ -273,7 +294,7 @@ color: white;
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_2">
+                 <widget class="QLabel" name="labelTurnos">
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
@@ -317,7 +338,7 @@ TURNOS</string>
                  <number>5</number>
                 </property>
                 <item alignment="Qt::AlignHCenter">
-                 <widget class="QPushButton" name="conTurno">
+                 <widget class="QPushButton" name="ver_historial">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                     <horstretch>0</horstretch>
@@ -352,7 +373,7 @@ TURNOS</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_3">
+                 <widget class="QLabel" name="labelHistorial">
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
@@ -396,7 +417,7 @@ TURNOS</string>
                  <number>5</number>
                 </property>
                 <item alignment="Qt::AlignHCenter">
-                 <widget class="QPushButton" name="settings">
+                 <widget class="QPushButton" name="info">
                   <property name="minimumSize">
                    <size>
                     <width>60</width>
@@ -425,7 +446,7 @@ TURNOS</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_4">
+                 <widget class="QLabel" name="labelInfo">
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>

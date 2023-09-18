@@ -60,19 +60,3 @@ class Connection():
             return False
 
 
-    def returnQuery(self, query):
-        print('processing query')
-        #new query object  QSqlQuery(database objetive dbObject)
-        qry= QSqlQuery(self.con)
-
-        #Prepare the query to execute
-        qry.prepare(query)
-        print(query)
-        if (qry.next()):
-            print('Query realizada exitosamente')
-            if not(qry.isNull()):
-                return qry
-            else:
-                return False
-        else:
-            print('error en query')

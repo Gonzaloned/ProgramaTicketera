@@ -36,6 +36,45 @@ def deleteItemsOfLayout(layout:QVBoxLayout):
 
 class Pantalla(object):
 
+    def setActualBoxList(self):
+        #This method actualizes the box list order to the actual
+        #Last to the first
+        self.list_box = self.nums.children()
+        self.list_box.remove(0)
+        for elem in self.list_box:
+            print(elem)
+
+
+    def showNew(self, num:int, caj:int):
+
+        #Add all the boxes to the layout
+        print('orden1')
+        for elem in self.list_box:
+            print(elem)
+        self.verticalLayout_7.replaceWidget(self.list_box[0],self.list_box[4])
+        self.verticalLayout_7.addWidget(self.list_box[4])
+        #delete actual layout
+        #deleteItemsOfLayout(self.verticalLayout_7)
+
+        #numbersNext=(0,0)
+        #self.databaseNext(numbersNext)
+
+        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+        childs= self.list_box[4].children()
+
+        #Save num and caja labels
+        num:QLabel = childs[1]
+        caja:QLabel = childs[2]
+
+        num.setText('gon')
+        caja.setText('DATABASE')
+
+        #Execute color animation on new number
+        self.animationColor(self.list_box[4])
+
+        #Refresh the order of boxes in list
+        #QTimer.singleShot(500, lambda: self.setActualBoxList())
+
     def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
         
         #sound= PySide6.QtMultimedia.QSoundEffect()
@@ -182,60 +221,6 @@ class Pantalla(object):
         QTimer.singleShot(10000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
 
         QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
-
-    def setActualBoxList(self):
-        #This method actualizes the box list order to the actual
-        #Last to the first
-        respaldo=self.list_box[0]
-        self.list_box[0] = self.list_box[4]
-        self.list_box[4] = respaldo
-
-
-    def showNew(self, num:int, caj:int):
-
-     
-        #Create a MP3 Sound player (Import)
-        mp3_player = SoundPlayer()
-
-        #Path of MP3
-        path_mp3='timbrecasa.wav'
-
-        #Create a new layout
-        newLayout= QVBoxLayout(self.nums)
-
-        #Add all the boxes to the layout
-        newLayout.addWidget(self.list_box[4])
-        for i in range(0,4):
-            newLayout.addWidget(self.list_box[i])
-
-        #delete actual layout
-        deleteItemsOfLayout(self.verticalLayout_7)
-
-        #numbersNext=(0,0)
-        #self.databaseNext(numbersNext)
-
-        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
-        childs= self.list_box[4].children()
-
-        #Save num and caja labels
-        num:QLabel = childs[1]
-        caja:QLabel = childs[2]
-
-        num.setText('gon')
-        caja.setText('DATABASE')
-
-        #Set new layout
-        self.verticalLayout_7.addLayout(newLayout)
-
-        #Play mp3 file (Search how to play parallel)
-        #mp3_player.play(path_mp3)
-
-        #Execute color animation on new number
-        self.animationColor(self.list_box[4])
-
-        #Refresh the order of boxes in list
-        QTimer.singleShot(500, lambda: self.setActualBoxList())
-
 
 
 
@@ -713,7 +698,6 @@ class Pantalla(object):
         
         QTimer.singleShot(5000, lambda: self.showNew(1,1))
         QTimer.singleShot(11000, lambda: self.showNew(1,1))
-
 
         self.refreshTime()
         self.refreshWeather()

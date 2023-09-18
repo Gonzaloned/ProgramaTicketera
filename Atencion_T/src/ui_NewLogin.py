@@ -18,21 +18,16 @@ from ui_popWarning import PopWarning
 
 class Login(object):
 
-    #self.input.text() -> GET TEXT
-    #self.input.setEchoMode(QLineEdit.EchoMode.Password) -> password mode
-    #
-
-    #Start the main program
-    
+    #Create a DB    
     def createCon(self):
-        self.creator= Connection() 
-        self.db= self.creator.createConnection()        
+        self.db_handler= Connection() 
+        self.db= self.db_handler.createConnection()        
 
-    #Start a new program       
+    #Start a main program       
     def startProgram(self):
         vent= QMainWindow()
         ui= Selector()
-        ui.setupUi(vent) #Paso la ventana para configuraciones
+        ui.setupUi(vent,self.db) #pass window and DB
         vent.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
         vent.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
         ui.location_on_the_screen()  #set the Position
@@ -40,7 +35,6 @@ class Login(object):
         self.window.close()
 
     def registerUser(self):
-
         #Save the field values to local vars
         name= self.fullName.text()
         user= self.userRegister.text()
@@ -62,7 +56,7 @@ class Login(object):
                 print('user lenght is ok')
                 if(name.__len__() >= 4) and (name.__len__() < 30): #if name< 30 char
                     print('name lenght is ok')
-                    if(self.creator.executeQuery(QUERY)): #Create the user
+                    if(self.db_handler.executeQuery(QUERY)): #Create the user
                         self.popAdvice(f'Se ha creado correctamente el usuario {user}\n para {name}')
                     else:
                         self.popAdvice(f'Ha ocurrido un error en la creacion del usuario')
@@ -80,22 +74,24 @@ class Login(object):
         username = self.userLogin.text() #Get the Username
         password = self.passLogin.text() #Get the Password
 
-        QUERY=f"SELECT usuario,password FROM Persona WHERE usuario='{username}'"
+        QUERY=f"SELECT usuario,pass FROM Persona WHERE usuario=\'{username}\'"
+        print(QUERY)
 
-
-        query_data:QSqlQuery= self.creator.returnQuery(QUERY) 
-
-        if (query_data.value('usuario') == username):
-            print('ok usuario')
-            if (query_data.value('pass')== password): #If password equals to input
-                print('ok contrasenia')
-                self.startProgram() #Start the program
-            else:
-                self.popAdvice('Error en usuario o contraseña') #Password error, show advice            
+        query_data= QSqlQuery(self.db) #Creeate a query and link to db
+        query_data.prepare(QUERY) #Set the query
+        found=False
+        if query_data.exec(): #If query executes ok
+            while query_data.next(): #each row
+                if ((query_data.value(0) == username) and (query_data.value(1)== password)): 
+                    self.startProgram() #Start the program
+                    found=True
+                    break
+            if not found:
+                self.popAdvice('Error en usuario o contraseña') #User error, show advice
         else:
-            self.popAdvice('Error en usuario o contraseña') #User error, show advice
+            self.popAdvice('Error en la conexion\n con la base de datos') #User error, show advice
 
-
+            
     def popAdvice(self,text):  #Create a window of advice
         self.pop= QMainWindow()
         self.ui= PopWarning()
@@ -574,6 +570,7 @@ class Login(object):
 
         #BUTTONS CONF
         self.createCon()
+        self.stack.setCurrentWidget(self.pag_login)
         self.logToReg.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_registro))
         self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
         self.access_btn.clicked.connect( lambda: self.loginUser())

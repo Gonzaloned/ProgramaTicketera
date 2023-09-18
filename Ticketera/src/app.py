@@ -29,6 +29,6 @@ if __name__ == '__main__':
     
     #Muestro ventana pantalla completa
     ventana_principal.showFullScreen()
-
+    
     #Cerrar
     sys.exit(app.exec())

@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'pantalla2DreCNp.ui'
-##
-## Created by: Qt User Interface Compiler version 6.4.3
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
 
 import datetime
 from PySide6.QtCore import *
@@ -46,7 +37,8 @@ class Pantalla3(object):
         print(QUERY)
         
         #execute the query
-        db.executeQuery(QUERY)
+        if(db.executeQuery(QUERY)):
+            print('Query realizada exitosamente')
 
         #Abro nueva ventana
         self.window = QMainWindow()

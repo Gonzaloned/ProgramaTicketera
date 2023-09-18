@@ -1,5 +1,6 @@
 
 
+import sys
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
@@ -12,7 +13,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
 from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import fondos_rc
-from ui_options import Settings
+from ui_options import SettingsWindow
 
 class Selector(object):
 
@@ -26,8 +27,7 @@ class Selector(object):
 
     #Calls next shift
     def llamarProximo(self, tipo:int):
-        self.db= Connection()
-        #f'SELECT TOP (1) num FROM turnos_actual WHERE tipo={tipo} ORDER BY hora'
+
         transaction=\
         f'''BEGIN TRANSACTION;
 
@@ -52,26 +52,29 @@ class Selector(object):
 
         COMMIT TRANSACTION;'''
 
+        query=QSqlQuery(self.db)
+        query.prepare(transaction)
+        if query.exec(): #If query executes ok
+            if query.first(): #if ok
+                pass
 
-        #if (self.db.executeQuery(query_proximo)):
-            #qry= QSqlQuery(query_proximo)
-            #print(qry.nextResult())
+        
 
     #Opens the options    
     def abrirOpciones(self):
-        options_window= QMainWindow()
-        ui= Settings()
-        ui.setupUi(options_window) #Paso la ventana para configuraciones
-        #options_window.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
-        options_window.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
-        #ui.location_on_the_screen()  #set the Position
-        options_window.show() #Show
-    #cerrar programa
+        self.options_window= QMainWindow()
+        self.ui= SettingsWindow()
+        self.ui.setupUi(self.options_window,self.db) #Paso la ventana para configuraciones
+        self.options_window.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+        self.options_window.show() #Show
+
+    #Close program
     def cerrarSelectora(self):
         self.ventana.close()
 
 
-    #  This function calculates the position in the screen
+
+    #This function calculates the position in the screen
     def location_on_the_screen(self):    
         screen = QGuiApplication.primaryScreen().availableGeometry()
         #print(f' screen: {screen.width()}  {screen.height()}')
@@ -87,7 +90,10 @@ class Selector(object):
 
 
 
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, dataBase):
+
+        self.db= dataBase
+
         self.ventana=MainWindow
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -254,3 +260,11 @@ class Selector(object):
         self.exit.setText("")
     # retranslateUi
 
+if __name__ == "__main__":
+    print('starting')
+    app = QApplication(sys.argv)
+    vent=QMainWindow()
+    login= Selector() #Creo la ventana login
+    login.setupUi(vent) #Paso la ventana para configuraciones
+    vent.show() #Show
+    sys.exit(app.exec())

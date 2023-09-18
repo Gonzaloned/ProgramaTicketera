@@ -1,15 +1,42 @@
+import datetime
 from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
+    QSizePolicy, QVBoxLayout, QWidget)
+from PyQt6.QtSql import *
+
+from PyQt6.QtMultimediaWidgets import *
+from PyQt6.QtMultimedia import *
+
+import pantalla1_rc
 import pantalla1_rc
 import sys
-from PyQt6.QtSql import *
-import datetime
+
+
+from multiprocessing import Process
+
+import requests
+
+from soundplayer import SoundPlayer
+
+#Global f to delete layout widget
+def deleteItemsOfLayout(layout:QVBoxLayout):
+    if layout is not None:
+        while layout.count():        
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+            else:
+                deleteItemsOfLayout(item.layout())
 
 
 class Pantalla(object):
 
-    def consultarProximos(self): #exececute a query of bring on the last num called by BOX and actualize displa
+    def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
         
         #sound= PySide6.QtMultimedia.QSoundEffect()
         
@@ -75,12 +102,65 @@ class Pantalla(object):
                 proximo=query_proximo.value(0)
                 self.prox.setText(f'PROXIMO NUMERO {proximo}')
 
+    def refreshTime(self):
+        #Get the actual time in HH:MM
+        time_now=datetime.datetime.now().strftime('%H:%M')
 
+        #Put the time in the label
+        self.time.setText(time_now)
+
+
+    def refreshWeather(self):
+        #Uses an api to get the temp in kelvin, using a connector with lat, lon and account key
+        #That request retrieves a json with all the data
+        lat= "-34.90407623790362"
+        lon= "-57.94973360159151"
+        key= 'b8674863bb11fe6782c8e7b8183a3a47'
+
+        #URL To request the data
+        url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}'
+
+        #Request -> gets a json
+        res= requests.get(url)
+
+        #Open the json
+        data= res.json()
+        
+        #Save the temp data of the json (In kelvin)
+        temp=data['main']['temp']
+
+        #Pass Kelvin to Celsius
+        tempC=temp-273.15
+
+        #Put temp in label
+        self.temp.setText(f'{str(round(tempC))}C')
+
+    def setupVideo(self):
+        self.videoOutput= self.makeVideoWidget()
+        self.mediaPlayer= self.makeMediaPlayer()
+
+    def makeMediaPlayer(self):
+        mediaPlayer= QMediaPlayer()
+        mediaPlayer.setVideoOutput(self.videoOutput)
+        return mediaPlayer
+    
+    def makeVideoWidget(self):
+        videoOutput= QVideoWidget()
+        vbox =QVBoxLayout()
+        vbox.addWidget(videoOutput)
+        self.videoWidget.setLayout(vbox)
+        return videoOutput
+        #layout4
+
+    def iniciarVideo(self):
+        self.mediaPlayer.set
+
+        
     def animationColor(self, elem:QWidget):
-        #BLUE
+        #Change the color between blue and white
         elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
-        #azul	background-color: rgb(4, 42, 79);color:white;
-        #blanco 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
+        #blue	background-color: rgb(4, 42, 79);color:white;
+        #white 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
         QTimer.singleShot(1000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
         QTimer.singleShot(2000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
@@ -91,43 +171,106 @@ class Pantalla(object):
 
         QTimer.singleShot(5000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
-        QTimer.singleShot(600, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
+        QTimer.singleShot(6000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
 
         QTimer.singleShot(7000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
+        QTimer.singleShot(8000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
 
-    def showNew(self, num:int, caj:int):
-        #self.verticalLayout_7.takeAt(0)
-        self.verticalLayout_7.direction()
-        self.verticalLayout_7.takeAt(2)
-        self.verticalLayout_7.takeAt(3)
-        self.verticalLayout_7.takeAt(4)
-        self.verticalLayout_7.takeAt(5)
-        '''for i in range(5):
-            print(i)
-            self.verticalLayout_7.takeAt(0)
+        QTimer.singleShot(9000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
-        self.verticalLayout_7.addWidget(self.list_box[4])
-        for i in range(0,3):
-            self.verticalLayout_7.addWidget(self.list_box[i])
-'''
+        QTimer.singleShot(10000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
 
-    
-    
-    def animationListGenerator(self, listBox: [QWidget]):#, listNum: [QLabel], listCaja: [QLabel]): 
-                #https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QGraphicsEffect.html
-        self.animationList = []
-        for elem in listBox:
-            act=QGraphicsColorizeEffect(elem) #Create a new QGraphicsOpacityEffect with the Qobject
-            act.setStrength(0)  #Set color streght of the effect
-            act.setColor(QColor(0,73,113)) #BLUE
-            elem.setGraphicsEffect(act) #Assign the effect to elem
-            anim = QPropertyAnimation(act, b'strength') #Create the animation of the effect
-            anim.setStartValue(0)
-            anim.setDuration(5000)#Duration to colorize
-            anim.setEndValue(1)
-            self.animationList.append(anim)  #Add the effect to the temporal list            
+        QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
+    def createNewLayout(self, num: int, caja: int):
+        #This method actualizes the box list order to the actual
+        ultima=self.list_box[4]
+
+        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+        childs= ultima.children()
+        childs[1].setText('gon') #Set the num in the QLabel
+        childs[2].setText('DATABASE') #the the caja in the QLabel
+        for i in range(1,5):
+            self.list_box[i] = self.list_box[i-1]
+        self.list_box[0] = ultima 
+        self.animationColor(ultima)
+
+
+
+    def showNew(self):
+
+        #Create a new layout
+        
+        #Add all the boxes to the layout
+
+        ''''''
+            
+        #delete actual layout
+        '''childs = self.nums.children()
+        print('tipos antes')
+        for e in childs:
+            print(type(e))'''
+
+        #childs[0].deleteLater()
+        #deleteItemsOfLayout(childs[0])
+        
+
+        '''childs2:[QObject] = self.nums.children()
+        print('tipos despues')
+        for e in childs2:
+            print(type(e))'''
+
+
+        
+        
+        newLayout= QVBoxLayout(self.nums)
+        for i in range(0,5):     
+            self.list_box[i].setParent(self.nums)
+            newLayout.addWidget(self.list_box[i])
+
+
+        
+
+        #self.refreshLayout()
+
+
+        #self.updateBoxList()
+
+        #numbersNext=(0,0)
+        #self.databaseNext(numbersNext)
+
+        
+
+        #Set new layout
+        #self.verticalLayout_7.addLayout(newLayout)
+
+
+
+        #Play mp3 file (Search how to play parallel)
+        #mp3_player.play(path_mp3)
+
+        #Execute color animation on new number
+        
+
+        #Refresh the order of boxes in list
+        #QTimer.singleShot(500, lambda: self.updateBoxList())
+
+
+
+
+
+                    
+    '''def playVideo(self):
+        #QMediaPlayer
+        #https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html
+        filename = "src/2.mp3"
+        player = QMediaPlayer()
+        audio_output = QAudioOutput()
+        player.setAudioOutput(audio_output)
+        player.setSource(QUrl.fromLocalFile(filename))
+        audio_output.setVolume(50)
+        player.play()'''
 
     def footerBarAnimation(self):
         print('footer starts')
@@ -140,6 +283,7 @@ class Pantalla(object):
         rect.translate(2260,0) #Transpose X to right
         self.animation.setEndValue(rect) #Set the end geo value
         self.animation.start()  #Start
+
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -159,12 +303,12 @@ class Pantalla(object):
 "\n"
 "\n"
 "\n"
-"#borde_imagen{\n"
+"#borde_video{\n"
 "	border-image: url(:/img/src/img/fondo_sin.jpg);\n"
 "	border-radius:10px;\n"
 "}\n"
 "\n"
-"#imagen{\n"
+"#videoWidget{\n"
 "	\n"
 "	border-image: url(:/img/src/img/logo.jpeg);\n"
 "	\n"
@@ -254,22 +398,22 @@ class Pantalla(object):
 
         self.horizontalLayout_10.addWidget(self.label_3)
 
-        self.label_2 = QLabel(self.borde_top)
-        self.label_2.setObjectName(u"label_2")
+        self.time = QLabel(self.borde_top)
+        self.time.setObjectName(u"time")
         font1 = QFont()
         font1.setPointSize(20)
         font1.setBold(True)
-        self.label_2.setFont(font1)
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.time.setFont(font1)
+        self.time.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.label_2)
+        self.horizontalLayout_10.addWidget(self.time)
 
-        self.label_4 = QLabel(self.borde_top)
-        self.label_4.setObjectName(u"label_4")
-        self.label_4.setFont(font1)
-        self.label_4.setAlignment(Qt.AlignCenter)
+        self.temp = QLabel(self.borde_top)
+        self.temp.setObjectName(u"temp")
+        self.temp.setFont(font1)
+        self.temp.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.label_4)
+        self.horizontalLayout_10.addWidget(self.temp)
 
 
         self.verticalLayout_12.addWidget(self.borde_top)
@@ -289,19 +433,19 @@ class Pantalla(object):
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(40, 0, 40, 100)
-        self.borde_imagen = QWidget(self.widget_5)
-        self.borde_imagen.setObjectName(u"borde_imagen")
-        self.borde_imagen.setStyleSheet(u"")
-        self.verticalLayout_4 = QVBoxLayout(self.borde_imagen)
+        self.borde_video = QWidget(self.widget_5)
+        self.borde_video.setObjectName(u"borde_video")
+        self.borde_video.setStyleSheet(u"")
+        self.verticalLayout_4 = QVBoxLayout(self.borde_video)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(15, 25, 15, 25)
-        self.imagen = QWidget(self.borde_imagen)
-        self.imagen.setObjectName(u"imagen")
+        self.videoWidget = QWidget(self.borde_video)
+        self.videoWidget.setObjectName(u"videoWidget")
 
-        self.verticalLayout_4.addWidget(self.imagen)
+        self.verticalLayout_4.addWidget(self.videoWidget)
 
 
-        self.verticalLayout_3.addWidget(self.borde_imagen)
+        self.verticalLayout_3.addWidget(self.borde_video)
 
 
         self.horizontalLayout.addWidget(self.widget_5)
@@ -567,24 +711,39 @@ class Pantalla(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
-        #vars
+        
+        #Box list BOX:QWidget[num:QLabel,caja:Qlabel]
         self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
 
 		#FUNCTIONS
         self.footerBarAnimation()
-        self.timer1 = QTimer() #Create a timer
-        self.timer1.timeout.connect(lambda: self.footerBarAnimation()) # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
+
+        #Create footer reset timer
+        self.timer1 = QTimer() 
+
+        # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
+        self.timer1.timeout.connect(lambda: self.footerBarAnimation()) 
         self.timer1.start(10000)
 
-        self.showNew(1,1)
-        #self.animationColor(self.list_box[0])
+        #Show new
+        self.timer2 = QTimer()
+        self.timer2.timeout.connect(lambda: self.showNew())
+        self.timer2.start(2000)
+        
+        #QTimer.singleShot(5000, lambda: self.showNew(1,1))
+        #QTimer.singleShot(11000, lambda: self.showNew(1,1))
+
+
+        self.refreshTime()
+        self.refreshWeather()
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Buenos Aires, La Plata", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
+        self.time.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
+        self.temp.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
         self.titulo_llamado.setText(QCoreApplication.translate("MainWindow", u"LLAMADO TURNOS", None))
         self.label_num.setText(QCoreApplication.translate("MainWindow", u"NUM", None))
         self.label_caja.setText(QCoreApplication.translate("MainWindow", u"CAJA", None))
