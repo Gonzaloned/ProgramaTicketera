@@ -8,8 +8,12 @@ from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
     QSizePolicy, QVBoxLayout, QWidget)
 from PyQt6.QtSql import *
 
-from PyQt6.QtMultimediaWidgets import *
-from PyQt6.QtMultimedia import *
+#from PyQt6.QtMultimediaWidgets import *
+#from PyQt6.QtMultimedia import *
+
+#This import generates a parallel subprocess
+import subprocess
+
 
 import pantalla1_rc
 import pantalla1_rc
@@ -20,30 +24,41 @@ from multiprocessing import Process
 
 import requests
 
-from soundplayer import SoundPlayer
 
-#Global f to delete layout widget
-def deleteItemsOfLayout(layout:QVBoxLayout):
-    if layout is not None:
-        while layout.count():
-            item = layout.takeAt(0)
-            widget = item.widget()
-            if widget is not None:
-                widget.setParent(None)
-            else:
-                deleteItemsOfLayout(item.layout())
-    print('termine')
+
+
 
 class Pantalla(object):
 
-    def setActualBoxList(self):
+    #f to delete layout widget
+    def deleteItemsOfLayout(self,layout:QVBoxLayout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.setParent(None)
+                else:
+                    self.deleteItemsOfLayout(item.layout())
+
+    def refreshBoxList(self):
         #This method actualizes the box list order to the actual
         #Last to the first
-        self.list_box = self.nums.children()
-        self.list_box.remove(0)
+        ultimo = self.list_box[4]
+        for i in range(4,0,-1):
+            print(f'pos for {i}')
+            self.list_box[i] = self.list_box[i-1]
+        self.list_box[0] = ultimo
+
+        print('orden2')
         for elem in self.list_box:
             print(elem)
 
+    def createLayout(self,layout:QVBoxLayout):
+        for elem in self.list_box:
+            elem.setParent(self.nums)
+            layout.addWidget(elem)
+        
 
     def showNew(self, num:int, caj:int):
 
@@ -51,29 +66,34 @@ class Pantalla(object):
         print('orden1')
         for elem in self.list_box:
             print(elem)
-        self.verticalLayout_7.replaceWidget(self.list_box[0],self.list_box[4])
-        self.verticalLayout_7.addWidget(self.list_box[4])
-        #delete actual layout
-        #deleteItemsOfLayout(self.verticalLayout_7)
 
-        #numbersNext=(0,0)
-        #self.databaseNext(numbersNext)
+        #actualize the list of widgets
+        self.refreshBoxList()
 
         #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
-        childs= self.list_box[4].children()
+        childs= self.list_box[0].children()
 
         #Save num and caja labels
         num:QLabel = childs[1]
         caja:QLabel = childs[2]
 
+        #Insert text
         num.setText('gon')
         caja.setText('DATABASE')
 
-        #Execute color animation on new number
-        self.animationColor(self.list_box[4])
+        #MP3 Path
+        path='./soundplayer.py'
+        subprocess.Popen(['python', path])
 
-        #Refresh the order of boxes in list
-        #QTimer.singleShot(500, lambda: self.setActualBoxList())
+        #delete actual layout
+        self.deleteItemsOfLayout(self.verticalLayout_7)
+
+        #Create ordered layout
+        self.createLayout(self.verticalLayout_7)
+
+        #Execute color animation on new number
+        self.animationColor(self.list_box[0])
+
 
     def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
         
@@ -692,12 +712,12 @@ class Pantalla(object):
 
         #Show new
         self.timer2 = QTimer()
-        #self.timer2.timeout.connect(lambda: self.showNew(1,1))
+        self.timer2.timeout.connect(lambda: self.showNew(1,1))
 
-        self.timer2.start(2000)
+        self.timer2.start(4000)
         
-        QTimer.singleShot(5000, lambda: self.showNew(1,1))
-        QTimer.singleShot(11000, lambda: self.showNew(1,1))
+        #QTimer.singleShot(5000, lambda: self.showNew(1,1))
+        #QTimer.singleShot(15000, lambda: self.showNew(1,1))
 
         self.refreshTime()
         self.refreshWeather()

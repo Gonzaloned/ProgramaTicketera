@@ -1,15 +1,19 @@
 import datetime
+
 from PySide6.QtCore import *
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import *
 from PyQt6.QtSql import *
 
 from PyQt6.QtMultimediaWidgets import *
 from PyQt6.QtMultimedia import *
+
+#This import generates a parallel subprocess
+import subprocess
+
 
 import pantalla1_rc
 import pantalla1_rc
@@ -20,21 +24,76 @@ from multiprocessing import Process
 
 import requests
 
-from soundplayer import SoundPlayer
 
-#Global f to delete layout widget
-def deleteItemsOfLayout(layout:QVBoxLayout):
-    if layout is not None:
-        while layout.count():        
-            item = layout.takeAt(0)
-            widget = item.widget()
-            if widget is not None:
-                widget.setParent(None)
-            else:
-                deleteItemsOfLayout(item.layout())
+
 
 
 class Pantalla(object):
+
+    #f to delete layout widget
+    def deleteItemsOfLayout(self,layout:QVBoxLayout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.setParent(None)
+                else:
+                    self.deleteItemsOfLayout(item.layout())
+
+    def refreshBoxList(self):
+        #This method actualizes the box list order to the actual
+        #Last to the first
+        ultimo = self.list_box[4]
+        for i in range(4,0,-1):
+            print(f'pos for {i}')
+            self.list_box[i] = self.list_box[i-1]
+        self.list_box[0] = ultimo
+
+        print('orden2')
+        for elem in self.list_box:
+            print(elem)
+
+    def createLayout(self,layout:QVBoxLayout):
+        for elem in self.list_box:
+            elem.setParent(self.nums)
+            layout.addWidget(elem)
+        
+
+    def showNew(self, num:int, caj:int):
+
+        #Add all the boxes to the layout
+        print('orden1')
+        for elem in self.list_box:
+            print(elem)
+
+        #actualize the list of widgets
+        self.refreshBoxList()
+
+        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+        childs= self.list_box[0].children()
+
+        #Save num and caja labels
+        num:QLabel = childs[1]
+        caja:QLabel = childs[2]
+
+        #Insert text
+        num.setText('gon')
+        caja.setText('DATABASE')
+
+        #MP3 Path
+        path='./soundplayer.py'
+        subprocess.Popen(['python', path])
+
+        #delete actual layout
+        self.deleteItemsOfLayout(self.verticalLayout_7)
+
+        #Create ordered layout
+        self.createLayout(self.verticalLayout_7)
+
+        #Execute color animation on new number
+        self.animationColor(self.list_box[0])
+
 
     def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
         
@@ -140,21 +199,24 @@ class Pantalla(object):
         self.mediaPlayer= self.makeMediaPlayer()
 
     def makeMediaPlayer(self):
-        mediaPlayer= QMediaPlayer()
+        mediaPlayer= QMediaPlayer(self.videoWidget)
         mediaPlayer.setVideoOutput(self.videoOutput)
+        mediaPlayer.setSource(QUrl('./VideoHospital.mp4'))
         return mediaPlayer
     
     def makeVideoWidget(self):
-        videoOutput= QVideoWidget()
-        vbox =QVBoxLayout()
+        videoOutput = QVideoWidget(self.videoWidget)
+        vbox = QVBoxLayout()
         vbox.addWidget(videoOutput)
         self.videoWidget.setLayout(vbox)
         return videoOutput
-        #layout4
 
-    def iniciarVideo(self):
-        self.mediaPlayer.set
-
+    def onActionAbrirTriggered(self):
+        path = QFileDialog.getOpenFileName(self,"Abrir", "/")
+        filepath= path[0]
+        if filepath== "":
+            return
+        self.mediaPlayer.setSource(filepath)
         
     def animationColor(self, elem:QWidget):
         #Change the color between blue and white
@@ -182,80 +244,6 @@ class Pantalla(object):
         QTimer.singleShot(10000, lambda:elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
 
         QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
-
-    def createNewLayout(self, num: int, caja: int):
-        #This method actualizes the box list order to the actual
-        ultima=self.list_box[4]
-
-        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
-        childs= ultima.children()
-        childs[1].setText('gon') #Set the num in the QLabel
-        childs[2].setText('DATABASE') #the the caja in the QLabel
-        for i in range(1,5):
-            self.list_box[i] = self.list_box[i-1]
-        self.list_box[0] = ultima 
-        self.animationColor(ultima)
-
-
-
-    def showNew(self):
-
-        #Create a new layout
-        
-        #Add all the boxes to the layout
-
-        ''''''
-            
-        #delete actual layout
-        '''childs = self.nums.children()
-        print('tipos antes')
-        for e in childs:
-            print(type(e))'''
-
-        #childs[0].deleteLater()
-        #deleteItemsOfLayout(childs[0])
-        
-
-        '''childs2:[QObject] = self.nums.children()
-        print('tipos despues')
-        for e in childs2:
-            print(type(e))'''
-
-
-        
-        
-        newLayout= QVBoxLayout(self.nums)
-        for i in range(0,5):     
-            self.list_box[i].setParent(self.nums)
-            newLayout.addWidget(self.list_box[i])
-
-
-        
-
-        #self.refreshLayout()
-
-
-        #self.updateBoxList()
-
-        #numbersNext=(0,0)
-        #self.databaseNext(numbersNext)
-
-        
-
-        #Set new layout
-        #self.verticalLayout_7.addLayout(newLayout)
-
-
-
-        #Play mp3 file (Search how to play parallel)
-        #mp3_player.play(path_mp3)
-
-        #Execute color animation on new number
-        
-
-        #Refresh the order of boxes in list
-        #QTimer.singleShot(500, lambda: self.updateBoxList())
-
 
 
 
@@ -286,6 +274,8 @@ class Pantalla(object):
 
 
     def setupUi(self, MainWindow):
+
+        
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(940, 678)
@@ -727,12 +717,12 @@ class Pantalla(object):
 
         #Show new
         self.timer2 = QTimer()
-        self.timer2.timeout.connect(lambda: self.showNew())
-        self.timer2.start(2000)
+        self.timer2.timeout.connect(lambda: self.showNew(1,1))
+
+        self.timer2.start(4000)
         
         #QTimer.singleShot(5000, lambda: self.showNew(1,1))
-        #QTimer.singleShot(11000, lambda: self.showNew(1,1))
-
+        #QTimer.singleShot(15000, lambda: self.showNew(1,1))
 
         self.refreshTime()
         self.refreshWeather()
