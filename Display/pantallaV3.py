@@ -194,22 +194,42 @@ class Pantalla(object):
         #Put temp in label
         self.temp.setText(f'{str(round(tempC))}C')
 
-    def setupVideo(self):
-        self.videoOutput= self.makeVideoWidget()
-        self.mediaPlayer= self.makeMediaPlayer()
+    def initializeVideo(self):
+                #Create a playlist
+        self._playlist = []  # FIXME 6.3: Replace by QMediaPlaylist?
+        self._playlist_index = -1
 
-    def makeMediaPlayer(self):
-        mediaPlayer= QMediaPlayer(self.videoWidget)
-        mediaPlayer.setVideoOutput(self.videoOutput)
-        mediaPlayer.setSource(QUrl('./VideoHospital.mp4'))
-        return mediaPlayer
-    
-    def makeVideoWidget(self):
-        videoOutput = QVideoWidget(self.videoWidget)
-        vbox = QVBoxLayout()
-        vbox.addWidget(videoOutput)
-        self.videoWidget.setLayout(vbox)
-        return videoOutput
+        #Create audio output
+        self._audio_output = QAudioOutput()
+
+        #Create a media player
+        self._player = QMediaPlayer()
+
+        #Set the audio output to player
+        self._player.setAudioOutput(self._audio_output)
+
+        #Create the widget
+        self._video_widget = QVideoWidget(self.videoWidget)
+
+        #Create layout and add the videoW
+        self.layout_video = QVBoxLayout(self.videoWidget)
+        self.layout_video.addWidget(self._video_widget)
+
+        #Set the video output of the QMediaPlayer-> QVideoWidget
+        self._player.setVideoOutput(self._video_widget)
+
+        #Generate the path to the video //GET OF A JSON
+        url = QUrl.fromLocalFile('VideoHospital.mp4')
+
+        #Add to playlist
+        self._playlist.append(url)
+        self._playlist_index = len(self._playlist) - 1
+
+        #Set the source with the QUrl to the Player
+        self._player.setSource(url)
+
+        #Play
+        self._player.play()
 
     def onActionAbrirTriggered(self):
         path = QFileDialog.getOpenFileName(self,"Abrir", "/")
@@ -726,6 +746,9 @@ class Pantalla(object):
 
         self.refreshTime()
         self.refreshWeather()
+
+
+        self.initializeVideo()
 
     # setupUi
 
