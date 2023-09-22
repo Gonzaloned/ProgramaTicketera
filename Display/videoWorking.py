@@ -118,6 +118,8 @@ class Video(object):
         self._playlist_index = len(self._playlist) - 1
         self._player.setSource(url)
         self._player.play()
+
+        self._player.playingChanged.play()
         #self.open()
     # setupUi
 

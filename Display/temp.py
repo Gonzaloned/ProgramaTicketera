@@ -1,15 +1,12 @@
 import datetime
-from PySide6.QtCore import *
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QMainWindow,
-    QSizePolicy, QVBoxLayout, QWidget)
-from PyQt6.QtSql import *
 
-#from PyQt6.QtMultimediaWidgets import *
-#from PyQt6.QtMultimedia import *
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+from PySide6.QtSql import *
+from PySide6.QtMultimedia import *
+from PySide6.QtMultimediaWidgets import *
+
 
 #This import generates a parallel subprocess
 import subprocess
@@ -194,25 +191,51 @@ class Pantalla(object):
         #Put temp in label
         self.temp.setText(f'{str(round(tempC))}C')
 
-    def setupVideo(self):
-        self.videoOutput= self.makeVideoWidget()
-        self.mediaPlayer= self.makeMediaPlayer()
+    def initializeVideo(self):
 
-    def makeMediaPlayer(self):
-        mediaPlayer= QMediaPlayer()
-        mediaPlayer.setVideoOutput(self.videoOutput)
-        return mediaPlayer
-    
-    def makeVideoWidget(self):
-        videoOutput= QVideoWidget()
-        vbox =QVBoxLayout()
-        vbox.addWidget(videoOutput)
-        self.videoWidget.setLayout(vbox)
-        return videoOutput
-        #layout4
+        #Create a playlist
+        self._playlist = []  # FIXME 6.3: Replace by QMediaPlaylist?
 
-    def iniciarVideo(self):
-        self.mediaPlayer.set
+        self._playlist_index = -1
+
+        #Create audio output
+        self._audio_output = QAudioOutput()
+
+        #Create a media player
+        self._player = QMediaPlayer()
+
+        #Set the audio output to player
+        self._player.setAudioOutput(self._audio_output)
+
+        #Create layout and add the videoW
+        self.layout_video = QVBoxLayout(self.videoWidget)
+
+        #Create the widget
+        self._video_widget = QVideoWidget()
+
+        #Add w to layout
+        self.layout_video.addWidget(self._video_widget)
+
+        
+
+
+
+        #Set the video output of the QMediaPlayer-> QVideoWidget
+        self._player.setVideoOutput(self._video_widget)
+
+        #Generate the path to the video //GET OF A JSON
+        url = QUrl.fromLocalFile('VideoHospital.mp4')
+
+        #Add to playlist
+        self._playlist.append(url)
+        self._playlist_index = len(self._playlist) - 1
+
+        #Set the source with the QUrl to the Player
+        self._player.setSource(url)
+
+        #Play
+        self._player.play()
+
 
         
     def animationColor(self, elem:QWidget):
@@ -271,6 +294,8 @@ class Pantalla(object):
 
 
     def setupUi(self, MainWindow):
+
+        
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(940, 678)
@@ -424,9 +449,9 @@ class Pantalla(object):
         self.verticalLayout_4 = QVBoxLayout(self.borde_video)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(15, 25, 15, 25)
-        self.videoWidget = QWidget(self.borde_video)
-        self.videoWidget.setObjectName(u"videoWidget")
 
+        self.videoWidget = QVideoWidget(self.borde_video)
+        self.videoWidget.setObjectName(u"videoWidget")
         self.verticalLayout_4.addWidget(self.videoWidget)
 
 
@@ -721,6 +746,9 @@ class Pantalla(object):
 
         self.refreshTime()
         self.refreshWeather()
+
+
+        #self.initializeVideo()
 
     # setupUi
 

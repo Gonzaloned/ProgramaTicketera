@@ -1,15 +1,12 @@
 import datetime
 
 from PySide6.QtCore import *
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from PyQt6.QtSql import *
+from PySide6.QtSql import *
+from PySide6.QtMultimedia import *
+from PySide6.QtMultimediaWidgets import *
 
-from PyQt6.QtMultimediaWidgets import *
-from PyQt6.QtMultimedia import *
 
 #This import generates a parallel subprocess
 import subprocess
@@ -195,8 +192,10 @@ class Pantalla(object):
         self.temp.setText(f'{str(round(tempC))}C')
 
     def initializeVideo(self):
-                #Create a playlist
+
+        #Create a playlist
         self._playlist = []  # FIXME 6.3: Replace by QMediaPlaylist?
+
         self._playlist_index = -1
 
         #Create audio output
@@ -208,12 +207,24 @@ class Pantalla(object):
         #Set the audio output to player
         self._player.setAudioOutput(self._audio_output)
 
-        #Create the widget
-        self._video_widget = QVideoWidget(self.videoWidget)
-
         #Create layout and add the videoW
         self.layout_video = QVBoxLayout(self.videoWidget)
+
+        #Create the widget
+        self._video_widget = QVideoWidget()
+        videoPolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        videoPolicy.setHorizontalStretch(0)
+        videoPolicy.setVerticalStretch(0)
+        videoPolicy.setHeightForWidth(self._video_widget.sizePolicy().hasHeightForWidth())
+        self._video_widget.setSizePolicy(videoPolicy)
+        self._video_widget.setMinimumSize(QSize(360, 380))
+        self._video_widget.setMaximumSize(QSize(800, 450))
+        #Add w to layout
         self.layout_video.addWidget(self._video_widget)
+
+        
+
+
 
         #Set the video output of the QMediaPlayer-> QVideoWidget
         self._player.setVideoOutput(self._video_widget)
@@ -231,12 +242,7 @@ class Pantalla(object):
         #Play
         self._player.play()
 
-    def onActionAbrirTriggered(self):
-        path = QFileDialog.getOpenFileName(self,"Abrir", "/")
-        filepath= path[0]
-        if filepath== "":
-            return
-        self.mediaPlayer.setSource(filepath)
+
         
     def animationColor(self, elem:QWidget):
         #Change the color between blue and white
