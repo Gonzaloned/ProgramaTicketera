@@ -18,7 +18,7 @@ from ui_options import SettingsWindow
 class Selector(object):
 
 ###########################################################################################
-    ###FUNCTIONS CALLED BY THE BUTTONS
+###         FUNCTIONS CALLED BY THE BUTTONS
 ###########################################################################################
 
     #bells ring again
@@ -261,10 +261,10 @@ class Selector(object):
     # retranslateUi
 
 if __name__ == "__main__":
-    print('starting')
+    dataBase=''
     app = QApplication(sys.argv)
     vent=QMainWindow()
     login= Selector() #Creo la ventana login
-    login.setupUi(vent) #Paso la ventana para configuraciones
+    login.setupUi(vent,dataBase) #Paso la ventana para configuraciones
     vent.show() #Show
     sys.exit(app.exec())
