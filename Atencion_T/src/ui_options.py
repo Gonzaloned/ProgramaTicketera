@@ -1,20 +1,26 @@
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
-    QLabel, QMainWindow, QPushButton, QSizePolicy,
-    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+from PySide6.QtMultimedia import (QAudioOutput, QMediaFormat,
+                                  QMediaPlayer)
+from PySide6.QtMultimediaWidgets import QVideoWidget
 from connection import Connection
 import fondos_rc
 import fondos_rc
 import datetime
+import sys
 
+AVI = "video/x-msvideo"  # AVI
+MP4 = 'video/mp4'
+
+def get_supported_mime_types():
+    result = []
+    for f in QMediaFormat().supportedFileFormats(QMediaFormat.Decode):
+        mime_type = QMediaFormat(f).mimeType()
+        result.append(mime_type.name())
+    return result
 
 class SettingsWindow(object): 
 
@@ -56,8 +62,35 @@ class SettingsWindow(object):
         else:
             self.popAdvice('Error en la conexion\n con la base de datos') #User error, show advice
 
-    def marcarVideoActual(self):
-        pass
+    def selectActualVideo(self):
+
+        file_dialog = QFileDialog()
+        self._mime_types= []
+
+        is_windows = sys.platform == 'win32'
+        if not self._mime_types:
+            self._mime_types = get_supported_mime_types()
+            if (is_windows and AVI not in self._mime_types):
+                self._mime_types.append(AVI)
+            elif MP4 not in self._mime_types:
+                self._mime_types.append(MP4)
+
+        file_dialog.setMimeTypeFilters(self._mime_types)
+
+        default_mimetype = AVI if is_windows else MP4
+        if default_mimetype in self._mime_types:
+            file_dialog.selectMimeTypeFilter(default_mimetype)
+
+        movies_location = QStandardPaths.writableLocation(QStandardPaths.MoviesLocation)
+        file_dialog.setDirectory(movies_location)
+        if file_dialog.exec() == QDialog.Accepted:
+            url = file_dialog.selectedUrls()[0]
+            print(url.path())
+            #self._playlist.append(url)
+            #self._playlist_index = len(self._playlist) - 1
+            #self._player.setSource(url)
+            #self._player.play()
+
 
     def resetTurnos(self):
         QUERY=f'''INSERT INTO turnos_global(dni,hora,tipo,atiende_usuario) 
@@ -301,6 +334,8 @@ class SettingsWindow(object):
         self.tableWidget.setColumnWidth(2,120) #Set [col dni],width
         self.tableWidget.setColumnWidth(3,120) #Set [col atiende],width
         self.ver_historial.clicked.connect(lambda: self.verHistorial())
+        self.video_selector.clicked.connect(lambda: self.selectActualVideo())
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
