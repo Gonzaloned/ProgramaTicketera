@@ -1,0 +1,26 @@
+<RCC>
+  <qresource prefix="img">
+    <file>img/acceso.png</file>
+    <file>img/fondo(rot).jpg</file>
+    <file>img/fondo.jpg</file>
+    <file>img/fondo.png</file>
+    <file>img/fondo_sin.jpg</file>
+    <file>img/fondo1.jpg</file>
+    <file>img/fondo2.jpg</file>
+    <file>img/fondo3 - Copy.jpg</file>
+    <file>img/fondo3.jpg</file>
+    <file>img/fondoGris - Copy.jpg</file>
+    <file>img/fondoGris.jpg</file>
+    <file>img/fondotransparente - Copy.jpg</file>
+    <file>img/fondotransparente.jpg</file>
+    <file>img/grisSinFondo.jpg</file>
+    <file>img/icons8-login-50.png</file>
+    <file>img/icons8-login-100.png</file>
+    <file>img/icons8-people-64.png</file>
+    <file>img/iconWhite.png</file>
+    <file>img/ImagenTicket.svg</file>
+    <file>img/logo.jpeg</file>
+    <file>img/logo_sinFondo.png</file>
+    <file>img/q.html</file>
+  </qresource>
+</RCC>

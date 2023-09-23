@@ -5,10 +5,9 @@ CREATE TABLE Persona(
   pass varchar(max),
 )
 
-CREATE TABLE turnos_global (
-  dni int,
+CREATE TABLE turnos_dia (
+  dni int primary key,
   hora datetime,
-  primary key(dni, hora),
   tipo int,
   atiende_usuario varchar(10),
   FOREIGN KEY(atiende_usuario) REFERENCES Persona(usuario)
@@ -24,4 +23,9 @@ CREATE TABLE turnos_actual(
   FOREIGN KEY(atiende_usuario) REFERENCES Persona(usuario),
   status int, /* creado, 2 llamado, 3 mostrado, 4 retirado.*/
 
+)
+
+CREATE TABLE video(
+	ipnum varchar(max),
+	dir varchar(max)
 )
