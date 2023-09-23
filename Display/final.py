@@ -209,13 +209,13 @@ class Pantalla(object):
 
         #Create the widget
         self._video_widget = QVideoWidget(self.video_widget)
-        #videoPolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        #videoPolicy.setHorizontalStretch(0)
-        #videoPolicy.setVerticalStretch(1230)
-        #videoPolicy.setHeightForWidth(self._video_widget.sizePolicy().hasHeightForWidth())
-        #self._video_widget.setSizePolicy(videoPolicy)
-        #self._video_widget.setMinimumSize(QSize(360, 380))
-        #self._video_widget.setMaximumSize(QSize(1100, 20000))
+        videoPolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        videoPolicy.setHorizontalStretch(0)
+        videoPolicy.setVerticalStretch(1230)
+        videoPolicy.setHeightForWidth(self._video_widget.sizePolicy().hasHeightForWidth())
+        self._video_widget.setSizePolicy(videoPolicy)
+        self._video_widget.setMinimumSize(QSize(360, 380))
+        self._video_widget.setMaximumSize(QSize(1100, 20000))
         
         #Add w to layout
         self.layout_video.addWidget(self._video_widget)

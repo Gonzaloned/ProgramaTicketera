@@ -10,6 +10,8 @@ from connection import Connection
 import pantalla1_rc
 from ui_pop import Pop
 
+#Subprocess to run node printer file
+import subprocess
 
 class Pantalla3(object):
 
@@ -57,7 +59,22 @@ class Pantalla3(object):
 
         QTimer.singleShot(8000, lambda: self.closeAll())
 
+        
 
+
+
+        # Ejecuta el script de Node.js desde Python
+        printer_file= 'ticketera.js'
+
+        #Parameters
+        param_list=['param1','param2']
+        try:
+            subprocess.run(['node', printer_file, *param_list], check=True)
+            print("Script de Node.js ejecutado con éxito desde Python.")
+        except subprocess.CalledProcessError as e:
+            print("Error al ejecutar el script de Node.js:", e)
+        except FileNotFoundError:
+            print("File not found")
         #If the query succeeds
         #if (db.executeQuery(QUERY)):
 
