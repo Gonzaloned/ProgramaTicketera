@@ -43,25 +43,24 @@ class Pantalla3(object):
             print('Query realizada exitosamente')
 
         #Abro nueva ventana
-        self.window = QMainWindow()
+        self.pop_window = QMainWindow()
         
         #Creo template y seteo el estilo en ventana
         self.pop = Pop()
-        self.pop.setupUi(self.window)
+        self.pop.setupUi(self.pop_window)
 
         #No frame, no background, show
-        self.window.setWindowFlags(Qt.FramelessWindowHint)
-        self.window.setAttribute(Qt.WA_TranslucentBackground)
+        self.pop_window.setWindowFlags(Qt.FramelessWindowHint)
+        self.pop_window.setAttribute(Qt.WA_TranslucentBackground)
+
+        #Set the pop window main and the others -NO clickeable- until the pop closes
+        self.pop_window.setWindowModality(Qt.ApplicationModal)
 
         #Show pop with the opening animation
-        self.window.show()
-        self.animateOn(self.window)
+        self.pop_window.show()
+        self.animateOn(self.pop_window)
 
         QTimer.singleShot(8000, lambda: self.closeAll())
-
-        
-
-
 
         # Ejecuta el script de Node.js desde Python
         printer_file= 'ticketera.js'
@@ -88,10 +87,10 @@ class Pantalla3(object):
 
     def closeAll(self):
         self.window3.close()
-        self.window.close()
+        self.pop_window.close()
     
 
-    def setupUi(self, base, dni, window3):
+    def setupUi(self, base, dni, window3:QMainWindow):
         self.dni = dni
         self.window3= window3
         if not base.objectName():
