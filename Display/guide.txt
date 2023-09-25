@@ -1,2 +1,0 @@
-Por cada llamado a consulta -> Crear vector con ptros a QWidgets actuales [0..5]
-Si hay uno nuevo para mostrar, quitar widgets, agregar reorganizados

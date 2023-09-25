@@ -1,4 +1,15 @@
-from time import sleep
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'calculadoracgKDjw.ui'
+##
+## Created by: Qt User Interface Compiler version 6.4.3
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+
+
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
@@ -20,7 +31,7 @@ class Calculadora(object):
         self.texto.setText(self.dni)
     
     def eliminarDig(self):
-        self.dni = ""
+        self.dni = self.dni[:-1]
         self.texto.setText(self.dni)
 
     def checkDNI(self):
@@ -44,14 +55,14 @@ class Calculadora(object):
         self.window3.showFullScreen()
         self.animateOn()
         
+
+
     def setupUi(self, main, calc:QMainWindow):
         ##IMPORTANT SAVE THE DNI NUMBER (AS STRING)
         self.dni=''
 
         #Save this wind
         self.calc= calc
-
-
 
         if not main.objectName():
             main.setObjectName(u"main")
@@ -71,19 +82,13 @@ class Calculadora(object):
 "}\n"
 "\n"
 "QPushButton{\n"
-"	background-color: rgba(141, 23, 40,255);\n"
+"	background-color: rgb(141, 23, 38);\n"
 "	color: rgba(255, 255, 255,200);\n"
 "    border-style: outset;\n"
 "    padding: 2px;\n"
 "    font: 50px Arial Black;\n"
 "    border-width: 2px;\n"
-"	border-color: rgba(148, 75, 77,255);\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"	background-color: rgba(141, 23, 40,200);\n"
-"	color: rgba(255, 255, 255,100);\n"
-"	border-color: rgb(148, 75, 77,255);\n"
+"	border-color: rgb(148, 75, 77);\n"
 "}\n"
 "\n"
 "#texto{\n"
