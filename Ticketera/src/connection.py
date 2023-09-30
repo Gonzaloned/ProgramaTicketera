@@ -17,11 +17,10 @@ PASSWORD = '123456'
 
 class Connection():
     def __init__(self):
+        print('entre a db')
         #Set the new database driver (in this case QODBC)
         self.con = QSqlDatabase().addDatabase('QODBC')
-
-        self.createConnection()    
-        #SQL_STATEMENT = "INSERT INTO dbo.turnos_cajas(dni,hora) VALUES (444444,'2015-03-25 15:30:00')"
+        
 
     def createConnection(self):
         #Setting attributes string to start connection
@@ -43,6 +42,8 @@ class Connection():
             print("Database Error: %s"  % self.con.lastError().databaseText())
             exit(0)
 
+        return self.con
+
 
     def executeQuery(self,query):
         print('processing query')
@@ -52,9 +53,10 @@ class Connection():
 
         #Prepare the query to execute
         qry.prepare(query)
-        if (qry.exec()):    
+        if (qry.exec()):
+            print('Query realizada exitosamente')
             return True
         else:
             return False
 
-    
+

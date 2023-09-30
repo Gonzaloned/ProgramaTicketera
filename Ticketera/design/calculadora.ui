@@ -18,18 +18,13 @@
 background:transparent;
 border-radius: 20px;
 }
-#base{
-	background-color: rgba(59,22,66,120);
-
-	border-radius: 20px;
-}
 
 #frame{
 border-radius: 20px;
 }
 
 QPushButton{
-	background-color: rgba(141, 23, 40,255);
+	background-color: rgb(157, 19, 45);
 	color: rgba(255, 255, 255,200);
     border-style: outset;
     padding: 2px;
@@ -39,7 +34,7 @@ QPushButton{
 }
 
 QPushButton:pressed{
-	background-color: rgba(141, 23, 40,200);
+	background-color: rgb(106, 13, 32);
 	color: rgba(255, 255, 255,100);
 	border-color: rgb(148, 75, 77,255);
 }

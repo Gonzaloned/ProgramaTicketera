@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QWidget)
 
 from ui_pantalla1 import Pantalla1
-from ui_calculadora import Calculadora
+
 
 if __name__ == '__main__':
     #Creo app

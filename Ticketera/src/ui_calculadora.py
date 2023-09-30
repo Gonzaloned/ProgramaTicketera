@@ -1,4 +1,3 @@
-from time import sleep
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
@@ -20,8 +19,11 @@ class Calculadora(object):
         self.texto.setText(self.dni)
     
     def eliminarDig(self):
-        self.dni = ""
-        self.texto.setText(self.dni)
+        if self.dni == "":
+            self.calc.close()
+        else:
+            self.dni = ""
+            self.texto.setText(self.dni)
 
     def checkDNI(self):
         self.window3= QMainWindow()
@@ -44,15 +46,8 @@ class Calculadora(object):
         self.window3.showFullScreen()
         self.animateOn()
         
-    def setupUi(self, main, calc:QMainWindow):
-        ##IMPORTANT SAVE THE DNI NUMBER (AS STRING)
-        self.dni=''
 
-        #Save this wind
-        self.calc= calc
-
-
-
+    def setupUi(self, main):
         if not main.objectName():
             main.setObjectName(u"main")
         main.resize(915, 798)
@@ -60,18 +55,13 @@ class Calculadora(object):
 "background:transparent;\n"
 "border-radius: 20px;\n"
 "}\n"
-"#base{\n"
-"	background-color: rgba(59,22,66,120);\n"
-"\n"
-"	border-radius: 20px;\n"
-"}\n"
 "\n"
 "#frame{\n"
 "border-radius: 20px;\n"
 "}\n"
 "\n"
 "QPushButton{\n"
-"	background-color: rgba(141, 23, 40,255);\n"
+"	background-color: rgb(157, 19, 45);\n"
 "	color: rgba(255, 255, 255,200);\n"
 "    border-style: outset;\n"
 "    padding: 2px;\n"
@@ -81,7 +71,7 @@ class Calculadora(object):
 "}\n"
 "\n"
 "QPushButton:pressed{\n"
-"	background-color: rgba(141, 23, 40,200);\n"
+"	background-color: rgb(106, 13, 32);\n"
 "	color: rgba(255, 255, 255,100);\n"
 "	border-color: rgb(148, 75, 77,255);\n"
 "}\n"
@@ -366,7 +356,15 @@ class Calculadora(object):
 
         QMetaObject.connectSlotsByName(main)
 
-        #Events
+        #Vars
+        #Save this wind
+        self.calc= main
+
+        #Create DNI label
+        self.dni=''
+
+
+        #EVENTS
         self.btn0.clicked.connect(lambda: self.agregarDig("0"))
         self.btn1.clicked.connect(lambda: self.agregarDig("1"))
         self.btn2.clicked.connect(lambda: self.agregarDig("2"))
@@ -379,6 +377,7 @@ class Calculadora(object):
         self.btn9.clicked.connect(lambda: self.agregarDig("9"))
         self.btnDel.clicked.connect(lambda: self.eliminarDig())
         self.btnOK.clicked.connect(lambda: self.checkDNI())  
+
     # setupUi
 
     def retranslateUi(self, main):

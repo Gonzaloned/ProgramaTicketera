@@ -1,11 +1,9 @@
 
 import datetime
 from PySide6.QtCore import *
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtGui import *
 from PySide6.QtWidgets import *
+from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import pantalla1_rc
 from ui_pop import Pop
@@ -14,6 +12,11 @@ from ui_pop import Pop
 import subprocess
 
 class Pantalla3(object):
+
+    #Create a DB    
+    def createCon(self):
+        self.db_handler= Connection() 
+        self.db:QSqlDatabase= self.db_handler.createConnection()        
 
     def animateOn(self, win: QMainWindow):
         self.eff = QGraphicsOpacityEffect(win)
@@ -27,20 +30,58 @@ class Pantalla3(object):
         self.anim.start()
 
     def solicitarAtencion(self,tipo):
-        #Create a db
-        db=Connection()
+
 
         #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
         time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
         
         #Query
-        QUERY= f"INSERT INTO turnos_actual(dni,hora,tipo,status) VALUES({self.dni},'{time_now}',{tipo},1)"
+        QUERY= f'''BEGIN TRANSACTION;
+        -- Insertar un nuevo turno a ser llamado
+        INSERT INTO turnos_actual(dni,hora,tipo,status) VALUES({self.dni},'{time_now}',{tipo},1);
 
-        print(QUERY)
-        
+        -- Recuperar el ultimo num insertado
+        SELECT SCOPE_IDENTITY();
+
+        COMMIT TRANSACTION;
+        '''
+
+        #new query object  QSqlQuery(database objetive dbObject)
+        query_data= QSqlQuery(self.db)
+
+        #Prepare the query to execute
+        query_data.prepare(QUERY)
+        query_data.exec()
         #execute the query
-        if(db.executeQuery(QUERY)):
+        if(query_data.first()):
+
+            #Save the added num to print the ticket
+            numero_agregado:float=query_data.value(0)
+
             print('Query realizada exitosamente')
+                # Ejecuta el script de Node.js desde Python
+            printer_file= r'C:\Users\gon\Desktop\Proyecto Ticketera\Ticketera\src\ticketera.js'
+
+            #Parameters list to call NodePrinter
+            param_list=[]
+            
+            #Add num to Ticket params
+            param_list.append(str(round(numero_agregado)))
+
+            try:
+                subprocess.run(['node', printer_file, *param_list], check=True)
+                print("Script de Node.js ejecutado con éxito desde Python.")
+            except subprocess.CalledProcessError as e:
+                print("Error al ejecutar el script de Node.js:", e)
+            except FileNotFoundError:
+                print("File not found")
+        else:
+            print('hubo error')
+            #If executequery fails, regen a connection
+            #self.db= Connection()
+            
+            #Try again query
+            #self.solicitarAtencion(tipo)
 
         #Abro nueva ventana
         self.pop_window = QMainWindow()
@@ -60,30 +101,8 @@ class Pantalla3(object):
         self.pop_window.show()
         self.animateOn(self.pop_window)
 
-        QTimer.singleShot(8000, lambda: self.closeAll())
+        QTimer.singleShot(7000, lambda: self.closeAll())
 
-        # Ejecuta el script de Node.js desde Python
-        printer_file= 'ticketera.js'
-
-        #Parameters
-        param_list=['param1','param2']
-        try:
-            subprocess.run(['node', printer_file, *param_list], check=True)
-            print("Script de Node.js ejecutado con éxito desde Python.")
-        except subprocess.CalledProcessError as e:
-            print("Error al ejecutar el script de Node.js:", e)
-        except FileNotFoundError:
-            print("File not found")
-        #If the query succeeds
-        #if (db.executeQuery(QUERY)):
-
-            #Close windows (turn type selection)
-
-            #Show the ticket windows
-            
-        #else:
-            
-           # pass
 
     def closeAll(self):
         self.window3.close()
@@ -91,6 +110,7 @@ class Pantalla3(object):
     
 
     def setupUi(self, base, dni, window3:QMainWindow):
+
         self.dni = dni
         self.window3= window3
         if not base.objectName():
@@ -210,6 +230,8 @@ class Pantalla3(object):
         self.retranslateUi(base)
 
         QMetaObject.connectSlotsByName(base)
+
+        self.createCon()
 
         #Defining events
         self.btn1.clicked.connect(lambda: self.solicitarAtencion(1))
