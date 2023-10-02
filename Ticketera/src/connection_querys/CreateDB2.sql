@@ -20,6 +20,7 @@ CREATE TABLE turnos_actual(
   hora datetime,
   tipo int,
   atiende_usuario varchar(10),
+  atiende_caja int,
   FOREIGN KEY(atiende_usuario) REFERENCES Persona(usuario),
   status int, /* creado, 2 llamado, 3 mostrado, 4 retirado.*/
 

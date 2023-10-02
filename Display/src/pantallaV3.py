@@ -47,9 +47,6 @@ class Pantalla(object):
             self.list_box[i] = self.list_box[i-1]
         self.list_box[0] = ultimo
 
-        print('orden2')
-        for elem in self.list_box:
-            print(elem)
 
     def createLayout(self,layout:QVBoxLayout):
         for elem in self.list_box:
@@ -58,11 +55,6 @@ class Pantalla(object):
         
 
     def showNew(self, num:int, caj:int):
-
-        #Add all the boxes to the layout
-        print('orden1')
-        for elem in self.list_box:
-            print(elem)
 
         #actualize the list of widgets
         self.refreshBoxList()
@@ -74,12 +66,11 @@ class Pantalla(object):
         num:QLabel = childs[1]
         caja:QLabel = childs[2]
 
-        #Insert text
-        num.setText('gon')
-        caja.setText('DATABASE')
+        #Set the next num text in the labels
+        self.databaseNext(num,caja)
 
         #MP3 Path
-        path='./soundplayer.py'
+        path='./src/soundplayer.py'
         subprocess.Popen(['python', path])
 
         #delete actual layout
@@ -92,71 +83,44 @@ class Pantalla(object):
         self.animationColor(self.list_box[0])
 
 
-    def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
-        
-        #sound= PySide6.QtMultimedia.QSoundEffect()
-        
-        #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
-        time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')        
+    def databaseNext(self,label_num:QLabel, label_caja:QLabel): #exececute a query of bring on the last num called by BOX and actualize displa
+          
 
         #Create a query to get the next display
         query= QSqlQuery(self.con)   #SELF.db is the connection QSqlDatabase already created
-        query_proximo=QSqlQuery(self.con)    
-
 
         #Query to get the new num
-        data_query1= \
+        data_query= \
         '''BEGIN TRANSACTION;
         DECLARE @proximo_turno INT;
 
-        -- Obtener el próximo turno disponible
+        -- Obtener el proximo turno disponible
 
         SELECT TOP (1) @proximo_turno=num 
         FROM turnos_actual 
         WHERE (status=2) 
-        ORDER BY hora
-
-        -- Asignar el turno a una persona específica (supongamos que la persona tiene el ID 1)
-                
+        ORDER BY num        
         
+        SELECT @proximo_turno
 
-        SELECT @proximo_turno as num
-                         
+        UPDATE turnos_actual SET status = 3 WHERE num=@proximo_turno
+
         COMMIT TRANSACTION;
         '''
 
-        data_query2= \
-        '''BEGIN TRANSACTION;
-        DECLARE @proximo_turno INT;
+        query.prepare(data_query) #Query brings on the next
 
-        -- Obtener el potencial proximo turno disponible
-
-        SELECT TOP (1) @proximo_turno=num 
-        FROM turnos_actual 
-        WHERE (status=1) 
-        ORDER BY hora        
-        
-        SELECT @proximo_turno as num
-                         
-        COMMIT TRANSACTION;
-        '''
-
-
-        query.prepare(data_query1) #Query brings on the next
-
-        query_proximo.prepare(data_query2) #Query searchs the potential next call
-
-        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)
-
+        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
             query.first()   #Get the first row
-            next=query.value(0)  #The first value
-   
-            self.refreshDisplay(next,'cajaGon',5) #Calls the function refresh display with the values to actualize
 
-            if not(query.isNull(0)) & (query_proximo.exec()): #If query haves a value and query_proximo succeeds
-                query_proximo.first()  #Get the first row
-                proximo=query_proximo.value(0)
-                self.prox.setText(f'PROXIMO NUMERO {proximo}')
+            if not(query.isNull(0)): #If value is not null
+                next_number = query.value(0)  #Save first value to put in screen
+                self.label_num.setText(next_number) #Put num in label
+                self.label_caja.setText("caja")
+            
+
+
+
 
     def refreshTime(self):
         #Get the actual time in HH:MM
@@ -766,16 +730,6 @@ class Pantalla(object):
         self.titulo_llamado.setText(QCoreApplication.translate("MainWindow", u"LLAMADO TURNOS", None))
         self.label_num.setText(QCoreApplication.translate("MainWindow", u"NUM", None))
         self.label_caja.setText(QCoreApplication.translate("MainWindow", u"CAJA", None))
-        self.num1.setText(QCoreApplication.translate("MainWindow", u"B3", None))
-        self.caja1.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num2.setText(QCoreApplication.translate("MainWindow", u"B2", None))
-        self.caja2.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num3.setText(QCoreApplication.translate("MainWindow", u"B1", None))
-        self.caja3.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num4.setText(QCoreApplication.translate("MainWindow", u"A2", None))
-        self.caja4.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num5.setText(QCoreApplication.translate("MainWindow", u"A1", None))
-        self.caja5.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
         self.labelDesplazable.setText(QCoreApplication.translate("MainWindow", u"LABEL DESPLAZABLE", None))
     # retranslateUi
 

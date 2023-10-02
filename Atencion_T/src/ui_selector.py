@@ -1,19 +1,13 @@
-
-
 import sys
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform, QGuiApplication)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
-from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import fondos_rc
 from ui_options import SettingsWindow
+
+import manejar_datos
 
 class Selector(object):
 
@@ -21,44 +15,45 @@ class Selector(object):
 ###         FUNCTIONS CALLED BY THE BUTTONS
 ###########################################################################################
 
+    def createCon(self):
+        self.db_handler= Connection() 
+        self.db= self.db_handler.createConnection() 
+
     #bells ring again
     def notificar(self):
         self.db.executeQuery()
 
     #Calls next shift
     def llamarProximo(self, tipo:int):
-
-        transaction=\
-        f'''BEGIN TRANSACTION;
+        
+        box_num= manejar_datos.getBoxNum()
+        name= manejar_datos.getName()
+        #Status 1: created, 2: called, 3: displayed
+        #Select first turn in the table and change status to called
+        transaction=f'''BEGIN TRANSACTION;
 
         DECLARE @proximo_turno INT;
 
         -- Obtener el próximo turno disponible
 
-        SELECT TOP 1 @proximo_turno = id
-        FROM turnos_global
-        WHERE estado = 'esperando'
-        ORDER BY fecha_hora_llegada;
+        SELECT TOP (1) @proximo_turno=num 
+        FROM turnos_actual 
+        WHERE (status=1 and tipo={tipo}) 
+        ORDER BY hora
 
-        -- Asignar el turno a una persona específica (supongamos que la persona tiene el ID 1)
-        
-        UPDATE turnos_global
-        SET estado = 'atendido', persona_id = 1
-        WHERE id = @proximo_turno;
+        -- Asignar el turno cambiando status y caja llamadora
+                
+        UPDATE turnos_actual 
+        SET status = 2, atiende_usuario='{name}', atiende_caja='{box_num}'
+        WHERE num = @proximo_turno;
 
-        -- Actualizar el turno actual que se muestra en pantalla
-        UPDATE turnos_actual
-        SET turno_actual_id = @proximo_turno;
-
-        COMMIT TRANSACTION;'''
-
-        query=QSqlQuery(self.db)
-        query.prepare(transaction)
-        if query.exec(): #If query executes ok
-            if query.first(): #if ok
-                pass
-
-        
+        COMMIT TRANSACTION;
+        '''
+        print(f'conexion establecida: {self.db.isOpen()}')
+        query= QSqlQuery(self.db) #Creeate a query and link to db
+        query.prepare(transaction) #Set the query
+        query.exec()
+            
 
     #Opens the options    
     def abrirOpciones(self):
@@ -90,11 +85,12 @@ class Selector(object):
 
 
 
-    def setupUi(self, MainWindow, dataBase):
+    def setupUi(self, MainWindow):
 
-        self.db= dataBase
+        self.createCon()
 
         self.ventana=MainWindow
+
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(94, 405)
@@ -243,6 +239,11 @@ class Selector(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
+        #INITIAL WINDOW CONFIG
+        self.ventana.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        self.ventana.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+        self.location_on_the_screen()
+
         ##EVENTS
         self.llamar.clicked.connect(lambda: self.notificar())
         self.sinTurno.clicked.connect(lambda: self.llamarProximo(1))
@@ -265,6 +266,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     vent=QMainWindow()
     login= Selector() #Creo la ventana login
-    login.setupUi(vent,dataBase) #Paso la ventana para configuraciones
+    login.setupUi(vent) #Paso la ventana para configuraciones
     vent.show() #Show
     sys.exit(app.exec())

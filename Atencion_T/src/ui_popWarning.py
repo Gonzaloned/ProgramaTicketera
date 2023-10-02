@@ -13,6 +13,9 @@ import fondos_rc
 
 class PopWarning(object):
     def setupUi(self, MainWindow, entradaTexto):
+        #Save window locally
+        self.ventana= MainWindow
+
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(320, 228)
@@ -39,6 +42,7 @@ class PopWarning(object):
 "	border: 1px solid rgba(95, 12, 28, 30);\n"
 "}\n"
 "\n"
+"#fondo{border-radius: 15px}\n"
 "#btn1:pressed{\n"
 "	\n"
 "	background-color: rgb(160, 159, 176);\n"
@@ -117,8 +121,18 @@ class PopWarning(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
+        #INITIAL WINDOW CONFIG
+        self.ventana.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        self.ventana.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+
+
         #Put the text in the label
         self.text.setText(entradaTexto)
+
+        #EVENTS
+
+        self.btn2.clicked.connect(lambda: self.ventana.close())
+
     # setupUi
 
     def retranslateUi(self, MainWindow):

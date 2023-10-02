@@ -1,5 +1,6 @@
 
 
+import os
 from PySide6.QtCore import *
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
@@ -8,13 +9,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
     QLineEdit, QMainWindow, QPushButton, QSizePolicy,
     QStackedWidget, QVBoxLayout, QWidget)
-from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+
 from connection import Connection
+
+from werkzeug.security import generate_password_hash, check_password_hash
 import fondos_rc
 from ui_selector import Selector
 from ui_popWarning import PopWarning
 
-
+import manejar_datos
 
 class Login(object):
 
@@ -27,10 +31,7 @@ class Login(object):
     def startProgram(self):
         vent= QMainWindow()
         ui= Selector()
-        ui.setupUi(vent,self.db) #pass window and DB
-        vent.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
-        vent.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
-        ui.location_on_the_screen()  #set the Position
+        ui.setupUi(vent) #pass window and DB
         vent.show() #Show
         self.window.close()
 
@@ -41,12 +42,18 @@ class Login(object):
         pass1= self.passRegister.text()
         pass2= self.pass2Register.text()
 
+
+
+        #Create te encrypted pass
+        encrypted_pass = generate_password_hash(pass1, method='pbkdf2')
+        print(encrypted_pass)
+        
         print(user.__len__())
         print(name.__len__())
 
         QUERY= f'''BEGIN TRANSACTION
             --REGISTRAR USUARIO
-            INSERT INTO Persona(nombre,usuario,pass) VALUES('{name}','{user}','{pass1}');
+            INSERT INTO Persona(nombre,usuario,pass) VALUES('{name}','{user}','{encrypted_pass}');
             COMMIT TRANSACTION'''
         
         
@@ -75,20 +82,26 @@ class Login(object):
         password = self.passLogin.text() #Get the Password
 
         QUERY=f"SELECT usuario,pass FROM Persona WHERE usuario=\'{username}\'"
-        print(QUERY)
 
         query_data= QSqlQuery(self.db) #Creeate a query and link to db
         query_data.prepare(QUERY) #Set the query
-        found=False
+
         if query_data.exec(): #If query executes ok
-            while query_data.next(): #each row
-                if ((query_data.value(0) == username) and (query_data.value(1)== password)): 
+            if query_data.first(): #if user exists
+
+                #If user in query equals and Check pass ok => checkpw(TEXT, ENCRIPTED PASS)
+                if ((query_data.value(0) == username) and (check_password_hash(query_data.value(1), password))): 
+
+                    #Set the local info name and box number
+                    manejar_datos.setPersonalData(username,str(self.selectorCaja.currentText()))
+
                     self.startProgram() #Start the program
-                    found=True
-                    break
-            if not found:
+
+                else: #If pass dont match
+                    self.popAdvice('Error en usuario o contraseña') #User error, show advice
+            else: #User not found
                 self.popAdvice('Error en usuario o contraseña') #User error, show advice
-        else:
+        else: #Conection error
             self.popAdvice('Error en la conexion\n con la base de datos') #User error, show advice
 
             
@@ -101,9 +114,10 @@ class Login(object):
         self.pop.show() #Show
         QTimer.singleShot(3000, lambda: self.pop.close())
 
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow:QMainWindow):
 
         self.window= MainWindow #Pass the window to close
+
 
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -568,8 +582,20 @@ class Login(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
-        #BUTTONS CONF
+        #WINDOW CONFIG
+
+        #Set title
+        self.window.setWindowTitle('Acceso turnos HPS') #Win title
+        
+        #Get the actual path
+        scriptDir = os.path.dirname(os.path.realpath(__file__))
+
+        #Set the Window icon
+        self.window.setWindowIcon(QIcon(scriptDir + os.path.sep + 'logoBlack.png'))
+        
         self.createCon()
+
+        #BUTTONS CONF
         self.stack.setCurrentWidget(self.pag_login)
         self.logToReg.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_registro))
         self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
@@ -579,7 +605,6 @@ class Login(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_16.setText("")
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Acceso atencion \n"
 " Ticketera", None))

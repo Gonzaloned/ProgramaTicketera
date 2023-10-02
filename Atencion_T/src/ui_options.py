@@ -1,8 +1,9 @@
-
+import os
+import sys
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from PySide6.QtMultimedia import (QAudioOutput, QMediaFormat,
                                   QMediaPlayer)
 from PySide6.QtMultimediaWidgets import QVideoWidget
@@ -10,7 +11,9 @@ from connection import Connection
 import fondos_rc
 import fondos_rc
 import datetime
-import sys
+
+
+from ui_popWarning import PopWarning
 
 AVI = "video/x-msvideo"  # AVI
 MP4 = 'video/mp4'
@@ -104,10 +107,18 @@ class SettingsWindow(object):
         if query_data.exec(): #If query executes ok
             pass
 
-    def infoDisplayer(self):
-        pass
+    def popAdvice(self,text):  #Create a window of advice
+        self.pop= QMainWindow()
+        self.ui= PopWarning()
+        self.ui.setupUi(self.pop,text) #Paso la ventana para configuraciones
+        self.pop.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        self.pop.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+        self.pop.show() #Show
+        QTimer.singleShot(3000, lambda: self.pop.close())    
 
     def setupUi(self, MainWindow, dataBase):
+
+        self.window= MainWindow
 
         self.db = dataBase #Get the dataBase from start
 
@@ -331,8 +342,23 @@ class SettingsWindow(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
+        #INITIAL WINDOW CONFIG
+        #Set title
+        self.window.setWindowTitle('Menu opciones') #Win title
+        
+        #Get the actual path
+        scriptDir = os.path.dirname(os.path.realpath(__file__))
+
+        #Set the Window icon
+        self.window.setWindowIcon(QIcon(scriptDir + os.path.sep + 'logoBlack.png'))
+        #self.ventana.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        #self.ventana.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+
+        #TABLE CONFS
         self.tableWidget.setColumnWidth(2,120) #Set [col dni],width
         self.tableWidget.setColumnWidth(3,120) #Set [col atiende],width
+
+        #EVENTS
         self.ver_historial.clicked.connect(lambda: self.verHistorial())
         self.video_selector.clicked.connect(lambda: self.selectActualVideo())
 
