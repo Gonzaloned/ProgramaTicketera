@@ -1,3 +1,6 @@
+import datetime
+import json
+import os
 import sys
 from PySide6.QtCore import *
 from PySide6.QtGui import *
@@ -19,15 +22,30 @@ class Selector(object):
         self.db_handler= Connection() 
         self.db= self.db_handler.createConnection() 
 
-    #bells ring again
-    def notificar(self):
-        self.db.executeQuery()
+    #This method sends to db a indicator of recall last num
+    def callLastNumAgain(self):
+
+        #Get the last num info
+        last_num = manejar_datos.getLastNum()
+        last_time = manejar_datos.getLastTime()
+
+        #Insert the last num info in the db
+        notify_query=f'''
+        BEGIN TRANSACTION;
+        INSERT INTO advice(num, hora) VALUES('{last_num}','{last_time}');
+        COMMIT TRANSACTION; 
+        '''
+        query= QSqlQuery(self.db) #Create a query and link to db
+        query.prepare(notify_query) #Set the query
+        query.exec() #Exec the query
 
     #Calls next shift
     def llamarProximo(self, tipo:int):
         
+        #This methods calls "Manejar_datos.py" to get box_num and caller name
         box_num= manejar_datos.getBoxNum()
         name= manejar_datos.getName()
+
         #Status 1: created, 2: called, 3: displayed
         #Select first turn in the table and change status to called
         transaction=f'''BEGIN TRANSACTION;
@@ -47,13 +65,34 @@ class Selector(object):
         SET status = 2, atiende_usuario='{name}', atiende_caja='{box_num}'
         WHERE num = @proximo_turno;
 
+        -- Guardar el ultimo turno para notificar
+        SELECT @proximo_turno
+
         COMMIT TRANSACTION;
         '''
-        print(f'conexion establecida: {self.db.isOpen()}')
+
         query= QSqlQuery(self.db) #Creeate a query and link to db
         query.prepare(transaction) #Set the query
-        query.exec()
-            
+        query.exec() #Exec the query
+        query.first() #Pos 0
+
+        #this final method code
+        #writes the json file last_num and save the info just in case to need a notification
+
+        #Save last num called by the query
+        last_num = query.value(0) 
+
+        # 1. Read last turn file
+        with open(os.path.join(os.getcwd(), "src", "data", "last_num.json"), "r", encoding='utf-8') as archivo:
+            data = json.load(archivo)
+
+        # 2. Set the last num and time
+        data['num']=last_num
+        data['hour']= datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
+
+        # 3. Rewrite the json file
+        with open(os.path.join(os.getcwd(), "src", "data", "last_num.json"), "w", encoding='utf-8') as archivo:
+            json.dump(data, archivo)    
 
     #Opens the options    
     def abrirOpciones(self):
@@ -66,7 +105,6 @@ class Selector(object):
     #Close program
     def cerrarSelectora(self):
         self.ventana.close()
-
 
 
     #This function calculates the position in the screen
@@ -82,7 +120,6 @@ class Selector(object):
 
         #print(f' X: {x} Y: {y}')
         self.ventana.move(x, y)
-
 
 
     def setupUi(self, MainWindow):
@@ -245,7 +282,7 @@ class Selector(object):
         self.location_on_the_screen()
 
         ##EVENTS
-        self.llamar.clicked.connect(lambda: self.notificar())
+        self.llamar.clicked.connect(lambda: self.callLastNumAgain())
         self.sinTurno.clicked.connect(lambda: self.llamarProximo(1))
         self.conTurno.clicked.connect(lambda: self.llamarProximo(2))
         self.settings.clicked.connect(lambda: self.abrirOpciones())

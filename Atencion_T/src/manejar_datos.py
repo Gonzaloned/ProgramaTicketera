@@ -1,25 +1,35 @@
 import os
 import json
 
-def setPersonalData(nombre, caja):
+def setPersonalData(name, caja):
     # 1. Leer el contenido actual del archivo JSON en una estructura de datos
-    with open(os.path.join(os.getcwd(), "src", "data", "info_caja.json"), "r", encoding='utf-8') as archivo:
+    with open(os.path.join(os.getcwd(), "src", "data", "box_info.json"), "r", encoding='utf-8') as archivo:
         data = json.load(archivo)
 
     # 2. Modificar la estructura de datos (en este caso, supongamos que estamos agregando un nuevo campo)
-    data['nombre']=nombre
-    data['caja']= caja
+    data['name']=name
+    data['box']= caja
 
     # 3. Sobrescribir el archivo JSON con la nueva información
-    with open(os.path.join(os.getcwd(), "src", "data", "info_caja.json"), "w", encoding='utf-8') as archivo:
+    with open(os.path.join(os.getcwd(), "src", "data", "box_info.json"), "w", encoding='utf-8') as archivo:
         json.dump(data, archivo)
 
 def getBoxNum():
-    with open(os.path.join(os.getcwd(), "src", "data", "info_caja.json"), "r", encoding='utf-8') as file:
+    with open(os.path.join(os.getcwd(), "src", "data", "box_info.json"), "r", encoding='utf-8') as file:
         box_num=json.load(file)
-        return box_num['caja']
+        return box_num['box']
 
 def getName():
-    with open(os.path.join(os.getcwd(), "src", "data", "info_caja.json"), "r", encoding='utf-8') as file:
+    with open(os.path.join(os.getcwd(), "src", "data", "box_info.json"), "r", encoding='utf-8') as file:
         name=json.load(file)
-        return name['nombre']
+        return name['name']
+    
+def getLastNum():
+    with open(os.path.join(os.getcwd(), "src", "data", "last_num.json"), "r", encoding='utf-8') as file:
+        last_num=json.load(file)
+        return last_num['num']
+
+def getLastTime():
+    with open(os.path.join(os.getcwd(), "src", "data", "last_num.json"), "r", encoding='utf-8') as file:
+        last_hour=json.load(file)
+        return last_hour['hour']

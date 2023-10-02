@@ -30,3 +30,8 @@ CREATE TABLE video(
 	ipnum varchar(max),
 	dir varchar(max)
 )
+
+CREATE TABLE advice(
+	num int primary key,
+	hora datetime
+)

@@ -10,6 +10,7 @@ from PySide6.QtMultimediaWidgets import *
 
 #This import generates a parallel subprocess
 import subprocess
+from connection import Connection
 
 
 import pantalla1_rc
@@ -54,12 +55,15 @@ class Pantalla(object):
             layout.addWidget(elem)
         
 
-    def showNew(self, num:int, caj:int):
+    def showNew(self):
 
-        #actualize the list of widgets
+        #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
         self.refreshBoxList()
 
-        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+        #Check if need to advice
+        self.checkAdvice()
+
+        #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
         childs= self.list_box[0].children()
 
         #Save num and caja labels
@@ -69,10 +73,6 @@ class Pantalla(object):
         #Set the next num text in the labels
         self.databaseNext(num,caja)
 
-        #MP3 Path
-        path='./src/soundplayer.py'
-        subprocess.Popen(['python', path])
-
         #delete actual layout
         self.deleteItemsOfLayout(self.verticalLayout_7)
 
@@ -80,48 +80,77 @@ class Pantalla(object):
         self.createLayout(self.verticalLayout_7)
 
         #Execute color animation on new number
-        self.animationColor(self.list_box[0])
+        self.boxAnimation(self.list_box[0])
+
+    def checkAdvice(self):
+        advice_query= \
+        '''BEGIN TRANSACTION;
+
+        DECLARE @advice_num INT;
+
+        -- Obtener el proximo turno disponible
+        SELECT TOP (1) @advice_num=num FROM advice ORDER BY num        
+        
+        -- Eliminar aviso
+        DELETE  FROM advice_list WHERE num=@proximo_turno
+
+        SELECT @proximo_turno
+
+        COMMIT TRANSACTION;
+        '''
+        query= QSqlQuery(self.db)
+        query.prepare(advice_query) #Query brings on the next advice
+        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
+            query.first()
+            last_num= query.value(0) #Save the num to look
+            if not(query.isNull(0)):
+                self.lookForTheNum(last_num)
+
+    #This method searchs in the boxes for the num to advice
+    def lookForTheNum(self,last_num):
+        for elem in self.list_box:
+            childs= elem.children() #Get childs of QWidget
+            num:QLabel = childs[1] #Get label
+            if num.text == str(last_num):
+                self.boxAnimation(elem)
 
 
-    def databaseNext(self,label_num:QLabel, label_caja:QLabel): #exececute a query of bring on the last num called by BOX and actualize displa
+    def databaseNext(self,label_num0:QLabel, label_caja0:QLabel): #exececute a query of bring on the last num called by BOX and actualize displa
           
-
-        #Create a query to get the next display
-        query= QSqlQuery(self.con)   #SELF.db is the connection QSqlDatabase already created
-
         #Query to get the new num
         data_query= \
         '''BEGIN TRANSACTION;
         DECLARE @proximo_turno INT;
+        DECLARE @caja_llamadora INT;
 
         -- Obtener el proximo turno disponible
 
-        SELECT TOP (1) @proximo_turno=num 
+        SELECT TOP (1) @proximo_turno=num, @caja_llamadora=atiende_caja 
         FROM turnos_actual 
         WHERE (status=2) 
         ORDER BY num        
         
-        SELECT @proximo_turno
+        SELECT @proximo_turno, @caja_llamadora
 
         UPDATE turnos_actual SET status = 3 WHERE num=@proximo_turno
 
         COMMIT TRANSACTION;
         '''
+        #Create a query to get the next display
+        query= QSqlQuery(self.db)   #SELF.db is the connection QSqlDatabase already created
 
         query.prepare(data_query) #Query brings on the next
 
         if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
             query.first()   #Get the first row
-
             if not(query.isNull(0)): #If value is not null
                 next_number = query.value(0)  #Save first value to put in screen
-                self.label_num.setText(next_number) #Put num in label
-                self.label_caja.setText("caja")
-            
-
-
-
-
+                caller_box = query.value(1)
+                label_num0.setText(str(next_number)) #Put num in label
+                label_caja0.setText(str(caller_box)) #put box in label
+                return True
+            return False
+        
     def refreshTime(self):
         #Get the actual time in HH:MM
         time_now=datetime.datetime.now().strftime('%H:%M')
@@ -208,11 +237,17 @@ class Pantalla(object):
 
 
         
-    def animationColor(self, elem:QWidget):
+    def boxAnimation(self, elem:QWidget):
+        
+        #MP3 Path
+        path='./src/soundplayer.py'
+        subprocess.Popen(['python', path])
+
         #Change the color between blue and white
-        elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
         #blue	background-color: rgb(4, 42, 79);color:white;
         #white 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
+        elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
+        
         QTimer.singleShot(1000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
         QTimer.singleShot(2000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
@@ -235,20 +270,6 @@ class Pantalla(object):
 
         QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
-
-
-
-                    
-    '''def playVideo(self):
-        #QMediaPlayer
-        #https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html
-        filename = "src/2.mp3"
-        player = QMediaPlayer()
-        audio_output = QAudioOutput()
-        player.setAudioOutput(audio_output)
-        player.setSource(QUrl.fromLocalFile(filename))
-        audio_output.setVolume(50)
-        player.play()'''
 
     def footerBarAnimation(self):
         print('footer starts')
@@ -691,7 +712,10 @@ class Pantalla(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
-        
+        #DB
+        self.db_handler= Connection()
+        self.db=self.db_handler.createConnection()
+
         #Box list BOX:QWidget[num:QLabel,caja:Qlabel]
         self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
 
@@ -700,24 +724,17 @@ class Pantalla(object):
 
         #Create footer reset timer
         self.timer1 = QTimer() 
-
-        # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
         self.timer1.timeout.connect(lambda: self.footerBarAnimation()) 
         self.timer1.start(10000)
 
-        #Show new
+        #Show new number and advice
         self.timer2 = QTimer()
-        self.timer2.timeout.connect(lambda: self.showNew(1,1))
-
+        self.timer2.timeout.connect(lambda: self.showNew())
         self.timer2.start(4000)
         
-        #QTimer.singleShot(5000, lambda: self.showNew(1,1))
-        #QTimer.singleShot(15000, lambda: self.showNew(1,1))
 
         self.refreshTime()
         self.refreshWeather()
-
-
         self.initializeVideo()
 
     # setupUi

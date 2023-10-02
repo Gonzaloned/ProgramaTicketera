@@ -46,10 +46,7 @@ class Login(object):
 
         #Create te encrypted pass
         encrypted_pass = generate_password_hash(pass1, method='pbkdf2')
-        print(encrypted_pass)
-        
-        print(user.__len__())
-        print(name.__len__())
+
 
         QUERY= f'''BEGIN TRANSACTION
             --REGISTRAR USUARIO

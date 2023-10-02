@@ -6,7 +6,7 @@ from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QSizePolicy, QVBoxLayout,QTableWidget,QTableView,
     QWidget,QMessageBox,QTableWidgetItem)
-from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 import sys
 
 DRIVER='ODBC Driver 17 for SQL Server'
