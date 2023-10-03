@@ -915,7 +915,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="src/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

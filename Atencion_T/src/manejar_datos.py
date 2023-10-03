@@ -33,3 +33,5 @@ def getLastTime():
     with open(os.path.join(os.getcwd(), "src", "data", "last_num.json"), "r", encoding='utf-8') as file:
         last_hour=json.load(file)
         return last_hour['hour']
+    
+

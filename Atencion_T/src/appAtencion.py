@@ -4,7 +4,7 @@ from PySide6.QtWidgets import *
 import sys
 from ui_NewLogin import Login
 from ui_selector import Selector
-
+import os
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

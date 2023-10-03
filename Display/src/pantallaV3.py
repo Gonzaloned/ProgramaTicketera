@@ -13,17 +13,15 @@ import subprocess
 from connection import Connection
 
 
+import resources_rc
 import pantalla1_rc
-import pantalla1_rc
+
 import sys
 
 
 from multiprocessing import Process
 
 import requests
-
-
-
 
 
 class Pantalla(object):
@@ -44,7 +42,6 @@ class Pantalla(object):
         #Last to the first
         ultimo = self.list_box[4]
         for i in range(4,0,-1):
-            print(f'pos for {i}')
             self.list_box[i] = self.list_box[i-1]
         self.list_box[0] = ultimo
 
@@ -57,30 +54,34 @@ class Pantalla(object):
 
     def showNew(self):
 
-        #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
-        self.refreshBoxList()
+        #if exists a call request
+        if self.checkNext():
 
-        #Check if need to advice
-        self.checkAdvice()
+            #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
+            self.refreshBoxList()
 
-        #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
-        childs= self.list_box[0].children()
+            #Check if need to advice
+            self.checkAdvice()
 
-        #Save num and caja labels
-        num:QLabel = childs[1]
-        caja:QLabel = childs[2]
+            #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+            childs= self.list_box[0].children()
 
-        #Set the next num text in the labels
-        self.databaseNext(num,caja)
+            #Save num and caja labels
+            num:QLabel = childs[1]
+            caja:QLabel = childs[2]
 
-        #delete actual layout
-        self.deleteItemsOfLayout(self.verticalLayout_7)
+            #Put info in labels
+            num.setText(f'{self.next_type} {str(self.next_number)}')
+            caja.setText(f'BOX {str(self.caller_box)}')
 
-        #Create ordered layout
-        self.createLayout(self.verticalLayout_7)
+            #delete actual layout
+            self.deleteItemsOfLayout(self.verticalLayout_7)
 
-        #Execute color animation on new number
-        self.boxAnimation(self.list_box[0])
+            #Create ordered layout
+            self.createLayout(self.verticalLayout_7)
+
+            #Execute color animation on the FIRST box
+            self.boxAnimation(self.list_box[0])
 
     def checkAdvice(self):
         advice_query= \
@@ -92,9 +93,9 @@ class Pantalla(object):
         SELECT TOP (1) @advice_num=num FROM advice ORDER BY num        
         
         -- Eliminar aviso
-        DELETE  FROM advice_list WHERE num=@proximo_turno
+        DELETE  FROM advice WHERE num=@advice_num
 
-        SELECT @proximo_turno
+        SELECT @advice_num
 
         COMMIT TRANSACTION;
         '''
@@ -115,22 +116,22 @@ class Pantalla(object):
                 self.boxAnimation(elem)
 
 
-    def databaseNext(self,label_num0:QLabel, label_caja0:QLabel): #exececute a query of bring on the last num called by BOX and actualize displa
+    def checkNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
           
         #Query to get the new num
         data_query= \
         '''BEGIN TRANSACTION;
         DECLARE @proximo_turno INT;
         DECLARE @caja_llamadora INT;
+        DECLARE @proximo_tipo INT;
 
         -- Obtener el proximo turno disponible
-
-        SELECT TOP (1) @proximo_turno=num, @caja_llamadora=atiende_caja 
+        SELECT TOP (1) @proximo_turno=num, @caja_llamadora=atiende_caja, @proximo_tipo=tipo 
         FROM turnos_actual 
         WHERE (status=2) 
         ORDER BY num        
         
-        SELECT @proximo_turno, @caja_llamadora
+        SELECT @proximo_turno, @caja_llamadora, @proximo_tipo
 
         UPDATE turnos_actual SET status = 3 WHERE num=@proximo_turno
 
@@ -138,16 +139,20 @@ class Pantalla(object):
         '''
         #Create a query to get the next display
         query= QSqlQuery(self.db)   #SELF.db is the connection QSqlDatabase already created
-
         query.prepare(data_query) #Query brings on the next
 
         if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
             query.first()   #Get the first row
+
             if not(query.isNull(0)): #If value is not null
-                next_number = query.value(0)  #Save first value to put in screen
-                caller_box = query.value(1)
-                label_num0.setText(str(next_number)) #Put num in label
-                label_caja0.setText(str(caller_box)) #put box in label
+                self.next_number = query.value(0)  #Save first value to put in screen
+                self.caller_box = query.value(1) #Save caller num
+
+                if (query.value(2)== 1): #Save CON TURNO or SIN TURNO
+                    self.next_type = 'ST'
+                else: 
+                    self.next_type = 'CT'   
+
                 return True
             return False
         

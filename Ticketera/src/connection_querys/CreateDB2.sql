@@ -5,8 +5,8 @@ CREATE TABLE Persona(
   pass varchar(max),
 )
 
-CREATE TABLE turnos_dia (
-  dni int primary key,
+CREATE TABLE historial_turnos (
+  dni int,
   hora datetime,
   tipo int,
   atiende_usuario varchar(10),

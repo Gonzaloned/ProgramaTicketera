@@ -9,7 +9,6 @@ from PySide6.QtMultimedia import (QAudioOutput, QMediaFormat,
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from connection import Connection
 import fondos_rc
-import fondos_rc
 import datetime
 
 
@@ -96,16 +95,20 @@ class SettingsWindow(object):
 
 
     def resetTurnos(self):
-        QUERY=f'''INSERT INTO turnos_global(dni,hora,tipo,atiende_usuario) 
-        SELECT a.dni,a.hora,a.tipo,a.atiende_usuario FROM turnos_actual a'''
+        query_reset=f'''
+        BEGIN TRANSACTION;
+        INSERT INTO historial_turnos(dni,hora,tipo,atiende_usuario) 
+        SELECT a.dni,a.hora,a.tipo,a.atiende_usuario FROM turnos_actual a;
+        DELETE FROM turnos_actual;
+        COMMIT TRANSACTION;
+        '''
 
-        query_data= QSqlQuery(self.db) #Creeate a query and link to db
-        query_data.prepare(QUERY) #Set the query
-
-        #Rows=0
-        self.tableWidget.setRowCount(0)
-        if query_data.exec(): #If query executes ok
-            pass
+        query= QSqlQuery(self.db) #Creeate a query and link to db
+        query.prepare(query_reset) #Set the query
+        if (query.exec()):
+            self.popAdvice('Se ha limpiado los turnos \n actuales satisfactoriamente')
+        else:
+            self.popAdvice('Error en la limpieza de turnos')
 
     def popAdvice(self,text):  #Create a window of advice
         self.pop= QMainWindow()
@@ -361,6 +364,7 @@ class SettingsWindow(object):
         #EVENTS
         self.ver_historial.clicked.connect(lambda: self.verHistorial())
         self.video_selector.clicked.connect(lambda: self.selectActualVideo())
+        self.reset_turnos.clicked.connect(lambda: self.resetTurnos())
 
     # setupUi
 
