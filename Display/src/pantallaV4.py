@@ -10,20 +10,15 @@ from PySide6.QtMultimediaWidgets import *
 
 #This import generates a parallel subprocess
 import subprocess
+from connection import Connection
 
-
-import pantalla1_rc
-import pantalla1_rc
+import resources_rc
 import sys
 
 
 from multiprocessing import Process
 
 import requests
-
-
-
-
 
 class Pantalla(object):
 
@@ -43,13 +38,9 @@ class Pantalla(object):
         #Last to the first
         ultimo = self.list_box[4]
         for i in range(4,0,-1):
-            print(f'pos for {i}')
             self.list_box[i] = self.list_box[i-1]
         self.list_box[0] = ultimo
 
-        print('orden2')
-        for elem in self.list_box:
-            print(elem)
 
     def createLayout(self,layout:QVBoxLayout):
         for elem in self.list_box:
@@ -57,113 +48,116 @@ class Pantalla(object):
             layout.addWidget(elem)
         
 
-    def showNew(self, num:int, caj:int):
+    def showNew(self):
 
-        #Add all the boxes to the layout
-        print('orden1')
+        #if exists a call request
+        if self.checkNext():
+
+            #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
+            self.refreshBoxList()
+
+            #Check if need to advice
+            self.checkAdvice()
+
+            #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+            childs= self.list_box[0].children()
+
+            #Save num and caja labels
+            num:QLabel = childs[1]
+            caja:QLabel = childs[2]
+
+            #Put info in labels
+            num.setText(f'{self.next_type} {str(self.next_number)}')
+            caja.setText(f'BOX {str(self.caller_box)}')
+
+            #delete actual layout
+            self.deleteItemsOfLayout(self.verticalLayout_7)
+
+            #Create ordered layout
+            self.createLayout(self.verticalLayout_7)
+
+            #Execute color animation on the FIRST box
+            self.boxAnimation(self.list_box[0])
+
+    def checkAdvice(self):
+        advice_query= \
+        '''BEGIN TRANSACTION;
+
+        DECLARE @advice_num INT;
+
+        -- Obtener el proximo turno disponible
+        SELECT TOP (1) @advice_num=num FROM advice ORDER BY num        
+        
+        -- Eliminar aviso
+        DELETE  FROM advice WHERE num=@advice_num
+
+        SELECT @advice_num
+
+        COMMIT TRANSACTION;
+        '''
+        query= QSqlQuery(self.db)
+        query.prepare(advice_query) #Query brings on the next advice
+        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
+            query.first()
+            last_num= query.value(0) #Save the num to look
+            if not(query.isNull(0)):
+                self.lookForTheNum(last_num)
+
+    #This method searchs in the boxes for the num to advice
+    def lookForTheNum(self,last_num):
         for elem in self.list_box:
-            print(elem)
-
-        #actualize the list of widgets
-        self.refreshBoxList()
-
-        #Get the childs of the Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
-        childs= self.list_box[0].children()
-
-        #Save num and caja labels
-        num:QLabel = childs[1]
-        caja:QLabel = childs[2]
-
-        #Insert text
-        num.setText('gon')
-        caja.setText('DATABASE')
-
-        #MP3 Path
-        path='./soundplayer.py'
-        subprocess.Popen(['python', path])
-
-        #delete actual layout
-        self.deleteItemsOfLayout(self.verticalLayout_7)
-
-        #Create ordered layout
-        self.createLayout(self.verticalLayout_7)
-
-        #Execute color animation on new number
-        self.animationColor(self.list_box[0])
+            childs= elem.children() #Get childs of QWidget
+            num:QLabel = childs[1] #Get label
+            if num.text == str(last_num):
+                self.boxAnimation(elem)
 
 
-    def databaseNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
-        
-        #sound= PySide6.QtMultimedia.QSoundEffect()
-        
-        #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
-        time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')        
-
-        #Create a query to get the next display
-        query= QSqlQuery(self.con)   #SELF.db is the connection QSqlDatabase already created
-        query_proximo=QSqlQuery(self.con)    
-
-
+    def checkNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
+          
         #Query to get the new num
-        data_query1= \
+        data_query= \
         '''BEGIN TRANSACTION;
         DECLARE @proximo_turno INT;
+        DECLARE @caja_llamadora INT;
+        DECLARE @proximo_tipo INT;
 
-        -- Obtener el próximo turno disponible
-
-        SELECT TOP (1) @proximo_turno=num 
+        -- Obtener el proximo turno disponible
+        SELECT TOP (1) @proximo_turno=num, @caja_llamadora=atiende_caja, @proximo_tipo=tipo 
         FROM turnos_actual 
         WHERE (status=2) 
-        ORDER BY hora
-
-        -- Asignar el turno a una persona específica (supongamos que la persona tiene el ID 1)
-                
+        ORDER BY num        
         
+        SELECT @proximo_turno, @caja_llamadora, @proximo_tipo
 
-        SELECT @proximo_turno as num
-                         
+        UPDATE turnos_actual SET status = 3 WHERE num=@proximo_turno
+
         COMMIT TRANSACTION;
         '''
+        #Create a query to get the next display
+        query= QSqlQuery(self.db)   #SELF.db is the connection QSqlDatabase already created
+        query.prepare(data_query) #Query brings on the next
 
-        data_query2= \
-        '''BEGIN TRANSACTION;
-        DECLARE @proximo_turno INT;
-
-        -- Obtener el potencial proximo turno disponible
-
-        SELECT TOP (1) @proximo_turno=num 
-        FROM turnos_actual 
-        WHERE (status=1) 
-        ORDER BY hora        
-        
-        SELECT @proximo_turno as num
-                         
-        COMMIT TRANSACTION;
-        '''
-
-
-        query.prepare(data_query1) #Query brings on the next
-
-        query_proximo.prepare(data_query2) #Query searchs the potential next call
-
-        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)
-
+        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
             query.first()   #Get the first row
-            next=query.value(0)  #The first value
-   
-            self.refreshDisplay(next,'cajaGon',5) #Calls the function refresh display with the values to actualize
 
-            if not(query.isNull(0)) & (query_proximo.exec()): #If query haves a value and query_proximo succeeds
-                query_proximo.first()  #Get the first row
-                proximo=query_proximo.value(0)
-                self.prox.setText(f'PROXIMO NUMERO {proximo}')
+            if not(query.isNull(0)): #If value is not null
+                self.next_number = query.value(0)  #Save first value to put in screen
+                self.caller_box = query.value(1) #Save caller num
 
+                if (query.value(2)== 1): #Save CON TURNO or SIN TURNO
+                    self.next_type = 'ST'
+                else: 
+                    self.next_type = 'CT'   
+
+                return True
+            return False
+        
     def refreshTime(self):
         #Get the actual time in HH:MM
         time_now=datetime.datetime.now().strftime('%H:%M')
 
         #Put the time in the label
-        self.time.setText(time_now)
+        self.time_label.setText(time_now)
 
 
     def refreshWeather(self):
@@ -189,7 +183,7 @@ class Pantalla(object):
         tempC=temp-273.15
 
         #Put temp in label
-        self.temp.setText(f'{str(round(tempC))}C')
+        self.temp_label.setText(f'{str(round(tempC))}C')
 
     def initializeVideo(self):
 
@@ -208,11 +202,17 @@ class Pantalla(object):
         self._player.setAudioOutput(self._audio_output)
 
         #Create layout and add the videoW
-        self.layout_video = QVBoxLayout(self.videoWidget)
+        self.layout_video = QVBoxLayout(self.video_widget)
 
         #Create the widget
         self._video_widget = QVideoWidget()
-
+        videoPolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        videoPolicy.setHorizontalStretch(0)
+        videoPolicy.setVerticalStretch(0)
+        videoPolicy.setHeightForWidth(self._video_widget.sizePolicy().hasHeightForWidth())
+        self._video_widget.setSizePolicy(videoPolicy)
+        self._video_widget.setMinimumSize(QSize(360, 380))
+        self._video_widget.setMaximumSize(QSize(800, 450))
         #Add w to layout
         self.layout_video.addWidget(self._video_widget)
 
@@ -224,7 +224,7 @@ class Pantalla(object):
         self._player.setVideoOutput(self._video_widget)
 
         #Generate the path to the video //GET OF A JSON
-        url = QUrl.fromLocalFile('VideoHospital.mp4')
+        url = QUrl.fromLocalFile('./vid/VideoHospital.mp4')
 
         #Add to playlist
         self._playlist.append(url)
@@ -238,11 +238,17 @@ class Pantalla(object):
 
 
         
-    def animationColor(self, elem:QWidget):
+    def boxAnimation(self, elem:QWidget):
+        
+        #MP3 Path
+        path='./src/soundplayer.py'
+        subprocess.Popen(['python', path])
+
         #Change the color between blue and white
-        elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
         #blue	background-color: rgb(4, 42, 79);color:white;
         #white 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
+        elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}")
+        
         QTimer.singleShot(1000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
         QTimer.singleShot(2000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(4, 42, 79);color:white;border-radius:2px;}"))
@@ -266,20 +272,6 @@ class Pantalla(object):
         QTimer.singleShot(11000, lambda: elem.setStyleSheet(u"QLabel{background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);;border-radius:2px;}"))
 
 
-
-
-                    
-    '''def playVideo(self):
-        #QMediaPlayer
-        #https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html
-        filename = "src/2.mp3"
-        player = QMediaPlayer()
-        audio_output = QAudioOutput()
-        player.setAudioOutput(audio_output)
-        player.setSource(QUrl.fromLocalFile(filename))
-        audio_output.setVolume(50)
-        player.play()'''
-
     def footerBarAnimation(self):
         print('footer starts')
         self.animation = QPropertyAnimation(self.labelDesplazable,b'geometry')
@@ -295,7 +287,6 @@ class Pantalla(object):
 
     def setupUi(self, MainWindow):
 
-        
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(940, 678)
@@ -308,31 +299,25 @@ class Pantalla(object):
 "}\n"
 "\n"
 "#widget{\n"
-"	background-image: url(:/img/src/img/grisSinFondo.jpg);\n"
+"	background-image: url(:/img/img/grisSinFondo.jpg);\n"
 "}\n"
-"\n"
-"\n"
 "\n"
 "#borde_video{\n"
-"	border-image: url(:/img/src/img/fondo_sin.jpg);\n"
-"	border-radius:10px;\n"
+"	border-image: url(:/img/img/fondo_sin.jpg);\n"
+"	border-radius:20px;\n"
 "}\n"
 "\n"
-"#videoWidget{\n"
-"	\n"
-"	border-image: url(:/img/src/img/logo.jpeg);\n"
-"	\n"
+"#video_widget{\n"
+"	border-image: url(:/img/img/logo.jpeg);\n"
 "}\n"
+"\n"
 "#titulo_llamado{\n"
 "	background-color: rgb(4, 42, 79);\n"
 "	color:white;\n"
 "	border-radius:2px;\n"
 "}\n"
 "#borde_turnos{\n"
-"	\n"
-"\n"
 "	border-radius:10px;\n"
-"	\n"
 "}\n"
 "\n"
 "#box_titulo QLabel{\n"
@@ -352,10 +337,10 @@ class Pantalla(object):
 "}\n"
 "\n"
 "#borde_bottom{\n"
-"	background-colo"
-                        "r: rgb(4, 42, 79);\n"
+"	background-color: rgb(4, 42, 79);\n"
 "	color:white;\n"
-"}\n"
+""
+                        "}\n"
 "#borde_bottom QLabel{\n"
 "	background-color: rgb(4, 42, 79);\n"
 "	color:white;\n"
@@ -385,49 +370,6 @@ class Pantalla(object):
         self.verticalLayout_12 = QVBoxLayout(self.top_box)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(40, 30, 600, 10)
-        self.borde_top = QWidget(self.top_box)
-        self.borde_top.setObjectName(u"borde_top")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.borde_top.sizePolicy().hasHeightForWidth())
-        self.borde_top.setSizePolicy(sizePolicy1)
-        self.borde_top.setMinimumSize(QSize(300, 40))
-        self.borde_top.setMaximumSize(QSize(400, 16777215))
-        self.horizontalLayout_10 = QHBoxLayout(self.borde_top)
-        self.horizontalLayout_10.setSpacing(0)
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.horizontalLayout_10.setContentsMargins(10, 0, 10, 0)
-        self.label_3 = QLabel(self.borde_top)
-        self.label_3.setObjectName(u"label_3")
-        font = QFont()
-        font.setPointSize(10)
-        font.setBold(True)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_10.addWidget(self.label_3)
-
-        self.time = QLabel(self.borde_top)
-        self.time.setObjectName(u"time")
-        font1 = QFont()
-        font1.setPointSize(20)
-        font1.setBold(True)
-        self.time.setFont(font1)
-        self.time.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_10.addWidget(self.time)
-
-        self.temp = QLabel(self.borde_top)
-        self.temp.setObjectName(u"temp")
-        self.temp.setFont(font1)
-        self.temp.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_10.addWidget(self.temp)
-
-
-        self.verticalLayout_12.addWidget(self.borde_top)
-
 
         self.verticalLayout_2.addWidget(self.top_box)
 
@@ -442,20 +384,104 @@ class Pantalla(object):
         self.verticalLayout_3 = QVBoxLayout(self.widget_5)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(40, 0, 40, 100)
-        self.borde_video = QWidget(self.widget_5)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 80)
+        self.base_hora = QWidget(self.widget_5)
+        self.base_hora.setObjectName(u"base_hora")
+        self.base_hora.setMinimumSize(QSize(0, 44))
+        self.base_hora.setMaximumSize(QSize(16777215, 44))
+        self.verticalLayout_13 = QVBoxLayout(self.base_hora)
+        self.verticalLayout_13.setSpacing(0)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.verticalLayout_13.setContentsMargins(36, 0, 0, 0)
+        self.borde_top = QWidget(self.base_hora)
+        self.borde_top.setObjectName(u"borde_top")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.borde_top.sizePolicy().hasHeightForWidth())
+        self.borde_top.setSizePolicy(sizePolicy1)
+        self.borde_top.setMinimumSize(QSize(300, 44))
+        self.borde_top.setMaximumSize(QSize(400, 44))
+        self.horizontalLayout_11 = QHBoxLayout(self.borde_top)
+        self.horizontalLayout_11.setSpacing(0)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.widget_2 = QWidget(self.borde_top)
+        self.widget_2.setObjectName(u"widget_2")
+        self.horizontalLayout_12 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.city_label = QLabel(self.widget_2)
+        self.city_label.setObjectName(u"city_label")
+        font = QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        self.city_label.setFont(font)
+        self.city_label.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_12.addWidget(self.city_label)
+
+
+        self.horizontalLayout_11.addWidget(self.widget_2)
+
+        self.widget_3 = QWidget(self.borde_top)
+        self.widget_3.setObjectName(u"widget_3")
+        self.horizontalLayout_13 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.time_label = QLabel(self.widget_3)
+        self.time_label.setObjectName(u"time_label")
+        font1 = QFont()
+        font1.setPointSize(20)
+        font1.setBold(True)
+        self.time_label.setFont(font1)
+        self.time_label.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_13.addWidget(self.time_label)
+
+
+        self.horizontalLayout_11.addWidget(self.widget_3)
+
+        self.widget_4 = QWidget(self.borde_top)
+        self.widget_4.setObjectName(u"widget_4")
+        self.horizontalLayout_14 = QHBoxLayout(self.widget_4)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.temp_label = QLabel(self.widget_4)
+        self.temp_label.setObjectName(u"temp_label")
+        self.temp_label.setFont(font1)
+        self.temp_label.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_14.addWidget(self.temp_label)
+
+
+        self.horizontalLayout_11.addWidget(self.widget_4)
+
+
+        self.verticalLayout_13.addWidget(self.borde_top)
+
+
+        self.verticalLayout_3.addWidget(self.base_hora)
+
+        self.base_fondoVideo = QWidget(self.widget_5)
+        self.base_fondoVideo.setObjectName(u"base_fondoVideo")
+        self.verticalLayout_4 = QVBoxLayout(self.base_fondoVideo)
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(20, 4, 0, 0)
+        self.borde_video = QWidget(self.base_fondoVideo)
         self.borde_video.setObjectName(u"borde_video")
         self.borde_video.setStyleSheet(u"")
-        self.verticalLayout_4 = QVBoxLayout(self.borde_video)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_4.setContentsMargins(15, 25, 15, 25)
+        self.verticalLayout_14 = QVBoxLayout(self.borde_video)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.verticalLayout_14.setContentsMargins(10, 30, 10, 30)
+        self.video_widget = QWidget(self.borde_video)
+        self.video_widget.setObjectName(u"video_widget")
 
-        self.videoWidget = QVideoWidget(self.borde_video)
-        self.videoWidget.setObjectName(u"videoWidget")
-        self.verticalLayout_4.addWidget(self.videoWidget)
+        self.verticalLayout_14.addWidget(self.video_widget)
 
 
-        self.verticalLayout_3.addWidget(self.borde_video)
+        self.verticalLayout_4.addWidget(self.borde_video)
+
+
+        self.verticalLayout_3.addWidget(self.base_fondoVideo)
 
 
         self.horizontalLayout.addWidget(self.widget_5)
@@ -721,7 +747,11 @@ class Pantalla(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
-        
+
+        #DB
+        self.db_handler= Connection()
+        self.db=self.db_handler.createConnection()
+
         #Box list BOX:QWidget[num:QLabel,caja:Qlabel]
         self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
 
@@ -730,46 +760,30 @@ class Pantalla(object):
 
         #Create footer reset timer
         self.timer1 = QTimer() 
-
-        # self.consultarProximos(self.con) Which connects function "ConsultarProximos"
         self.timer1.timeout.connect(lambda: self.footerBarAnimation()) 
         self.timer1.start(10000)
 
-        #Show new
+        #Show new number and advice
         self.timer2 = QTimer()
-        self.timer2.timeout.connect(lambda: self.showNew(1,1))
-
+        self.timer2.timeout.connect(lambda: self.showNew())
         self.timer2.start(4000)
         
-        #QTimer.singleShot(5000, lambda: self.showNew(1,1))
-        #QTimer.singleShot(15000, lambda: self.showNew(1,1))
 
         self.refreshTime()
         self.refreshWeather()
+        self.initializeVideo()
 
-
-        #self.initializeVideo()
 
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Buenos Aires, La Plata", None))
-        self.time.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
-        self.temp.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
+        self.city_label.setText(QCoreApplication.translate("MainWindow", u"Buenos Aires, La Plata", None))
+        self.time_label.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
+        self.temp_label.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
         self.titulo_llamado.setText(QCoreApplication.translate("MainWindow", u"LLAMADO TURNOS", None))
         self.label_num.setText(QCoreApplication.translate("MainWindow", u"NUM", None))
         self.label_caja.setText(QCoreApplication.translate("MainWindow", u"CAJA", None))
-        self.num1.setText(QCoreApplication.translate("MainWindow", u"B3", None))
-        self.caja1.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num2.setText(QCoreApplication.translate("MainWindow", u"B2", None))
-        self.caja2.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num3.setText(QCoreApplication.translate("MainWindow", u"B1", None))
-        self.caja3.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num4.setText(QCoreApplication.translate("MainWindow", u"A2", None))
-        self.caja4.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
-        self.num5.setText(QCoreApplication.translate("MainWindow", u"A1", None))
-        self.caja5.setText(QCoreApplication.translate("MainWindow", u"BOX 1", None))
         self.labelDesplazable.setText(QCoreApplication.translate("MainWindow", u"LABEL DESPLAZABLE", None))
     # retranslateUi
 

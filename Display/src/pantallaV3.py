@@ -228,7 +228,7 @@ class Pantalla(object):
         self._player.setVideoOutput(self._video_widget)
 
         #Generate the path to the video //GET OF A JSON
-        url = QUrl.fromLocalFile('VideoHospital.mp4')
+        url = QUrl.fromLocalFile('./vid/VideoHospital.mp4')
 
         #Add to playlist
         self._playlist.append(url)
