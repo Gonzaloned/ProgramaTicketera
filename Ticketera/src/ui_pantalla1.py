@@ -84,6 +84,13 @@ class Pantalla1(object):
 "	background-color: rgb(255, 255, 255);\n"
 "}\n"
 "\n"
+"#pushButton:pressed{\n"
+"	background-color: rgb(223, 223, 223);\n"
+"	color: rgba(0, 73, 113, 240);\n"
+"  	border-style: solid;\n"
+"    border-width: 4px;\n"
+"	border-color: rgba(0, 73, 113,20);\n"
+"}\n"
 "")
         self.wMain = QWidget(main)
         self.wMain.setObjectName(u"wMain")

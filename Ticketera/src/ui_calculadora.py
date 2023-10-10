@@ -73,7 +73,7 @@ class Calculadora(object):
 "QPushButton:pressed{\n"
 "	background-color: rgb(106, 13, 32);\n"
 "	color: rgba(255, 255, 255,100);\n"
-"	border-color: rgb(148, 75, 77,255);\n"
+"	border-color: rgba(148, 75, 77,255);\n"
 "}\n"
 "\n"
 "#texto{\n"
