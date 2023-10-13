@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="img">
+    <file>img/Sun.png</file>
     <file>img/acceso.png</file>
     <file>img/fondo(rot).jpg</file>
     <file>img/fondo.jpg</file>

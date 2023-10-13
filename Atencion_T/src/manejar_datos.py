@@ -35,3 +35,17 @@ def getLastTime():
         return last_hour['hour']
     
 
+def getVideoPath():
+    with open(os.path.join(os.getcwd(), "src", "data", "server_data.json"), "r", encoding='utf-8') as file:
+        json_file= json.load(file)
+        return f'''{json_file['IP']}\\videosTicketera'''
+
+def getConnectionString():
+    with open(os.path.join(os.getcwd(), "src", "data", "server_data.json"), "r", encoding='utf-8') as file:
+        json_file= json.load(file)
+        conn_str = (
+        r'DRIVER={SQL Server};'
+        r'SERVER=GONZALO\DBGON;'
+        r'DATABASE=turnos;'
+        r'Trusted_Connection=yes;'
+        )
