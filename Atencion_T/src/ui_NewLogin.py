@@ -22,11 +22,6 @@ import manejar_datos
 
 class Login(object):
 
-    #Create a DB    
-    def createCon(self):
-        self.db_handler= Connection() 
-        self.db= self.db_handler.createConnection()        
-
     #Start a main program       
     def startProgram(self):
         vent= QMainWindow()
@@ -60,7 +55,7 @@ class Login(object):
                 print('user lenght is ok')
                 if(name.__len__() >= 4) and (name.__len__() < 30): #if name< 30 char
                     print('name lenght is ok')
-                    if(self.db_handler.executeQuery(QUERY)): #Create the user
+                    if(self.db.queryExecution(QUERY)): #Create the user
                         self.popAdvice(f'Se ha creado correctamente el usuario {user}\n para {name}')
                     else:
                         self.popAdvice(f'Ha ocurrido un error en la creacion del usuario')
@@ -80,10 +75,10 @@ class Login(object):
 
         QUERY=f"SELECT usuario,pass FROM Persona WHERE usuario=\'{username}\'"
 
-        query_data= QSqlQuery(self.db) #Creeate a query and link to db
-        query_data.prepare(QUERY) #Set the query
 
-        if query_data.exec(): #If query executes ok
+
+        if self.db.queryExecution(QUERY): #If query executes ok
+            query_data:QSqlQuery= self.db.getQuery()
             if query_data.first(): #if user exists
 
                 #If user in query equals and Check pass ok => checkpw(TEXT, ENCRIPTED PASS)
@@ -590,7 +585,8 @@ class Login(object):
         #Set the Window icon
         self.window.setWindowIcon(QIcon(scriptDir + os.path.sep + 'logoBlack.png'))
         
-        self.createCon()
+        #Create the db handler
+        self.db = Connection()
 
         #BUTTONS CONF
         self.stack.setCurrentWidget(self.pag_login)

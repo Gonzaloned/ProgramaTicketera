@@ -18,9 +18,6 @@ class Selector(object):
 ###         FUNCTIONS CALLED BY THE BUTTONS
 ###########################################################################################
 
-    def createCon(self):
-        self.db_handler= Connection() 
-        self.db= self.db_handler.createConnection() 
 
     #This method sends to db a indicator of recall last num
     def callLastNumAgain(self):
@@ -35,9 +32,7 @@ class Selector(object):
         INSERT INTO advice(num, hora) VALUES('{last_num}','{last_time}');
         COMMIT TRANSACTION; 
         '''
-        query= QSqlQuery(self.db) #Create a query and link to db
-        query.prepare(notify_query) #Set the query
-        query.exec() #Exec the query
+        self.db.queryExecution(notify_query) #Executes the query
 
     #Calls next shift
     def llamarProximo(self, tipo:int):
@@ -70,16 +65,15 @@ class Selector(object):
 
         COMMIT TRANSACTION;
         '''
-
-        query= QSqlQuery(self.db) #Creeate a query and link to db
-        query.prepare(transaction) #Set the query
-        query.exec() #Exec the query
-        query.first() #Pos 0
+        #Execute the transaction
+        self.db.queryExecution(transaction)
 
         #this final method code
         #writes the json file last_num and save the info just in case to need a notification
 
-        #Save last num called by the query
+        #Get the first value of a result query
+        query:QSqlQuery= self.db.getQuery()
+        query.first()
         last_num = query.value(0) 
 
         # 1. Read last turn file
@@ -123,9 +117,6 @@ class Selector(object):
 
 
     def setupUi(self, MainWindow):
-
-        self.createCon()
-
         self.ventana=MainWindow
 
         if not MainWindow.objectName():
@@ -277,9 +268,11 @@ class Selector(object):
         QMetaObject.connectSlotsByName(MainWindow)
 
         #INITIAL WINDOW CONFIG
+        self.db= Connection() #Create the db object
+
         self.ventana.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
         self.ventana.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
-        self.location_on_the_screen()
+        self.location_on_the_screen() #position of the panel
 
         ##EVENTS
         self.llamar.clicked.connect(lambda: self.callLastNumAgain())
@@ -299,7 +292,6 @@ class Selector(object):
     # retranslateUi
 
 if __name__ == "__main__":
-    dataBase=''
     app = QApplication(sys.argv)
     vent=QMainWindow()
     login= Selector() #Creo la ventana login

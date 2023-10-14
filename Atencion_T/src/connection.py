@@ -17,7 +17,6 @@ PASSWORD = '123456'
 
 class Connection():
     def __init__(self):
-        print('entre a db')
         #Set the new database driver (in this case QODBC)
         self.con = QSqlDatabase().addDatabase('QODBC')
         
@@ -34,7 +33,6 @@ class Connection():
         #Set the db Server DRIVER,SERVER,DATABASE
         self.con.setDatabaseName(conn_str)
 
-        print('starting connection')
         #Check connection
         if self.con.open():
             print(' Succesfull connection')
@@ -45,18 +43,23 @@ class Connection():
         return self.con
 
 
-    def executeQuery(self,query):
+    def queryExecution(self,query):
         print('processing query')
 
-        #new query object  QSqlQuery(database objetive dbObject)
-        qry= QSqlQuery(self.con)
+        #If con not open, recreate
+        if not(self.con.isOpen()):
+             self.createConnection()
+
+        #new query object  QSqlQuery(database target)
+        self.qry= QSqlQuery(self.con)
 
         #Prepare the query to execute
-        qry.prepare(query)
-        if (qry.exec()):
+        self.qry.prepare(query)
+        if (self.qry.exec()):
             print('Query realizada exitosamente')
             return True
         else:
             return False
 
-
+    def getQuery(self):
+        return self.qry

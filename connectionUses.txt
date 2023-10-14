@@ -1,10 +1,10 @@
-Login -> EXECUTE  POP 
-Register -> EXECUTE  POP 
+Login -> EXECUTE  POP  C
+Register -> EXECUTE  POP  C
 Set video -> Pick SERVER PATH -> EXECUTE POP
 Call next -> EXECUTE
 Notify -> EXECUTE
 
-reset -> EXECUTE
-ver historial -> GET QUERY
-
+reset -> EXECUTE C
+ver historial -> GET QUERY C
+ 
 Execute query-> T F , Get query -> Query

@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 from PySide6.QtCore import *
 from PySide6.QtGui import *
@@ -10,7 +11,7 @@ from PySide6.QtMultimediaWidgets import QVideoWidget
 from connection import Connection
 import fondos_rc
 import datetime
-
+import manejar_datos
 
 from ui_popWarning import PopWarning
 
@@ -30,12 +31,13 @@ class SettingsWindow(object):
         QUERY=f'''SELECT [dni],[hora],[tipo],[atiende_usuario]\n
                 FROM [turnos].[dbo].[turnos_actual]'''
 
-        query_data= QSqlQuery(self.db) #Creeate a query and link to db
-        query_data.prepare(QUERY) #Set the query
 
         #Rows=0
         self.tableWidget.setRowCount(0)
-        if query_data.exec(): #If query executes ok
+        if self.db.queryExecution(QUERY): #If query executes ok
+
+            #Get the query
+            query_data:QSqlQuery= self.db.getQuery()   
 
             #The nums width is 15px
             self.tableWidget.setColumnWidth(1,85) #Set [col dni],width
@@ -87,12 +89,21 @@ class SettingsWindow(object):
         file_dialog.setDirectory(movies_location)
         if file_dialog.exec() == QDialog.Accepted:
             url = file_dialog.selectedUrls()[0]
-            print(url.path())
-            #self._playlist.append(url)
-            #self._playlist_index = len(self._playlist) - 1
-            #self._player.setSource(url)
-            #self._player.play()
+            print(url.path())            
+      
 
+
+        # Ruta de tu archivo .video en el escritorio
+        path_video = url.path()
+        
+        final_path= path_video[1:]
+
+        print(final_path)
+        # Ruta de la carpeta compartida en la dirección IP 
+        carpeta_compartida = manejar_datos.getVideoPath()
+
+        # Copiar el archivo .mp4 a la carpeta compartida
+        shutil.copy(final_path.replace(r'/','\\'), carpeta_compartida)
 
     def resetTurnos(self):
         query_reset=f'''
@@ -103,9 +114,7 @@ class SettingsWindow(object):
         COMMIT TRANSACTION;
         '''
 
-        query= QSqlQuery(self.db) #Creeate a query and link to db
-        query.prepare(query_reset) #Set the query
-        if (query.exec()):
+        if (self.db.queryExecution(query_reset)):
             self.popAdvice('Se ha limpiado los turnos \n actuales satisfactoriamente')
         else:
             self.popAdvice('Error en la limpieza de turnos')
@@ -346,6 +355,9 @@ class SettingsWindow(object):
         QMetaObject.connectSlotsByName(MainWindow)
 
         #INITIAL WINDOW CONFIG
+
+        #Create DB
+        self.db = Connection()
         #Set title
         self.window.setWindowTitle('Menu opciones') #Win title
         
@@ -392,3 +404,11 @@ class SettingsWindow(object):
         self.labelInfo.setText(QCoreApplication.translate("MainWindow", u"INFO", None))
     # retranslateUi
 
+if __name__ == "__main__":
+    db=''
+    app = QApplication(sys.argv)
+    vent=QMainWindow()
+    login= SettingsWindow() #Creo la ventana login
+    login.setupUi(vent,db) #Paso la ventana para configuraciones
+    vent.show() #Show
+    sys.exit(app.exec())
