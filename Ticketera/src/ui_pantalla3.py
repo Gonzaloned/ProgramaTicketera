@@ -7,16 +7,14 @@ from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import pantalla1_rc
 from ui_pop import Pop
+import logger_config
+import logging
 
 #Subprocess to run node printer file
 import subprocess
 
 class Pantalla3(object):
-
-    #Create a DB    
-    def createCon(self):
-        self.db_handler= Connection() 
-        self.db:QSqlDatabase= self.db_handler.createConnection()        
+ 
 
     def animateOn(self, win: QMainWindow):
         self.eff = QGraphicsOpacityEffect(win)
@@ -30,7 +28,6 @@ class Pantalla3(object):
         self.anim.start()
 
     def solicitarAtencion(self,tipo):
-
 
         #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
         time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
@@ -46,73 +43,67 @@ class Pantalla3(object):
         COMMIT TRANSACTION;
         '''
 
-        #new query object  QSqlQuery(database objetive dbObject)
-        query_data= QSqlQuery(self.db)
+        #Execute the query
+        if (self.db.queryExecution(QUERY)):
+            #Get the executed query
+            query_data= self.db.getQuery()       
+            if(query_data.first()):
 
-        #Prepare the query to execute
-        query_data.prepare(QUERY)
-        query_data.exec()
-        #execute the query
-        if(query_data.first()):
+                #Save the added num to print the ticket
+                numero_agregado:float=query_data.value(0)
 
-            #Save the added num to print the ticket
-            numero_agregado:float=query_data.value(0)
+                    # Ejecuta el script de Node.js desde Python
+                printer_file= r'C:\Users\gon\Desktop\Proyecto Ticketera\Ticketera\src\ticketera.js'
 
-            print('Query realizada exitosamente')
-                # Ejecuta el script de Node.js desde Python
-            printer_file= r'C:\Users\gon\Desktop\Proyecto Ticketera\Ticketera\src\ticketera.js'
+                #Parameters list to call NodePrinter
+                param_list=[]
+                
+                #Add num to Ticket params
+                param_list.append(str(round(numero_agregado)))
 
-            #Parameters list to call NodePrinter
-            param_list=[]
+                try:
+                    subprocess.Popen(['node', printer_file, *param_list], creationflags=subprocess.CREATE_NO_WINDOW)
+                    print("Script de Node.js ejecutado con éxito desde Python.")
+                except subprocess.CalledProcessError as e:
+                    logging.error(e)
+                    print("Error al ejecutar el script de Node.js:", e)
+                except FileNotFoundError:
+                    logging.error("File not found")
+                    print("File not found")
+            else:
+                logging.error("the num has not been loaded")
+                print('hubo error')
+                
+
+            #Abro nueva ventana
+            self.pop_window = QMainWindow()
             
-            #Add num to Ticket params
-            param_list.append(str(round(numero_agregado)))
+            #Creo template y seteo el estilo en ventana
+            self.pop = Pop()
+            self.pop.setupUi(self.pop_window)
 
-            try:
-                subprocess.run(['node', printer_file, *param_list], check=True)
-                print("Script de Node.js ejecutado con éxito desde Python.")
-            except subprocess.CalledProcessError as e:
-                print("Error al ejecutar el script de Node.js:", e)
-            except FileNotFoundError:
-                print("File not found")
-        else:
-            print('hubo error')
-            #If executequery fails, regen a connection
-            #self.db= Connection()
-            
-            #Try again query
-            #self.solicitarAtencion(tipo)
+            #No frame, no background, show
+            self.pop_window.setWindowFlags(Qt.FramelessWindowHint)
+            self.pop_window.setAttribute(Qt.WA_TranslucentBackground)
 
-        #Abro nueva ventana
-        self.pop_window = QMainWindow()
-        
-        #Creo template y seteo el estilo en ventana
-        self.pop = Pop()
-        self.pop.setupUi(self.pop_window)
+            #Set the pop window main and the others -NO clickeable- until the pop closes
+            self.pop_window.setWindowModality(Qt.ApplicationModal)
 
-        #No frame, no background, show
-        self.pop_window.setWindowFlags(Qt.FramelessWindowHint)
-        self.pop_window.setAttribute(Qt.WA_TranslucentBackground)
+            #Show pop with the opening animation
+            self.pop_window.show()
+            self.animateOn(self.pop_window)
 
-        #Set the pop window main and the others -NO clickeable- until the pop closes
-        self.pop_window.setWindowModality(Qt.ApplicationModal)
-
-        #Show pop with the opening animation
-        self.pop_window.show()
-        self.animateOn(self.pop_window)
-
-        QTimer.singleShot(7000, lambda: self.closeAll())
-
+            QTimer.singleShot(7000, lambda: self.closeAll())
 
     def closeAll(self):
         self.window3.close()
         self.pop_window.close()
     
-
-    def setupUi(self, base, dni, window3:QMainWindow):
-
+        
+    def setupUi(self, base:QMainWindow, dni, database:Connection):
+        self.db= database
         self.dni = dni
-        self.window3= window3
+        self.window3= base
         if not base.objectName():
             base.setObjectName(u"base")
         base.resize(1433, 817)
@@ -230,8 +221,6 @@ class Pantalla3(object):
         self.retranslateUi(base)
 
         QMetaObject.connectSlotsByName(base)
-
-        self.createCon()
 
         #Defining events
         self.btn1.clicked.connect(lambda: self.solicitarAtencion(1))

@@ -32,3 +32,5 @@ if __name__ == '__main__':
     
     #Cerrar
     sys.exit(app.exec())
+
+

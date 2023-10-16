@@ -1,8 +1,8 @@
 Login -> EXECUTE  POP  C
 Register -> EXECUTE  POP  C
-Set video -> Pick SERVER PATH -> EXECUTE POP
-Call next -> EXECUTE
-Notify -> EXECUTE
+Set video -> Pick SERVER PATH -> EXECUTE POP C
+Call next -> EXECUTE C 
+Notify -> EXECUTE C
 
 reset -> EXECUTE C
 ver historial -> GET QUERY C

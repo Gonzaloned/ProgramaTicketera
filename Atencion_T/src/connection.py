@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QWidget,QMessageBox,QTableWidgetItem)
 from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 import sys
-
+import manejar_datos
 DRIVER='ODBC Driver 17 for SQL Server'
 SERVER_NAME = 'GONZALO\DBGON'
 DATABASE_NAME = 'turnos'
@@ -23,16 +23,10 @@ class Connection():
 
     def createConnection(self):
         #Setting attributes string to start connection
-        conn_str = (
-        r'DRIVER={SQL Server};'
-        r'SERVER=GONZALO\DBGON;'
-        r'DATABASE=turnos;'
-        r'Trusted_Connection=yes;'
-        )
-
+        connection_string=manejar_datos.getConnectionString()
         #Set the db Server DRIVER,SERVER,DATABASE
-        self.con.setDatabaseName(conn_str)
-
+        self.con.setDatabaseName(connection_string)
+        print('Created a connection')
         #Check connection
         if self.con.open():
             print(' Succesfull connection')
@@ -44,7 +38,6 @@ class Connection():
 
 
     def queryExecution(self,query):
-        print('processing query')
 
         #If con not open, recreate
         if not(self.con.isOpen()):

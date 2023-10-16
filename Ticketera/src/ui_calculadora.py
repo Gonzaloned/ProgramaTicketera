@@ -30,7 +30,7 @@ class Calculadora(object):
         self.ui_screen3 = Pantalla3()
 
         #Create win3 sending the dni and the new MainWindow object
-        self.ui_screen3.setupUi(self.window3,self.dni, self.window3)
+        self.ui_screen3.setupUi(self.window3,self.dni, self.db)
 
         #Create a new Graphic effect in window 3
         self.eff = QGraphicsOpacityEffect(self.window3)
@@ -47,7 +47,8 @@ class Calculadora(object):
         self.animateOn()
         
 
-    def setupUi(self, main):
+    def setupUi(self, main, database):
+        self.db = database
         if not main.objectName():
             main.setObjectName(u"main")
         main.resize(915, 798)

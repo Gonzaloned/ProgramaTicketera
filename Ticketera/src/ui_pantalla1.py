@@ -6,6 +6,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import *
+from connection import Connection
 import pantalla1_rc
 
 from ui_calculadora import Calculadora
@@ -49,7 +50,7 @@ class Pantalla1(object):
     def mostrar2(self):
         self.calc= Calculadora()
         self.calc_Win= QMainWindow()
-        self.calc.setupUi(self.calc_Win)
+        self.calc.setupUi(self.calc_Win, self.db)
         self.calc_Win.setWindowFlags(Qt.FramelessWindowHint)
         self.calc_Win.setAttribute(Qt.WA_TranslucentBackground)
         self.calc_Win.show()
@@ -208,6 +209,7 @@ class Pantalla1(object):
 
         QMetaObject.connectSlotsByName(main)
 
+        self.db= Connection()
     # setupUi
 
     def retranslateUi(self, main):
