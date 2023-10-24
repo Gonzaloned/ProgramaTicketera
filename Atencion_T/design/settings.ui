@@ -203,13 +203,13 @@ color: white;
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>:/iconosWhite/iconsAtencion/bell-2-32.png</normaloff>:/iconosWhite/iconsAtencion/bell-2-32.png</iconset>
+                   <iconset resource="../src/fondos.qrc">
+                    <normaloff>:/iconosWhite/img/iconsAtencion/play-3-32.png</normaloff>:/iconosWhite/img/iconsAtencion/play-3-32.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>26</width>
-                    <height>26</height>
+                    <width>40</width>
+                    <height>40</height>
                    </size>
                   </property>
                  </widget>
@@ -282,13 +282,13 @@ color: white;
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>:/iconosWhite/iconsAtencion/check-mark-7-32.png</normaloff>:/iconosWhite/iconsAtencion/check-mark-7-32.png</iconset>
+                   <iconset resource="../src/fondos.qrc">
+                    <normaloff>:/iconosWhite/img/iconsAtencion/undo-5-32.png</normaloff>:/iconosWhite/img/iconsAtencion/undo-5-32.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>26</width>
-                    <height>26</height>
+                    <width>32</width>
+                    <height>32</height>
                    </size>
                   </property>
                  </widget>
@@ -361,8 +361,8 @@ TURNOS</string>
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>:/iconosWhite/iconsAtencion/letter-t-24.png</normaloff>:/iconosWhite/iconsAtencion/letter-t-24.png</iconset>
+                   <iconset resource="../src/fondos.qrc">
+                    <normaloff>:/iconosWhite/img/iconsAtencion/search-2-32.png</normaloff>:/iconosWhite/img/iconsAtencion/search-2-32.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -434,8 +434,8 @@ TURNOS</string>
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>:/iconosWhite/iconsAtencion/info-2-32.ico</normaloff>:/iconosWhite/iconsAtencion/info-2-32.ico</iconset>
+                   <iconset resource="../src/fondos.qrc">
+                    <normaloff>:/iconosWhite/img/iconsAtencion/info-32.png</normaloff>:/iconosWhite/img/iconsAtencion/info-32.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -477,7 +477,6 @@ TURNOS</string>
   </widget>
  </widget>
  <resources>
-  <include location="../src/fondos.qrc"/>
   <include location="../src/fondos.qrc"/>
  </resources>
  <connections/>
