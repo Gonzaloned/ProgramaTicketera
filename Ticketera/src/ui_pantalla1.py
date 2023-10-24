@@ -1,10 +1,7 @@
 
-from typing import Optional
+
 from PySide6.QtCore import *
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from connection import Connection
 import pantalla1_rc
@@ -53,6 +50,7 @@ class Pantalla1(object):
         self.calc.setupUi(self.calc_Win, self.db)
         self.calc_Win.setWindowFlags(Qt.FramelessWindowHint)
         self.calc_Win.setAttribute(Qt.WA_TranslucentBackground)
+        self.calc_Win.setWindowModality(Qt.ApplicationModal)
         self.calc_Win.show()
         self.animateOn(self.calc_Win)
 

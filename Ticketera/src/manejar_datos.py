@@ -49,7 +49,7 @@ def getConnectionString():
         r'DATABASE=turnos;'
         r'Trusted_Connection=yes;'
         )
-        if (json_file['TRUSTED_CONNECTION']=='yes'):
+        if (json_file['TRUSTED_CONNECTION']=='YES'):
             connection_string = (f"DRIVER={json_file['DRIVER']};"
                                 f"SERVER={json_file['SERVER']};"
                                 f"DATABASE={json_file['DATABASE']};"
@@ -57,8 +57,9 @@ def getConnectionString():
 
         else:
             connection_string = (f"DRIVER={json_file['DRIVER']};"
-                                f"SERVER={json_file['SERVER']};"
+                                f"SERVER={json_file['IP']}\\{json_file['SERVER']};"
                                 f"DATABASE={json_file['DATABASE']};"
-                                f"USERNAME={json_file['USERNAME']};"
-                                f"PASSWORD={json_file['PASSWORD']};")
+                                f"UID={json_file['USERNAME']};"
+                                f"PWD={json_file['PASSWORD']};"
+                                f"PORT={json_file['PORT']};")
         return connection_string

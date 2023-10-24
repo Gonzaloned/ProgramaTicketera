@@ -25,6 +25,17 @@ class Calculadora(object):
             self.dni = ""
             self.texto.setText(self.dni)
 
+    def centrarVentana(self):
+            # Obtiene el tamaño de la pantalla
+        screen = QGuiApplication.primaryScreen().availableGeometry()
+
+        # Calcula las coordenadas para centrar la calc
+        x = (screen.width() - self.calc.width()) // 2
+        y = (screen.height() - self.calc.height()) // 2
+
+        # Mueve la calc a las coordenadas centradas
+        self.calc.move(x, y)
+
     def checkDNI(self):
         self.window3= QMainWindow()
         self.ui_screen3 = Pantalla3()
@@ -40,14 +51,17 @@ class Calculadora(object):
         self.window3.setGraphicsEffect(self.eff)
 
         #Create a timer to close calc
-        QTimer.singleShot(2000, lambda: self.calc.close())
+        QTimer.singleShot(1000, lambda: self.calc.close())
 
         #Display fs w3 and start animation
         self.window3.showFullScreen()
+        self.window3.setWindowModality(Qt.ApplicationModal)
+        self.window3.raise_()
         self.animateOn()
         
 
-    def setupUi(self, main, database):
+    def setupUi(self, main:QMainWindow, database):
+        self.calc= main
         self.db = database
         if not main.objectName():
             main.setObjectName(u"main")
@@ -360,6 +374,7 @@ class Calculadora(object):
         #Vars
         #Save this wind
         self.calc= main
+        self.centrarVentana()
 
         #Create DNI label
         self.dni=''
