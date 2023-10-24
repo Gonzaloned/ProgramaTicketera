@@ -111,6 +111,7 @@ class SettingsWindow(object):
         INSERT INTO historial_turnos(dni,hora,tipo,atiende_usuario) 
         SELECT a.dni,a.hora,a.tipo,a.atiende_usuario FROM turnos_actual a;
         DELETE FROM turnos_actual;
+        DBCC CHECKIDENT('turnos_actual', RESEED, 0);
         COMMIT TRANSACTION;
         '''
 

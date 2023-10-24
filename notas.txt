@@ -1,0 +1,6 @@
+{"IP":"192.168.56.1", "DRIVER":"{SQL Server}", "SERVER":"10.10.93.222\\SQLEXPRESS", "DATABASE":"turnos","USERNAME":"ticketera", "PASSWORD":"123456","PORT":"1433","TRUSTED_CONNECTION":"no"}
+
+Impresora compartida como "printer"
+
+Manejar datos, logica, 
+cambiar path impresion en js
