@@ -1,5 +1,0 @@
-2023-10-16 10:03:47,792 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot open database "turno" requested by the login. The login failed. [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
-2023-10-16 10:04:09,900 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot open database "turno" requested by the login. The login failed. [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
-2023-10-16 10:09:55,641 - root - ERROR - Incorrect con in query, retry
-2023-10-16 10:09:55,682 - root - INFO - Correct connection
-2023-10-16 10:11:45,796 - root - INFO - Correct connection

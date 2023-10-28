@@ -66,8 +66,4 @@ class Connection():
             return False
 
     def getQuery(self):
-        if not self.qry.isNull:
-            return self.qry
-        else:
-            logging.info("query is null")
-            return self.qry
+        return self.qry

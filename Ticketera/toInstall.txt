@@ -1,0 +1,6 @@
+Driver Printer and share as "printer"
+node js
+node thermal printer
+put the exe in C:/Ticketera
+paste src/ticketera.js 
+paste src/data/server_data.json

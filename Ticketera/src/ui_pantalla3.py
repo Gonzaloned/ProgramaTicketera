@@ -53,7 +53,7 @@ class Pantalla3(object):
                 numero_agregado:float=query_data.value(0)
 
                     # Ejecuta el script de Node.js desde Python
-                printer_file= r'C:\Users\gon\Desktop\Proyecto Ticketera\Ticketera\src\ticketera.js'
+                printer_file= r'.\ticketera.js'
 
                 #Parameters list to call NodePrinter
                 param_list=[]
