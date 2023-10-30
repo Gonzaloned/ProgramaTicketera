@@ -1,0 +1,3 @@
+En server crear carpeta compartir la carpeta C:Ticketera
+Crear subdirectorio \Videos
+Compartir ticketera como "printer"

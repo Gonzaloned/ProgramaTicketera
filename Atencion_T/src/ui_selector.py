@@ -29,6 +29,7 @@ class Selector(object):
         #Insert the last num info in the db
         notify_query=f'''
         BEGIN TRANSACTION;
+        DELETE FROM advice;
         INSERT INTO advice(num, hora) VALUES('{last_num}','{last_time}');
         COMMIT TRANSACTION; 
         '''

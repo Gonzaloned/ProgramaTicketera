@@ -12,8 +12,10 @@ from connection import Connection
 import fondos_rc
 import datetime
 import manejar_datos
-
+import logger_config
+import logging
 from ui_popWarning import PopWarning
+from ui_publicity import Publicity
 
 AVI = "video/x-msvideo"  # AVI
 MP4 = 'video/mp4'
@@ -26,6 +28,15 @@ def get_supported_mime_types():
     return result
 
 class SettingsWindow(object): 
+
+    def showPublicity(self):
+        self.ui_pub= Publicity()
+        self.pop_publicity= QMainWindow()
+        self.ui_pub.setupUi(self.pop_publicity) #Paso la ventana para configuraciones
+        self.pop_publicity.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
+        self.pop_publicity.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
+        self.pop_publicity.show() #Show
+        QTimer.singleShot(3000, lambda: self.pop_publicity.close())
 
     def verHistorial(self):
         QUERY=f'''SELECT [dni],[hora],[tipo],[atiende_usuario]\n
@@ -66,6 +77,12 @@ class SettingsWindow(object):
         else:
             self.popAdvice('Error en la conexion\n con la base de datos') #User error, show advice
 
+        header = self.tableWidget.horizontalHeader()       
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+
     def selectActualVideo(self):
 
         file_dialog = QFileDialog()
@@ -89,13 +106,14 @@ class SettingsWindow(object):
         file_dialog.setDirectory(movies_location)
         if file_dialog.exec() == QDialog.Accepted:
             url = file_dialog.selectedUrls()[0]
-            print(url.path())            
+                  
       
 
 
         # Ruta de tu archivo .video en el escritorio
         path_video = url.path()
         
+        # Saco la primera barra
         final_path= path_video[1:]
 
         print(final_path)
@@ -105,13 +123,14 @@ class SettingsWindow(object):
         # Copiar el archivo .mp4 a la carpeta compartida
         shutil.copy(final_path.replace(r'/','\\'), carpeta_compartida)
 
+        logging.info(f'Copied the video from{final_path} to {carpeta_compartida} ')
+        
     def resetTurnos(self):
         query_reset=f'''
         BEGIN TRANSACTION;
         INSERT INTO historial_turnos(dni,hora,tipo,atiende_usuario) 
         SELECT a.dni,a.hora,a.tipo,a.atiende_usuario FROM turnos_actual a;
         DELETE FROM turnos_actual;
-        DBCC CHECKIDENT('turnos_actual', RESEED, 0);
         COMMIT TRANSACTION;
         '''
 
@@ -233,9 +252,9 @@ class SettingsWindow(object):
         self.video_selector.setMinimumSize(QSize(60, 60))
         self.video_selector.setMaximumSize(QSize(60, 60))
         icon = QIcon()
-        icon.addFile(u":/iconosWhite/iconsAtencion/bell-2-32.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/iconosWhite/img/iconsAtencion/play-3-32.png", QSize(), QIcon.Normal, QIcon.Off)
         self.video_selector.setIcon(icon)
-        self.video_selector.setIconSize(QSize(26, 26))
+        self.video_selector.setIconSize(QSize(40, 40))
 
         self.verticalLayout_4.addWidget(self.video_selector, 0, Qt.AlignHCenter)
 
@@ -266,9 +285,9 @@ class SettingsWindow(object):
         self.reset_turnos.setMinimumSize(QSize(60, 60))
         self.reset_turnos.setMaximumSize(QSize(60, 60))
         icon1 = QIcon()
-        icon1.addFile(u":/iconosWhite/iconsAtencion/check-mark-7-32.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/iconosWhite/img/iconsAtencion/undo-5-32.png", QSize(), QIcon.Normal, QIcon.Off)
         self.reset_turnos.setIcon(icon1)
-        self.reset_turnos.setIconSize(QSize(26, 26))
+        self.reset_turnos.setIconSize(QSize(32, 32))
 
         self.verticalLayout_5.addWidget(self.reset_turnos, 0, Qt.AlignHCenter)
 
@@ -296,7 +315,7 @@ class SettingsWindow(object):
         self.ver_historial.setMinimumSize(QSize(60, 60))
         self.ver_historial.setMaximumSize(QSize(60, 60))
         icon2 = QIcon()
-        icon2.addFile(u":/iconosWhite/iconsAtencion/letter-t-24.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/iconosWhite/img/iconsAtencion/search-2-32.png", QSize(), QIcon.Normal, QIcon.Off)
         self.ver_historial.setIcon(icon2)
         self.ver_historial.setIconSize(QSize(32, 32))
 
@@ -324,7 +343,7 @@ class SettingsWindow(object):
         self.info.setMinimumSize(QSize(60, 60))
         self.info.setMaximumSize(QSize(60, 60))
         icon3 = QIcon()
-        icon3.addFile(u":/iconosWhite/iconsAtencion/info-2-32.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon3.addFile(u":/iconosWhite/img/iconsAtencion/info-32.png", QSize(), QIcon.Normal, QIcon.Off)
         self.info.setIcon(icon3)
         self.info.setIconSize(QSize(32, 32))
 
@@ -354,7 +373,6 @@ class SettingsWindow(object):
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
-
         #INITIAL WINDOW CONFIG
 
         #Create DB
@@ -378,6 +396,7 @@ class SettingsWindow(object):
         self.ver_historial.clicked.connect(lambda: self.verHistorial())
         self.video_selector.clicked.connect(lambda: self.selectActualVideo())
         self.reset_turnos.clicked.connect(lambda: self.resetTurnos())
+        self.info.clicked.connect(lambda:self.showPublicity())
 
     # setupUi
 

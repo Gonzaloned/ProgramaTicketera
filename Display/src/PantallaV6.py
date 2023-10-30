@@ -258,7 +258,7 @@ class Pantalla(object):
     def boxAnimation(self, elem:QWidget):
         
         #MP3 Path
-        path='./src/soundplayer.py'
+        path='./soundplayer.py'
         subprocess.Popen(['python', path])
 
         #Change the color between blue and white
