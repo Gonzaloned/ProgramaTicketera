@@ -21,6 +21,12 @@ from multiprocessing import Process
 import requests
 
 class Pantalla(object):
+    def resetAdvice(self):
+        QUERY='''BEGIN TRANSACTION;
+        -- Eliminar aviso
+        DELETE  FROM advice
+        COMMIT TRANSACTION;'''
+        self.db_handler.queryExecution(QUERY)
 
     def adjustWindow(self,ventana:QMainWindow):    
         screen = QGuiApplication.primaryScreen().availableGeometry()
@@ -34,6 +40,7 @@ class Pantalla(object):
 
         #print(f' X: {x} Y: {y}')
         ventana.move(0, screen.height())
+
     #f to delete layout widget
     def deleteItemsOfLayout(self,layout:QVBoxLayout):
         if layout is not None:
@@ -62,14 +69,14 @@ class Pantalla(object):
 
     def showNew(self):
 
+        #Check if need to advice
+        self.checkAdvice()
+
         #if exists a call request
         if self.checkNext():
 
             #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
             self.refreshBoxList()
-
-            #Check if need to advice
-            self.checkAdvice()
 
             #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
             childs= self.list_box[0].children()
@@ -107,11 +114,13 @@ class Pantalla(object):
 
         COMMIT TRANSACTION;
         '''
-        query= QSqlQuery(self.db)
-        query.prepare(advice_query) #Query brings on the next advice
-        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
+
+
+        if (self.db_handler.queryExecution(advice_query)):  
+            query= self.db_handler.getQuery()       
             query.first()
             last_num= query.value(0) #Save the num to look
+            print(f'Encontre el num {last_num}')
             if not(query.isNull(0)):
                 self.lookForTheNum(last_num)
 
@@ -120,7 +129,8 @@ class Pantalla(object):
         for elem in self.list_box:
             childs= elem.children() #Get childs of QWidget
             num:QLabel = childs[1] #Get label
-            if num.text == str(last_num):
+            text:str= num.text()
+            if text.__contains__(str(last_num)):
                 self.boxAnimation(elem)
 
 
@@ -815,6 +825,7 @@ class Pantalla(object):
         self.list_box=[self.box_1,self.box_2,self.box_3,self.box_4,self.box_5]
 
 		#FUNCTIONS
+        self.resetAdvice()
         self.footerBarAnimation() #Init footer
         self.refreshTime() #Init time
         self.refreshWeather() #Init weather

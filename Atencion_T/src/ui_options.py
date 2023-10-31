@@ -404,11 +404,11 @@ class SettingsWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"VISOR TURNOS", None))
         ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Numero", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"DNI", None));
         ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Hora", None));
         ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"DNI", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Tipo", None));
         ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Atiende", None));
         self.video_selector.setText("")

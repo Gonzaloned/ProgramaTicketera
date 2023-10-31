@@ -9,6 +9,9 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
 from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 import sys
 import manejar_datos
+
+import logger_config
+import logging
 DRIVER='ODBC Driver 17 for SQL Server'
 SERVER_NAME = 'GONZALO\DBGON'
 DATABASE_NAME = 'turnos'
@@ -19,6 +22,7 @@ class Connection():
     def __init__(self):
         #Set the new database driver (in this case QODBC)
         self.con = QSqlDatabase().addDatabase('QODBC')
+        self.createConnection()
         
 
     def createConnection(self):
@@ -30,8 +34,11 @@ class Connection():
         #Check connection
         if self.con.open():
             print(' Succesfull connection')
+            logging.info("Correct connection")
         else:
-            print("Database Error: %s"  % self.con.lastError().databaseText())
+            error_msg=("Database Error: %s"  % self.con.lastError().databaseText())
+            print(error_msg)
+            logging.error(error_msg)
             exit(0)
 
         return self.con
@@ -39,9 +46,12 @@ class Connection():
 
     def queryExecution(self,query):
 
-        #If con not open, recreate
+        print(query)
+
+        #If con not open, reconnect
         if not(self.con.isOpen()):
-             self.createConnection()
+            logging.error("Incorrect con in query, retry")
+            self.createConnection()
 
         #new query object  QSqlQuery(database target)
         self.qry= QSqlQuery(self.con)
@@ -52,6 +62,7 @@ class Connection():
             print('Query realizada exitosamente')
             return True
         else:
+            logging.error("Error in query")
             return False
 
     def getQuery(self):
