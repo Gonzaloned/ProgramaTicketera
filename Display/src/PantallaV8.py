@@ -200,8 +200,8 @@ class Pantalla(object):
             pixmap.loadFromData(response.content)
             self.temp_icon.setPixmap(pixmap)
             self.temp_icon.setScaledContents(False)
-            self.temp_icon.setAlignment(Qt.AlignTop)
-            #self.temp_icon.setMargin(0)
+            self.temp_icon.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+
 
         #Save the temp data of the json (In kelvin)
         temp=data['main']['temp']
@@ -316,7 +316,7 @@ class Pantalla(object):
         self.ventana:QMainWindow= MainWindow
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(940, 678)
+        MainWindow.resize(1067, 686)
         MainWindow.setStyleSheet(u"#borde_top {\n"
 "	background-color: qlineargradient(spread:pad, x1:0.977, y1:0.636409, x2:0.125, y2:0.636636, stop:0 rgba(4, 42, 79,255), stop:1 rgba(0, 73, 113,255));\n"
 "	border-radius:2px;\n"
@@ -431,7 +431,7 @@ class Pantalla(object):
         sizePolicy1.setHeightForWidth(self.borde_top.sizePolicy().hasHeightForWidth())
         self.borde_top.setSizePolicy(sizePolicy1)
         self.borde_top.setMinimumSize(QSize(300, 60))
-        self.borde_top.setMaximumSize(QSize(600, 60))
+        self.borde_top.setMaximumSize(QSize(700, 60))
         self.horizontalLayout_11 = QHBoxLayout(self.borde_top)
         self.horizontalLayout_11.setSpacing(0)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
@@ -456,49 +456,65 @@ class Pantalla(object):
 
         self.horizontalLayout_11.addWidget(self.widget_2)
 
-        self.widget_3 = QWidget(self.borde_top)
-        self.widget_3.setObjectName(u"widget_3")
+        self.widget_4 = QWidget(self.borde_top)
+        self.widget_4.setObjectName(u"widget_4")
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.MinimumExpanding)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
-        self.widget_3.setSizePolicy(sizePolicy2)
-        self.widget_3.setMinimumSize(QSize(0, 60))
-        self.horizontalLayout_13 = QHBoxLayout(self.widget_3)
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.time_label = QLabel(self.widget_3)
-        self.time_label.setObjectName(u"time_label")
-        self.time_label.setFont(font)
-        self.time_label.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_13.addWidget(self.time_label)
-
-
-        self.horizontalLayout_11.addWidget(self.widget_3)
-
-        self.widget_4 = QWidget(self.borde_top)
-        self.widget_4.setObjectName(u"widget_4")
         sizePolicy2.setHeightForWidth(self.widget_4.sizePolicy().hasHeightForWidth())
         self.widget_4.setSizePolicy(sizePolicy2)
         self.widget_4.setMinimumSize(QSize(0, 60))
         self.horizontalLayout_10 = QHBoxLayout(self.widget_4)
-        self.horizontalLayout_10.setSpacing(3)
+        self.horizontalLayout_10.setSpacing(0)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.horizontalLayout_10.setContentsMargins(10, -1, -1, -1)
+        self.horizontalLayout_10.setContentsMargins(0, -1, 10, -1)
         self.temp_icon = QLabel(self.widget_4)
         self.temp_icon.setObjectName(u"temp_icon")
+        self.temp_icon.setStyleSheet(u"border-image:url(https://openweathermap.org/img/w/02n.png);")
+        self.temp_icon.setPixmap(QPixmap(u":/img/img/icons8-people-64.png"))
+        self.temp_icon.setScaledContents(False)
+        self.temp_icon.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.temp_icon.setMargin(5)
 
-        self.horizontalLayout_10.addWidget(self.temp_icon, 0, Qt.AlignRight|Qt.AlignVCenter)
+        self.horizontalLayout_10.addWidget(self.temp_icon, 0, Qt.AlignHCenter)
 
         self.temp_label = QLabel(self.widget_4)
         self.temp_label.setObjectName(u"temp_label")
-        self.temp_label.setFont(font)
+        font1 = QFont()
+        font1.setPointSize(25)
+        font1.setBold(True)
+        self.temp_label.setFont(font1)
         self.temp_label.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.temp_label)
+        self.horizontalLayout_10.addWidget(self.temp_label, 0, Qt.AlignHCenter)
 
 
         self.horizontalLayout_11.addWidget(self.widget_4)
+
+        self.widget_3 = QWidget(self.borde_top)
+        self.widget_3.setObjectName(u"widget_3")
+        sizePolicy2.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
+        self.widget_3.setSizePolicy(sizePolicy2)
+        self.widget_3.setMinimumSize(QSize(0, 60))
+        self.horizontalLayout_13 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_13.setSpacing(3)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(10, 9, 20, 9)
+        self.time_label = QLabel(self.widget_3)
+        self.time_label.setObjectName(u"time_label")
+        self.time_label.setFont(font1)
+        self.time_label.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_13.addWidget(self.time_label)
+
+        self.hs = QLabel(self.widget_3)
+        self.hs.setObjectName(u"hs")
+        self.hs.setFont(font)
+
+        self.horizontalLayout_13.addWidget(self.hs, 0, Qt.AlignVCenter)
+
+
+        self.horizontalLayout_11.addWidget(self.widget_3, 0, Qt.AlignRight)
 
 
         self.verticalLayout_13.addWidget(self.borde_top)
@@ -560,10 +576,10 @@ class Pantalla(object):
         self.verticalLayout_10.setContentsMargins(0, 0, 0, 1)
         self.titulo_llamado = QLabel(self.base_titulo)
         self.titulo_llamado.setObjectName(u"titulo_llamado")
-        font1 = QFont()
-        font1.setPointSize(25)
-        font1.setBold(True)
-        self.titulo_llamado.setFont(font1)
+        font2 = QFont()
+        font2.setPointSize(30)
+        font2.setBold(True)
+        self.titulo_llamado.setFont(font2)
         self.titulo_llamado.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_10.addWidget(self.titulo_llamado)
@@ -583,10 +599,10 @@ class Pantalla(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.label_num = QLabel(self.box_num)
         self.label_num.setObjectName(u"label_num")
-        font2 = QFont()
-        font2.setPointSize(30)
-        font2.setBold(True)
-        self.label_num.setFont(font2)
+        font3 = QFont()
+        font3.setPointSize(45)
+        font3.setBold(True)
+        self.label_num.setFont(font3)
         self.label_num.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.label_num)
@@ -601,7 +617,7 @@ class Pantalla(object):
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.label_caja = QLabel(self.box_caja)
         self.label_caja.setObjectName(u"label_caja")
-        self.label_caja.setFont(font2)
+        self.label_caja.setFont(font3)
         self.label_caja.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_9.addWidget(self.label_caja)
@@ -623,9 +639,9 @@ class Pantalla(object):
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.nums = QWidget(self.base_nums)
         self.nums.setObjectName(u"nums")
-        font3 = QFont()
-        font3.setPointSize(20)
-        self.nums.setFont(font3)
+        font4 = QFont()
+        font4.setPointSize(20)
+        self.nums.setFont(font4)
         self.verticalLayout_7 = QVBoxLayout(self.nums)
         self.verticalLayout_7.setSpacing(1)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
@@ -638,17 +654,17 @@ class Pantalla(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.num1 = QLabel(self.box_1)
         self.num1.setObjectName(u"num1")
-        self.num1.setFont(font3)
+        font5 = QFont()
+        font5.setPointSize(36)
+        font5.setBold(True)
+        self.num1.setFont(font5)
         self.num1.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_5.addWidget(self.num1)
 
         self.caja1 = QLabel(self.box_1)
         self.caja1.setObjectName(u"caja1")
-        font4 = QFont()
-        font4.setPointSize(20)
-        font4.setBold(False)
-        self.caja1.setFont(font4)
+        self.caja1.setFont(font5)
         self.caja1.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_5.addWidget(self.caja1)
@@ -664,14 +680,14 @@ class Pantalla(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.num2 = QLabel(self.box_2)
         self.num2.setObjectName(u"num2")
-        self.num2.setFont(font3)
+        self.num2.setFont(font5)
         self.num2.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_6.addWidget(self.num2)
 
         self.caja2 = QLabel(self.box_2)
         self.caja2.setObjectName(u"caja2")
-        self.caja2.setFont(font3)
+        self.caja2.setFont(font5)
         self.caja2.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_6.addWidget(self.caja2)
@@ -687,14 +703,14 @@ class Pantalla(object):
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.num3 = QLabel(self.box_3)
         self.num3.setObjectName(u"num3")
-        self.num3.setFont(font3)
+        self.num3.setFont(font5)
         self.num3.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_7.addWidget(self.num3)
 
         self.caja3 = QLabel(self.box_3)
         self.caja3.setObjectName(u"caja3")
-        self.caja3.setFont(font3)
+        self.caja3.setFont(font5)
         self.caja3.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_7.addWidget(self.caja3)
@@ -710,14 +726,14 @@ class Pantalla(object):
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.num4 = QLabel(self.box_4)
         self.num4.setObjectName(u"num4")
-        self.num4.setFont(font3)
+        self.num4.setFont(font5)
         self.num4.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_8.addWidget(self.num4)
 
         self.caja4 = QLabel(self.box_4)
         self.caja4.setObjectName(u"caja4")
-        self.caja4.setFont(font3)
+        self.caja4.setFont(font5)
         self.caja4.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_8.addWidget(self.caja4)
@@ -733,14 +749,14 @@ class Pantalla(object):
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.num5 = QLabel(self.box_5)
         self.num5.setObjectName(u"num5")
-        self.num5.setFont(font3)
+        self.num5.setFont(font5)
         self.num5.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_9.addWidget(self.num5)
 
         self.caja5 = QLabel(self.box_5)
         self.caja5.setObjectName(u"caja5")
-        self.caja5.setFont(font3)
+        self.caja5.setFont(font5)
         self.caja5.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_9.addWidget(self.caja5)
@@ -777,8 +793,9 @@ class Pantalla(object):
         self.labelDesplazable.setObjectName(u"labelDesplazable")
         self.labelDesplazable.setFont(font1)
         self.labelDesplazable.setAlignment(Qt.AlignCenter)
-        self.labelDesplazable.setMinimumWidth(800)
+
         self.verticalLayout_11.addWidget(self.labelDesplazable, 0, Qt.AlignHCenter)
+
 
         self.verticalLayout_2.addWidget(self.borde_bottom)
 
@@ -800,17 +817,24 @@ class Pantalla(object):
 
 		#FUNCTIONS
         self.footerBarAnimation() #Init footer
+        self.refreshTime() #Init time
+        self.refreshWeather() #Init weather
 
         #Show new number and advice
-        self.timer2 = QTimer()
-        self.timer2.timeout.connect(lambda: self.showNew())
-        self.timer2.start(4000)
+        self.timerNum = QTimer()
+        self.timerNum.timeout.connect(lambda: self.showNew())
+        self.timerNum.start(4000)
         
         #f to refresh time
-        self.refreshTime()
-
+        self.timerWeather = QTimer()
+        self.timerWeather.timeout.connect(lambda: self.refreshTime())
+        self.timerWeather.start(30000)
+        
         #f to refresh weather
-        self.refreshWeather()
+        self.timerWeather = QTimer()
+        self.timerWeather.timeout.connect(lambda: self.refreshWeather())
+        self.timerWeather.start(1800000)
+        
 
         #f to initalizate videoPlayer and stream
         self.initializeVideo()
@@ -820,6 +844,7 @@ class Pantalla(object):
 
         #if footer ends self.footerBarAnimation()
         self.animation.finished.connect(lambda: self.animation.start())
+        
         #if video finishes, restart
         self._player.mediaStatusChanged.connect(lambda: self._player.play())
     # setupUi
@@ -828,6 +853,7 @@ class Pantalla(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.city_label.setText(QCoreApplication.translate("MainWindow", u"Buenos Aires, La Plata", None))
         self.time_label.setText(QCoreApplication.translate("MainWindow", u"22:30", None))
+        self.hs.setText(QCoreApplication.translate("MainWindow", u"HS", None))
         self.temp_label.setText(QCoreApplication.translate("MainWindow", u"32`C", None))
         self.titulo_llamado.setText(QCoreApplication.translate("MainWindow", u"LLAMADO TURNOS", None))
         self.label_num.setText(QCoreApplication.translate("MainWindow", u"NUM", None))
@@ -846,4 +872,3 @@ if __name__ == "__main__":
     vent.setFixedSize(rect.width(),rect.height())
     vent.showFullScreen()
     sys.exit(app.exec())
-

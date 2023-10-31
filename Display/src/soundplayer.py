@@ -1,6 +1,6 @@
 
 import winsound
 
-path='./src/sounds/timbrecasa.wav'
+path='./sounds/timbrecasa.wav'
 winsound.PlaySound(path, 0)
 
