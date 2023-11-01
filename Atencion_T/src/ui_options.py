@@ -36,7 +36,7 @@ class SettingsWindow(object):
         self.pop_publicity.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
         self.pop_publicity.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
         self.pop_publicity.show() #Show
-        QTimer.singleShot(3000, lambda: self.pop_publicity.close())
+        QTimer.singleShot(6000, lambda: self.pop_publicity.close())
 
     def verHistorial(self):
         QUERY=f'''SELECT [dni],[hora],[tipo],[atiende_usuario]\n

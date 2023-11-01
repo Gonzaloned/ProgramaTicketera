@@ -9,6 +9,7 @@ from PySide6.QtMultimediaWidgets import *
 
 
 #This import generates a parallel subprocess
+import manejar_datos
 import subprocess
 from connection import Connection
 
@@ -258,8 +259,8 @@ class Pantalla(object):
         self._player.setVideoOutput(self._video_widget)
 
         #Generate the path to the video //GET OF A JSON
-        url = QUrl.fromLocalFile('./vid/VideoHospitalFinal.mp4')
-
+        url = QUrl.fromLocalFile(manejar_datos.getVideoPath())
+        print(url)
         #Add to playlist
         self._playlist.append(url)
         self._playlist_index = len(self._playlist) - 1
@@ -848,6 +849,10 @@ class Pantalla(object):
 
         #f to initalizate videoPlayer and stream
         self.initializeVideo()
+
+        #Timer video check
+        self.timerVideo = QTimer()
+        self.timerVideo.timeout.connect(lambda: self.refreshVideo())
 
         #f to fit fullscreen
         self.adjustWindow(MainWindow)
