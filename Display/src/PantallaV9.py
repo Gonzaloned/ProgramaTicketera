@@ -170,7 +170,7 @@ class Pantalla(object):
                 shutil.copy(manejar_datos.getVideoPath(), 'C:\\Ticketera\\Videos\\VideoHospital.mp4')
 
                 #Restart video on ///Server_ip//Ticketera//Videos//VideoHospital.mp4
-                self.initializeVideo() 
+                self.restartVideo() 
 
 
     def checkNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
@@ -309,7 +309,11 @@ class Pantalla(object):
         #Play
         self._player.play()
 
-
+    def restartVideo(self):
+        self._player.stop()
+        video_path= manejar_datos.getVideoPath()
+        self._player.setSource(video_path)
+        self._player.play()
         
     def boxAnimation(self, elem:QWidget):
         
