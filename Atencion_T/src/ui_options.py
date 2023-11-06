@@ -83,6 +83,16 @@ class SettingsWindow(object):
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
 
+
+
+    def get_first_file_path(self, path):
+        first_file_path = None
+        for root, dirs, files in os.walk(path):
+            if len(files) > 0:
+                first_file_path = os.path.join(root, files[0])
+                break
+        return first_file_path
+    
     def selectActualVideo(self):
 
         file_dialog = QFileDialog()
@@ -110,21 +120,43 @@ class SettingsWindow(object):
       
 
 
-        # Ruta de tu archivo .video en el escritorio
+        # Path of the selected file
         path_video = url.path()
         
-        # Saco la primera barra
-        final_path= path_video[1:]
+        
+        final_path= path_video[1:] # Take off the first bar
+        origen= final_path.replace(r'/','\\') # Modify the final path to generate the full path of the new file
+        
+        # Generate the server path
+        server_folder_path = manejar_datos.getVideoPath()
+        
+        # Generate the file video path in server
+        server_video_path=f'{server_folder_path}\\VideoHospital.mp4'
 
-        print(final_path)
-        # Ruta de la carpeta compartida en la dirección IP 
-        carpeta_compartida = manejar_datos.getVideoPath()
+        # Remove old Video from server
+        if(os.path.exists(server_video_path)):     
+            os.remove(server_video_path)
 
         # Copiar el archivo .mp4 a la carpeta compartida
-        shutil.copy(final_path.replace(r'/','\\'), carpeta_compartida)
+        shutil.copy(origen, server_folder_path)
 
-        logging.info(f'Copied the video from{final_path} to {carpeta_compartida} ')
+        # Rename new video in server to VideoHospital.mp4
+        first_server_file=self.get_first_file_path(server_folder_path)   #Gets the name of  the first file in folder(server)     
+        os.rename(first_server_file,server_video_path) #Rename XXXXXXXX to VideoHospital.mp4
+
+        logging.info(f'Copied the video from{final_path} to {server_folder_path} ')
         
+
+        VIDEO_WRITE_QUERY=f'''
+        BEGIN TRANSACTION;
+        INSERT INTO [turnos].[dbo].[video](ipnum,dir) VALUES('server_ip','{final_path}');
+        COMMIT TRANSACTION; 
+        '''
+        #Write in the DB the flag of a new video
+        self.db.queryExecution(VIDEO_WRITE_QUERY)
+
+
+
     def resetTurnos(self):
         query_reset=f'''
         BEGIN TRANSACTION;

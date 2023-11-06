@@ -27,6 +27,7 @@ CREATE TABLE turnos_actual(
 )
 
 CREATE TABLE video(
+	num int primary key identity(1,1),
 	ipnum varchar(max),
 	dir varchar(max)
 )

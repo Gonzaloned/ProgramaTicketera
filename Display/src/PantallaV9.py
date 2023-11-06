@@ -1,4 +1,6 @@
 import datetime
+import logging
+import shutil
 
 from PySide6.QtCore import *
 from PySide6.QtGui import *
@@ -43,6 +45,7 @@ class Pantalla(object):
         ventana.move(0, screen.height())
 
     #f to delete layout widget
+
     def deleteItemsOfLayout(self,layout:QVBoxLayout):
         if layout is not None:
             while layout.count():
@@ -72,6 +75,9 @@ class Pantalla(object):
 
         #Check if need to advice
         self.checkAdvice()
+
+        #Check if video reset
+        self.videoCheck()
 
         #if exists a call request
         if self.checkNext():
@@ -133,6 +139,38 @@ class Pantalla(object):
             text:str= num.text()
             if text.__contains__(str(last_num)):
                 self.boxAnimation(elem)
+
+
+
+    def videoCheck(self):
+        NEW_VIDEO_QUERY= \
+        '''BEGIN TRANSACTION;
+
+        DECLARE @video_num INT;
+
+        -- Obtener el proximo turno disponible
+        SELECT TOP (1) @video_num=num FROM video ORDER BY num        
+        
+        -- Eliminar aviso
+        DELETE  FROM video
+
+        SELECT @video_num
+
+        COMMIT TRANSACTION;
+        '''
+
+        if (self.db_handler.queryExecution(NEW_VIDEO_QUERY)):  #If query ok
+            query= self.db_handler.getQuery()       #Get query
+            query.first()  #Get first row
+            if not(query.isNull(0)): #If num <> null
+                #Log video changes
+                logging.info(f'Video Change, time:{datetime.datetime.now()}')
+
+                #Copy the file from the server in local storage
+                shutil.copy(manejar_datos.getVideoPath(), 'C:\\Ticketera\\Videos\\VideoHospital.mp4')
+
+                #Restart video on ///Server_ip//Ticketera//Videos//VideoHospital.mp4
+                self.initializeVideo() 
 
 
     def checkNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
@@ -267,7 +305,6 @@ class Pantalla(object):
 
         #Set the source with the QUrl to the Player
         self._player.setSource(url)
-
 
         #Play
         self._player.play()
@@ -849,10 +886,6 @@ class Pantalla(object):
 
         #f to initalizate videoPlayer and stream
         self.initializeVideo()
-
-        #Timer video check
-        self.timerVideo = QTimer()
-        self.timerVideo.timeout.connect(lambda: self.refreshVideo())
 
         #f to fit fullscreen
         self.adjustWindow(MainWindow)
