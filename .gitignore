@@ -1,1 +1,2 @@
-*archivo_datos.json
+# Ignorar archivos JSON
+*.json
