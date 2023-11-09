@@ -146,10 +146,10 @@ class Pantalla(object):
         NEW_VIDEO_QUERY= \
         '''BEGIN TRANSACTION;
 
-        DECLARE @video_num INT;
+        DECLARE @video_num varchar;
 
         -- Obtener el proximo turno disponible
-        SELECT TOP (1) @video_num=num FROM video ORDER BY num        
+        SELECT TOP (1) @video_num=ipnum FROM video ORDER BY ipnum        
         
         -- Eliminar aviso
         DELETE  FROM video
@@ -163,15 +163,39 @@ class Pantalla(object):
             query= self.db_handler.getQuery()       #Get query
             query.first()  #Get first row
             if not(query.isNull(0)): #If num <> null
+
                 #Log video changes
                 logging.info(f'Video Change, time:{datetime.datetime.now()}')
 
-                #Copy the file from the server in local storage
-                shutil.copy(manejar_datos.getVideoPath(), 'C:\\Ticketera\\Videos\\VideoHospital.mp4')
-
-                #Restart video on ///Server_ip//Ticketera//Videos//VideoHospital.mp4
+                #Restart video
                 self.restartVideo() 
 
+    def restartVideo(self):
+        #Stop the player
+        self._player.stop()
+
+        QTimer.singleShot(4000,lambda:print(''))
+        #Get the path #f'''\\\\{json_file['IP']}\\Ticketera\\Videos\\
+        server_folder_path= f'{manejar_datos.getVideoPath()}NewVideo.mp4'
+
+        #Local video path
+        folder_local='C:\\Ticketera\\Videos\\VideoHospital.mp4'
+
+        try:
+        # Replace local file with the server file
+            shutil.copy(server_folder_path, folder_local)
+            print("Archivo reemplazado exitosamente.")
+        except FileNotFoundError:
+            print("El archivo original no se encuentra o el directorio de destino no existe.")
+        except PermissionError:
+            print("Permiso denegado para copiar el archivo en el directorio de destino.")
+
+        #Reload file to the media player
+        self._player.setSource(f'{folder_local}\\VideoHospital.mp4')
+
+        #Play 
+        self._player.play()
+        print('VIDEO STARTED')
 
     def checkNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
           
@@ -297,7 +321,7 @@ class Pantalla(object):
         self._player.setVideoOutput(self._video_widget)
 
         #Generate the path to the video //GET OF A JSON
-        url = QUrl.fromLocalFile(manejar_datos.getVideoPath())
+        url = QUrl.fromLocalFile(f'{manejar_datos.getVideoPath()}VideoHospital.mp4')
         print(url)
         #Add to playlist
         self._playlist.append(url)
@@ -309,11 +333,7 @@ class Pantalla(object):
         #Play
         self._player.play()
 
-    def restartVideo(self):
-        self._player.stop()
-        video_path= manejar_datos.getVideoPath()
-        self._player.setSource(video_path)
-        self._player.play()
+   
         
     def boxAnimation(self, elem:QWidget):
         

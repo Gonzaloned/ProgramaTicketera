@@ -118,43 +118,33 @@ class SettingsWindow(object):
             url = file_dialog.selectedUrls()[0]
                   
       
-
-
-        # Path of the selected file
-        path_video = url.path()
+        path_video = url.path() # Path of the selected file
+        path_video= path_video[1:] # Take off the first bar
+        origen= path_video.replace(r'/','\\') # Modify the final path to generate the full path of the new file
         
-        
-        final_path= path_video[1:] # Take off the first bar
-        origen= final_path.replace(r'/','\\') # Modify the final path to generate the full path of the new file
-        
-        # Generate the server path
-        server_folder_path = manejar_datos.getVideoPath()
-        
-        # Generate the file video path in server
-        server_video_path=f'{server_folder_path}\\VideoHospital.mp4'
-
-        # Remove old Video from server
-        if(os.path.exists(server_video_path)):     
-            os.remove(server_video_path)
-
-        # Copiar el archivo .mp4 a la carpeta compartida
-        shutil.copy(origen, server_folder_path)
-
-        # Rename new video in server to VideoHospital.mp4
-        first_server_file=self.get_first_file_path(server_folder_path)   #Gets the name of  the first file in folder(server)     
-        os.rename(first_server_file,server_video_path) #Rename XXXXXXXX to VideoHospital.mp4
-
-        logging.info(f'Copied the video from{final_path} to {server_folder_path} ')
-        
-
         VIDEO_WRITE_QUERY=f'''
         BEGIN TRANSACTION;
-        INSERT INTO [turnos].[dbo].[video](ipnum,dir) VALUES('server_ip','{final_path}');
+        INSERT INTO [turnos].[dbo].[video](ipnum,dir) VALUES('server ip','{origen}');
         COMMIT TRANSACTION; 
         '''
-        #Write in the DB the flag of a new video
-        self.db.queryExecution(VIDEO_WRITE_QUERY)
+        # Get server Path
+        server_folder_path = manejar_datos.getVideoPath()  
+        
+        try:
+        # Replace local file in shared
 
+            shutil.copy(origen, os.path.join(server_folder_path, 'NewVideo.mp4'))
+
+            #Write in the DB the flag of a new video
+            self.db.queryExecution(VIDEO_WRITE_QUERY)
+
+            print("Archivo reemplazado exitosamente.")
+        except FileNotFoundError:
+            print("El archivo original no se encuentra o el directorio de destino no existe.")
+        except PermissionError:
+            print("Permiso denegado para copiar el archivo en el directorio de destino.")
+
+        logging.info(f'Copied the video from{origen} to {server_folder_path} ')
 
 
     def resetTurnos(self):
