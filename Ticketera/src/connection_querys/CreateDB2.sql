@@ -14,7 +14,19 @@ CREATE TABLE historial_turnos (
 )
 
 
-CREATE TABLE turnos_actual(
+CREATE TABLE turnos_programados(
+  dni int,
+  num int primary key identity(1,1),
+  hora datetime,
+  tipo int,
+  atiende_usuario varchar(10),
+  atiende_caja int,
+  FOREIGN KEY(atiende_usuario) REFERENCES Persona(usuario),
+  status int, /* creado, 2 llamado, 3 mostrado, 4 retirado.*/
+
+)
+
+CREATE TABLE turnos_llegada(
   dni int,
   num int primary key identity(1,1),
   hora datetime,

@@ -1,0 +1,323 @@
+2023-10-16 14:03:30,748 - root - INFO - Correct connection
+2023-10-16 14:03:37,873 - root - ERROR - Error in query
+2023-10-16 14:04:14,744 - root - ERROR - Error in query
+2023-10-16 14:06:02,484 - root - INFO - Correct connection
+2023-10-16 14:06:42,096 - root - INFO - Correct connection
+2023-10-16 14:06:51,216 - root - INFO - Correct connection
+2023-10-16 14:14:54,034 - root - INFO - Correct connection
+2023-10-16 14:36:02,756 - root - INFO - Correct connection
+2023-10-16 14:36:47,275 - root - INFO - Correct connection
+2023-10-16 17:34:30,987 - root - INFO - Correct connection
+2023-10-16 17:35:29,472 - root - INFO - Correct connection
+2023-10-16 17:39:52,209 - root - INFO - Correct connection
+2023-10-16 17:40:38,118 - root - INFO - Correct connection
+2023-10-16 17:42:17,197 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][SQL Server]Cannot open database "turno" requested by the login. The login failed. [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-10-16 17:42:52,773 - root - INFO - Correct connection
+2023-10-16 17:45:13,180 - root - INFO - Correct connection
+2023-10-22 09:46:29,623 - root - ERROR - Database Error: [Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified
+2023-10-22 09:46:36,748 - root - ERROR - Database Error: [Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified
+2023-10-22 09:48:16,594 - root - INFO - Correct connection
+2023-10-22 09:48:24,718 - root - INFO - query is null
+2023-10-22 09:48:25,059 - root - INFO - Correct connection
+2023-10-22 09:48:37,058 - root - INFO - query is null
+2023-10-22 09:48:41,716 - root - INFO - query is null
+2023-10-22 09:59:53,860 - root - INFO - Correct connection
+2023-10-22 10:00:02,629 - root - INFO - Correct connection
+2023-10-22 10:00:08,031 - root - INFO - query is null
+2023-10-22 10:00:13,207 - root - INFO - query is null
+2023-10-22 10:00:19,831 - root - INFO - query is null
+2023-10-22 10:00:20,154 - root - INFO - Correct connection
+2023-10-22 10:00:23,017 - root - INFO - Correct connection
+2023-10-22 10:00:27,384 - root - INFO - query is null
+2023-10-22 10:04:58,751 - root - INFO - Correct connection
+2023-10-22 10:14:25,883 - root - INFO - Correct connection
+2023-10-22 10:14:31,191 - root - INFO - query is null
+2023-10-24 17:14:40,000 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-10-27 20:56:25,546 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-10-27 20:59:32,736 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-10-27 21:02:02,971 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+2023-10-27 21:02:55,765 - root - INFO - Correct connection
+2023-10-27 21:09:04,242 - root - INFO - Correct connection
+2023-10-27 21:09:09,103 - root - INFO - query is null
+2023-10-27 21:09:58,180 - root - INFO - query is null
+2023-10-27 21:10:21,107 - root - INFO - Correct connection
+2023-10-27 21:10:27,551 - root - INFO - query is null
+2023-10-27 21:10:38,766 - root - INFO - query is null
+2023-10-27 21:10:52,351 - root - INFO - query is null
+2023-10-27 23:20:54,263 - root - INFO - Correct connection
+2023-10-27 23:24:45,878 - root - INFO - Correct connection
+2023-10-27 23:24:52,322 - root - INFO - Correct connection
+2023-10-27 23:27:30,583 - root - INFO - Correct connection
+2023-10-27 23:27:43,615 - root - INFO - Correct connection
+2023-10-27 23:29:18,755 - root - INFO - Correct connection
+2023-10-27 23:29:25,287 - root - INFO - Correct connection
+2023-10-27 23:31:05,418 - root - INFO - Correct connection
+2023-10-27 23:31:30,391 - root - INFO - Correct connection
+2023-10-27 23:31:36,747 - root - INFO - Correct connection
+2023-10-27 23:33:00,680 - root - INFO - Correct connection
+2023-10-28 11:45:16,498 - root - INFO - Correct connection
+2023-10-28 11:45:29,004 - root - INFO - Correct connection
+2023-10-28 11:45:45,808 - root - INFO - Correct connection
+2023-10-28 11:49:58,132 - root - INFO - Correct connection
+2023-10-28 11:50:03,648 - root - INFO - Correct connection
+2023-10-28 11:50:05,546 - root - INFO - Correct connection
+2023-10-28 11:50:33,993 - root - INFO - Correct connection
+2023-10-28 11:50:38,867 - root - INFO - Correct connection
+2023-10-28 11:50:40,165 - root - INFO - Correct connection
+2023-10-28 11:51:16,966 - root - INFO - Correct connection
+2023-10-28 11:51:25,667 - root - INFO - Correct connection
+2023-10-28 11:51:28,032 - root - INFO - Correct connection
+2023-10-28 11:53:43,170 - root - INFO - Correct connection
+2023-10-28 11:54:58,480 - root - INFO - Correct connection
+2023-10-28 11:57:17,601 - root - INFO - Correct connection
+2023-10-28 11:57:24,431 - root - INFO - Correct connection
+2023-10-28 11:57:25,503 - root - INFO - Correct connection
+2023-10-28 12:00:28,093 - root - INFO - Correct connection
+2023-10-28 12:00:34,726 - root - INFO - Correct connection
+2023-10-28 12:00:39,283 - root - INFO - Correct connection
+2023-10-28 12:05:02,907 - root - ERROR - Incorrect con in query, retry
+2023-10-28 12:05:02,908 - root - ERROR - Database Error: Driver not loaded
+2023-10-28 12:05:53,497 - root - INFO - Correct connection
+2023-10-28 12:05:59,955 - root - INFO - Correct connection
+2023-10-28 12:06:48,184 - root - INFO - Correct connection
+2023-10-28 12:06:53,525 - root - INFO - Correct connection
+2023-10-28 16:34:16,516 - root - INFO - Correct connection
+2023-10-28 16:35:53,635 - root - INFO - Correct connection
+2023-10-28 16:35:58,849 - root - INFO - Correct connection
+2023-10-28 16:36:00,466 - root - INFO - Correct connection
+2023-10-28 16:37:01,068 - root - INFO - Correct connection
+2023-10-28 16:37:06,372 - root - INFO - Correct connection
+2023-10-28 16:37:07,526 - root - INFO - Correct connection
+2023-10-28 16:40:39,776 - root - INFO - Correct connection
+2023-10-28 16:40:47,721 - root - INFO - Correct connection
+2023-10-28 16:40:50,165 - root - INFO - Correct connection
+2023-11-05 01:42:29,017 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-11-05 17:37:06,361 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-11-05 18:33:12,801 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+2023-11-05 18:34:05,219 - root - INFO - Correct connection
+2023-11-05 18:34:05,230 - root - INFO - Correct connection
+2023-11-05 18:34:05,261 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 18:34:06,314 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 506
+2023-11-05 18:34:06,316 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 18:34:06,803 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04d.png HTTP/1.1" 200 2773
+2023-11-05 18:34:41,141 - root - INFO - Correct connection
+2023-11-05 18:34:41,153 - root - INFO - Correct connection
+2023-11-05 18:34:41,159 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 18:34:42,137 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 506
+2023-11-05 18:34:42,139 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 18:34:42,622 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04d.png HTTP/1.1" 200 2773
+2023-11-05 18:35:57,694 - root - INFO - Correct connection
+2023-11-05 18:35:57,704 - root - INFO - Correct connection
+2023-11-05 18:35:57,711 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 18:35:58,653 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 506
+2023-11-05 18:35:58,655 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 18:35:59,135 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04d.png HTTP/1.1" 200 2773
+2023-11-05 18:36:09,737 - root - INFO - Correct connection
+2023-11-05 18:36:09,747 - root - INFO - Correct connection
+2023-11-05 18:36:09,753 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 18:36:10,770 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 506
+2023-11-05 18:36:10,772 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 18:36:11,235 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04d.png HTTP/1.1" 200 2773
+2023-11-05 20:12:05,157 - root - INFO - Correct connection
+2023-11-05 20:12:16,208 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-11-05 20:28:47,557 - root - INFO - Correct connection
+2023-11-05 20:28:59,980 - root - INFO - Correct connection
+2023-11-05 20:29:11,293 - root - INFO - Copied the video fromD:/HEMODINAMIA (1).mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 20:31:14,587 - root - INFO - Correct connection
+2023-11-05 20:31:22,655 - root - INFO - Copied the video fromD:/HEMODINAMIA (1).mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:03:01,951 - root - INFO - Correct connection
+2023-11-05 21:03:49,599 - root - INFO - Correct connection
+2023-11-05 21:07:41,569 - root - INFO - Correct connection
+2023-11-05 21:07:51,306 - root - INFO - Copied the video fromD:/HEMODINAMIA (1).mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:11:46,070 - root - INFO - Correct connection
+2023-11-05 21:11:46,080 - root - INFO - Correct connection
+2023-11-05 21:11:46,105 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:11:47,150 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 527
+2023-11-05 21:11:47,153 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:11:47,637 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04n.png HTTP/1.1" 200 2773
+2023-11-05 21:17:40,790 - root - INFO - Correct connection
+2023-11-05 21:17:57,385 - root - INFO - Copied the video fromD:/368677730_595365545867139_8780828668192907323_n.mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:17:57,405 - root - ERROR - Error in query
+2023-11-05 21:18:48,735 - root - INFO - Correct connection
+2023-11-05 21:19:00,777 - root - INFO - Copied the video fromD:/368677730_595365545867139_8780828668192907323_n.mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:19:00,780 - root - ERROR - Error in query
+2023-11-05 21:19:41,113 - root - INFO - Correct connection
+2023-11-05 21:19:50,550 - root - INFO - Copied the video fromD:/368677730_595365545867139_8780828668192907323_n.mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:19:50,552 - root - ERROR - Error in query
+2023-11-05 21:20:20,772 - root - INFO - Correct connection
+2023-11-05 21:20:34,318 - root - INFO - Copied the video fromD:/368677730_595365545867139_8780828668192907323_n.mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:30:33,732 - root - INFO - Correct connection
+2023-11-05 21:30:33,745 - root - INFO - Correct connection
+2023-11-05 21:30:33,753 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:30:34,788 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 521
+2023-11-05 21:30:34,790 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:30:35,279 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:30:39,292 - root - INFO - Video Change, time:2023-11-05 21:30:39.292054
+2023-11-05 21:31:15,750 - root - INFO - Correct connection
+2023-11-05 21:31:15,760 - root - INFO - Correct connection
+2023-11-05 21:31:15,766 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:31:16,780 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 521
+2023-11-05 21:31:16,783 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:31:17,278 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:32:12,580 - root - INFO - Correct connection
+2023-11-05 21:32:12,590 - root - INFO - Correct connection
+2023-11-05 21:32:12,596 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:32:13,535 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 521
+2023-11-05 21:32:13,538 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:32:14,020 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:32:43,037 - root - INFO - Correct connection
+2023-11-05 21:32:43,047 - root - INFO - Correct connection
+2023-11-05 21:32:43,053 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:32:44,005 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 521
+2023-11-05 21:32:44,008 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:32:44,473 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:33:01,080 - root - INFO - Correct connection
+2023-11-05 21:33:42,788 - root - INFO - Correct connection
+2023-11-05 21:33:42,798 - root - INFO - Correct connection
+2023-11-05 21:33:42,804 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:33:43,768 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 521
+2023-11-05 21:33:43,770 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:33:44,239 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:34:17,748 - root - INFO - Correct connection
+2023-11-05 21:36:43,576 - root - INFO - Correct connection
+2023-11-05 21:40:11,899 - root - INFO - Correct connection
+2023-11-05 21:40:26,947 - root - INFO - Copied the video fromD:/snaptik.link_QuKWfUmHrLQvpPLm1C0D.mp4 to \\192.168.0.100\Ticketera\Videos 
+2023-11-05 21:40:46,218 - root - INFO - Correct connection
+2023-11-05 21:40:53,526 - root - INFO - Correct connection
+2023-11-05 21:40:53,536 - root - INFO - Correct connection
+2023-11-05 21:40:53,543 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:40:54,525 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 522
+2023-11-05 21:40:54,527 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:40:55,016 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:41:13,228 - root - INFO - Correct connection
+2023-11-05 21:41:13,237 - root - INFO - Correct connection
+2023-11-05 21:41:13,243 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-05 21:41:14,178 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 522
+2023-11-05 21:41:14,180 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-05 21:41:14,657 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/01n.png HTTP/1.1" 200 2817
+2023-11-05 21:42:33,838 - root - INFO - Correct connection
+2023-11-08 22:36:24,356 - root - INFO - Correct connection
+2023-11-08 22:36:24,368 - root - INFO - Correct connection
+2023-11-08 22:36:24,400 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-08 22:36:25,939 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 526
+2023-11-08 22:36:25,941 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-08 22:36:26,424 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/02n.png HTTP/1.1" 200 2922
+2023-11-08 22:36:30,432 - root - INFO - Video Change, time:2023-11-08 22:36:30.432349
+2023-11-08 22:45:25,467 - root - INFO - Correct connection
+2023-11-08 22:45:51,226 - root - INFO - writed video change request in db 
+2023-11-10 19:56:10,259 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()). [Microsoft][ODBC SQL Server Driver]Invalid connection string attribute
+2023-11-10 19:56:50,210 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+2023-11-10 19:57:12,969 - root - INFO - Correct connection
+2023-11-10 19:57:12,980 - root - INFO - Correct connection
+2023-11-10 19:57:13,006 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 19:57:14,109 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 546
+2023-11-10 19:57:14,111 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 19:57:14,587 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 19:57:18,587 - root - INFO - Video Change, time:2023-11-10 19:57:18.587180
+2023-11-10 19:59:41,229 - root - ERROR - Database Error: [Microsoft][ODBC SQL Server Driver][DBNETLIB]SQL Server does not exist or access denied. [Microsoft][ODBC SQL Server Driver][DBNETLIB]ConnectionOpen (Connect()).
+2023-11-10 19:59:48,337 - root - INFO - Correct connection
+2023-11-10 19:59:59,559 - root - INFO - Copied the video fromD:\368677730_595365545867139_8780828668192907323_n.mp4 to \\192.168.0.100\Ticketera\Videos\ 
+2023-11-10 20:02:16,232 - root - INFO - Correct connection
+2023-11-10 20:02:16,243 - root - INFO - Correct connection
+2023-11-10 20:02:16,249 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:02:17,180 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 546
+2023-11-10 20:02:17,182 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:02:17,669 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 20:02:27,674 - root - INFO - Video Change, time:2023-11-10 20:02:27.674024
+2023-11-10 20:05:16,155 - root - INFO - Correct connection
+2023-11-10 20:05:28,805 - root - INFO - Copied the video fromD:\videoHospital2.mp4 to \\192.168.0.100\Ticketera\Videos\ 
+2023-11-10 20:05:34,518 - root - INFO - Correct connection
+2023-11-10 20:05:34,529 - root - INFO - Correct connection
+2023-11-10 20:05:34,535 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:05:35,496 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 546
+2023-11-10 20:05:35,498 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:05:35,991 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 20:05:45,988 - root - INFO - Video Change, time:2023-11-10 20:05:45.988875
+2023-11-10 20:08:29,539 - root - INFO - Correct connection
+2023-11-10 20:08:39,464 - root - INFO - Copied the video fromD:\snaptik.link_QuKWfUmHrLQvpPLm1C0D.mp4 to \\192.168.0.100\Ticketera\Videos\ 
+2023-11-10 20:08:49,453 - root - INFO - Correct connection
+2023-11-10 20:08:49,463 - root - INFO - Correct connection
+2023-11-10 20:08:49,468 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:08:50,448 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 543
+2023-11-10 20:08:50,450 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:08:50,926 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 20:09:04,521 - root - INFO - Correct connection
+2023-11-10 20:09:04,531 - root - INFO - Correct connection
+2023-11-10 20:09:04,537 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:09:05,493 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 543
+2023-11-10 20:09:05,494 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:09:05,970 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 20:09:15,969 - root - INFO - Video Change, time:2023-11-10 20:09:15.969323
+2023-11-10 20:12:24,123 - root - INFO - Correct connection
+2023-11-10 20:12:24,134 - root - INFO - Correct connection
+2023-11-10 20:12:24,139 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:12:25,122 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 543
+2023-11-10 20:12:25,124 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:12:25,600 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 20:12:35,847 - root - INFO - Correct connection
+2023-11-10 20:12:47,497 - root - INFO - Copied the video fromD:\videoHospital2.mp4 to \\192.168.0.100\Ticketera\Videos\ 
+2023-11-10 20:12:51,642 - root - INFO - Correct connection
+2023-11-10 20:12:51,653 - root - INFO - Correct connection
+2023-11-10 20:12:51,658 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:12:52,605 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 543
+2023-11-10 20:12:52,607 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:12:53,080 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 20:13:03,082 - root - INFO - Video Change, time:2023-11-10 20:13:03.082956
+2023-11-10 20:42:53,083 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 20:42:54,104 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 531
+2023-11-10 20:42:54,106 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 20:42:54,585 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04n.png HTTP/1.1" 200 2773
+2023-11-10 21:12:53,095 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 21:12:54,160 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 531
+2023-11-10 21:12:54,163 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 21:12:54,633 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04n.png HTTP/1.1" 200 2773
+2023-11-10 21:42:53,086 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 21:42:54,077 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 532
+2023-11-10 21:42:54,079 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 21:42:54,571 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04n.png HTTP/1.1" 200 2773
+2023-11-10 22:12:53,103 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 22:12:54,105 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 544
+2023-11-10 22:12:54,108 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 22:12:54,588 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/10n.png HTTP/1.1" 200 3801
+2023-11-10 22:42:53,094 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.openweathermap.org:443
+2023-11-10 22:42:54,092 - urllib3.connectionpool - DEBUG - https://api.openweathermap.org:443 "GET /data/2.5/weather?lat=-34.90407623790362&lon=-57.94973360159151&appid=b8674863bb11fe6782c8e7b8183a3a47 HTTP/1.1" 200 530
+2023-11-10 22:42:54,095 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): openweathermap.org:80
+2023-11-10 22:42:54,576 - urllib3.connectionpool - DEBUG - http://openweathermap.org:80 "GET /img/w/04n.png HTTP/1.1" 200 2773
+2023-11-10 22:53:17,082 - root - ERROR - Error in query
+2023-11-10 22:53:21,081 - root - ERROR - Error in query
+2023-11-10 22:53:23,082 - root - ERROR - Error in query
+2023-11-10 22:53:25,081 - root - ERROR - Error in query
+2023-11-10 22:53:29,082 - root - ERROR - Error in query
+2023-11-10 22:53:33,081 - root - ERROR - Error in query
+2023-11-10 22:53:33,083 - root - ERROR - Error in query
+2023-11-10 22:53:37,090 - root - ERROR - Error in query
+2023-11-10 22:53:41,078 - root - ERROR - Error in query
+2023-11-10 22:53:43,079 - root - ERROR - Error in query
+2023-11-10 22:53:45,082 - root - ERROR - Error in query
+2023-11-10 22:53:49,081 - root - ERROR - Error in query
+2023-11-10 22:53:53,081 - root - ERROR - Error in query
+2023-11-10 22:53:53,082 - root - ERROR - Error in query
+2023-11-10 22:53:57,077 - root - ERROR - Error in query
+2023-11-10 22:54:01,078 - root - ERROR - Error in query
+2023-11-10 22:54:03,077 - root - ERROR - Error in query
+2023-11-10 22:54:05,077 - root - ERROR - Error in query
+2023-11-10 22:54:09,078 - root - ERROR - Error in query
+2023-11-10 22:54:13,077 - root - ERROR - Error in query
+2023-11-10 22:54:13,078 - root - ERROR - Error in query
+2023-11-10 22:54:17,078 - root - ERROR - Error in query
+2023-11-10 22:54:21,081 - root - ERROR - Error in query
+2023-11-10 22:54:23,082 - root - ERROR - Error in query
+2023-11-10 22:54:25,081 - root - ERROR - Error in query
+2023-11-10 22:54:29,082 - root - ERROR - Error in query
+2023-11-10 22:54:33,082 - root - ERROR - Error in query
+2023-11-10 22:54:33,084 - root - ERROR - Error in query
+2023-11-10 22:54:37,081 - root - ERROR - Error in query
+2023-11-10 22:54:41,078 - root - ERROR - Error in query
+2023-11-10 22:54:43,078 - root - ERROR - Error in query
+2023-11-10 22:54:45,081 - root - ERROR - Error in query
+2023-11-10 22:54:49,108 - root - ERROR - Error in query
+2023-11-10 22:54:53,079 - root - ERROR - Error in query
+2023-11-10 22:54:53,080 - root - ERROR - Error in query
+2023-11-10 22:54:57,077 - root - ERROR - Error in query
+2023-11-10 22:55:01,081 - root - ERROR - Error in query
+2023-11-10 22:55:03,080 - root - ERROR - Error in query

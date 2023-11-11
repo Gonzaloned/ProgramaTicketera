@@ -76,9 +76,6 @@ class Pantalla(object):
         #Check if need to advice
         self.checkAdvice()
 
-        #Check if video reset
-        self.videoCheck()
-
         #if exists a call request
         if self.checkNext():
 
@@ -170,11 +167,21 @@ class Pantalla(object):
                 #Restart video
                 self.restartVideo() 
 
-    def restartVideo(self):
-        #Stop the player
-        self._player.stop()
 
-        QTimer.singleShot(4000,lambda:print(''))
+
+
+
+    @Slot()
+    def _ensure_stopped(self):
+        if self._player.playbackState() != QMediaPlayer.StoppedState:
+            self._player.stop()
+
+    def restartVideo(self):
+
+        print('vid restart begins')
+        #Stop the player
+        self._ensure_stopped()
+
         #Get the path #f'''\\\\{json_file['IP']}\\Ticketera\\Videos\\
         server_folder_path= f'{manejar_datos.getVideoPath()}NewVideo.mp4'
 
@@ -190,12 +197,66 @@ class Pantalla(object):
         except PermissionError:
             print("Permiso denegado para copiar el archivo en el directorio de destino.")
 
-        #Reload file to the media player
-        self._player.setSource(f'{folder_local}\\VideoHospital.mp4')
+        #Create the link
+        url= QUrl.fromLocalFile(folder_local)
 
-        #Play 
+        #Reload file to the media player
+        self._player.setSource(url)
+
+        #Play      
+        QTimer.singleShot(4000,lambda:self._player.play())
+        
+        QTimer.singleShot(4000,lambda:print('VIDEO STARTED'))
+
+    def initializeVideo(self):
+
+        #Create a playlist
+        self._playlist = []  # FIXME 6.3: Replace by QMediaPlaylist?
+
+        self._playlist_index = -1
+
+        #Create audio output
+        self._audio_output = QAudioOutput()
+
+        #Create a media player
+        self._player = QMediaPlayer()
+
+        #Set the audio output to player
+        self._player.setAudioOutput(self._audio_output)
+
+        #Create layout and add the videoW
+        self.layout_video = QVBoxLayout(self.video_widget)
+
+        #Create the widget
+        self._video_widget = QVideoWidget()
+        videoPolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        videoPolicy.setHorizontalStretch(0)
+        videoPolicy.setVerticalStretch(0)
+        videoPolicy.setHeightForWidth(self._video_widget.sizePolicy().hasHeightForWidth())
+        self._video_widget.setSizePolicy(videoPolicy)
+
+        #self._video_widget.setMinimumSize(QSize(ancho, altura))
+        self._video_widget.setMaximumSize(QSize(1024, 768))
+        self._video_widget.setAspectRatioMode(Qt.AspectRatioMode.IgnoreAspectRatio)
+
+        #Add w to layout
+        self.layout_video.addWidget(self._video_widget)
+
+        #Set the video output of the QMediaPlayer-> QVideoWidget
+        self._player.setVideoOutput(self._video_widget)
+
+        #Generate the path to the video //GET OF A JSON
+        url = QUrl.fromLocalFile(f'{manejar_datos.getVideoPath()}VideoHospital.mp4')
+        print(url)
+        #Add to playlist
+        self._playlist.append(url)
+        self._playlist_index = len(self._playlist) - 1
+
+        #Set the source with the QUrl to the Player
+        self._player.setSource(url)
+
+        #Play
         self._player.play()
-        print('VIDEO STARTED')
 
     def checkNext(self): #exececute a query of bring on the last num called by BOX and actualize displa
           
@@ -283,55 +344,6 @@ class Pantalla(object):
         tempC:float=temp-273.15
         self.temp_label.setText(f'{tempC.__round__()}°C')
 
-    def initializeVideo(self):
-
-        #Create a playlist
-        self._playlist = []  # FIXME 6.3: Replace by QMediaPlaylist?
-
-        self._playlist_index = -1
-
-        #Create audio output
-        self._audio_output = QAudioOutput()
-
-        #Create a media player
-        self._player = QMediaPlayer()
-
-        #Set the audio output to player
-        self._player.setAudioOutput(self._audio_output)
-
-        #Create layout and add the videoW
-        self.layout_video = QVBoxLayout(self.video_widget)
-
-        #Create the widget
-        self._video_widget = QVideoWidget()
-        videoPolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        videoPolicy.setHorizontalStretch(0)
-        videoPolicy.setVerticalStretch(0)
-        videoPolicy.setHeightForWidth(self._video_widget.sizePolicy().hasHeightForWidth())
-        self._video_widget.setSizePolicy(videoPolicy)
-
-        #self._video_widget.setMinimumSize(QSize(ancho, altura))
-        self._video_widget.setMaximumSize(QSize(1024, 768))
-        self._video_widget.setAspectRatioMode(Qt.AspectRatioMode.IgnoreAspectRatio)
-
-        #Add w to layout
-        self.layout_video.addWidget(self._video_widget)
-
-        #Set the video output of the QMediaPlayer-> QVideoWidget
-        self._player.setVideoOutput(self._video_widget)
-
-        #Generate the path to the video //GET OF A JSON
-        url = QUrl.fromLocalFile(f'{manejar_datos.getVideoPath()}VideoHospital.mp4')
-        print(url)
-        #Add to playlist
-        self._playlist.append(url)
-        self._playlist_index = len(self._playlist) - 1
-
-        #Set the source with the QUrl to the Player
-        self._player.setSource(url)
-
-        #Play
-        self._player.play()
 
    
         
@@ -907,6 +919,11 @@ class Pantalla(object):
         self.timerWeather.timeout.connect(lambda: self.refreshWeather())
         self.timerWeather.start(1800000)
         
+
+        #timer to reset video 15s
+        self.timerVideoReset = QTimer()
+        self.timerVideoReset.timeout.connect(lambda: self.videoCheck())
+        self.timerVideoReset.start(10000)
 
         #f to initalizate videoPlayer and stream
         self.initializeVideo()

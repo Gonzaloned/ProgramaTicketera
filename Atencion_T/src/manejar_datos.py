@@ -52,7 +52,7 @@ def getConnectionString():
         trusted:str=json_file['TRUSTED_CONNECTION']
         if (trusted.upper()=='YES'):
             connection_string = (f"DRIVER={json_file['DRIVER']};"
-                                f"SERVER={json_file['SERVER']};"
+                                f"SERVER={json_file['IP']}\\{json_file['SERVER']};"
                                 f"DATABASE={json_file['DATABASE']};"
                                 f"Trusted_Connection={trusted};")
 
