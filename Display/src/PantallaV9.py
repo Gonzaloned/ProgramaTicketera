@@ -103,11 +103,11 @@ class Pantalla(object):
             self.boxAnimation(self.list_box[0])
 
     def checkAdvice(self):
-        advice_query= \
+        advice_query_old= \
         '''BEGIN TRANSACTION;
 
         DECLARE @advice_num INT;
-
+        
         -- Obtener el proximo turno disponible
         SELECT TOP (1) @advice_num=num FROM advice ORDER BY num        
         
@@ -119,16 +119,50 @@ class Pantalla(object):
         COMMIT TRANSACTION;
         '''
 
+        advice_query= \
+        '''
+        BEGIN TRANSACTION;
 
+        DECLARE @advice_num INT;
+        DECLARE @selected_counter INT;
+
+        -- Obtener el próximo aviso solicitado del contador no nulo
+        SELECT TOP (1) 
+            @advice_num = num,
+            @selected_counter = CASE
+                                    WHEN contador_tipo_CT IS NOT NULL THEN contador_tipo_CT
+                                    WHEN contador_tipo_ST IS NOT NULL THEN contador_tipo_ST
+                                END
+        FROM advice
+        ORDER BY num;
+
+        -- Eliminar aviso
+        DELETE FROM advice WHERE num = @advice_num;
+
+        -- Seleccionar el contador no nulo
+        SELECT @selected_counter AS selected_counter;
+
+        COMMIT TRANSACTION;'''
+
+        #If query executes ok
         if (self.db_handler.queryExecution(advice_query)):  
+
+            #Get the qry
             query= self.db_handler.getQuery()       
+
+            #Get first value of query
             query.first()
-            last_num= query.value(0) #Save the num to look
-            print(f'Encontre el num {last_num}')
+
+            #Save the num to look
+            last_num= query.value(0) 
+
+            #If the value is not null
             if not(query.isNull(0)):
+
+                #Look for the founded num to animate the call again
                 self.lookForTheNum(last_num)
 
-    #This method searchs in the boxes for the num to advice
+    #This method searchs in the boxes for the num to advice and exec the call anim
     def lookForTheNum(self,last_num):
         for elem in self.list_box:
             childs= elem.children() #Get childs of QWidget
@@ -266,16 +300,28 @@ class Pantalla(object):
         DECLARE @proximo_turno INT;
         DECLARE @caja_llamadora INT;
         DECLARE @proximo_tipo INT;
+        DECLARE @num_llamado INT;
 
-        -- Obtener el proximo turno disponible
-        SELECT TOP (1) @proximo_turno=num, @caja_llamadora=atiende_caja, @proximo_tipo=tipo 
+        -- Obtener proximo tipo
+        SELECT TOP (1) @proximo_tipo=tipo 
         FROM turnos_actual 
-        WHERE (status=2) 
-        ORDER BY num        
-        
+        WHERE (status=2) ORDER BY num  
+
+        -- Obtener el proximo  turno disponible
+        IF @proximo_tipo=1
+            SELECT TOP (1) @proximo_turno=contador_tipo_CT, @caja_llamadora=atiende_caja, @proximo_tipo=tipo, @num_llamado=num 
+            FROM turnos_actual 
+            WHERE (status=2) 
+            ORDER BY num
+        ELSE
+            SELECT TOP (1) @proximo_turno=contador_tipo_ST, @caja_llamadora=atiende_caja, @proximo_tipo=tipo, @num_llamado=num 
+            FROM turnos_actual 
+            WHERE (status=2) 
+            ORDER BY num         
+                
         SELECT @proximo_turno, @caja_llamadora, @proximo_tipo
 
-        UPDATE turnos_actual SET status = 3 WHERE num=@proximo_turno
+        UPDATE turnos_actual SET status = 3 WHERE num=@num_llamado
 
         COMMIT TRANSACTION;
         '''
@@ -291,9 +337,9 @@ class Pantalla(object):
                 self.caller_box = query.value(1) #Save caller num
 
                 if (query.value(2)== 1): #Save CON TURNO or SIN TURNO
-                    self.next_type = 'ST'
+                    self.next_type ='CT'  
                 else: 
-                    self.next_type = 'CT'   
+                    self.next_type ='ST'   
 
                 return True
             return False

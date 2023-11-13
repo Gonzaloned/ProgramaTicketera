@@ -32,13 +32,24 @@ class Pantalla3(object):
         #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
         time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
         
+        if tipo==1:
+            contador_tipo='contador_tipo_CT'
+        if tipo==2:
+            contador_tipo='contador_tipo_ST'
         #Query
         QUERY= f'''BEGIN TRANSACTION;
+
+        --Creo variable para guardar siguiente indice
+        DECLARE @SiguienteIndice INT;
+        
+        -- Guardo el siguiente indice del tipo (MAXINDICETIPO+1)
+        SELECT @SiguienteIndice=COALESCE(MAX({contador_tipo}), 0) + 1 FROM turnos_actual;
+
         -- Insertar un nuevo turno a ser llamado
-        INSERT INTO turnos_actual(dni,hora,tipo,status) VALUES({self.dni},'{time_now}',{tipo},1);
+        INSERT INTO turnos_actual(dni,hora,tipo,status,{contador_tipo}) VALUES({self.dni},'{time_now}',{tipo},1,@SiguienteIndice);
 
         -- Recuperar el ultimo num insertado
-        SELECT SCOPE_IDENTITY();
+        SELECT @SiguienteIndice;
 
         COMMIT TRANSACTION;
         '''
