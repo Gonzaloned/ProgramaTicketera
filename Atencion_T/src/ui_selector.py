@@ -74,19 +74,21 @@ class Selector(object):
         #Get the first value of a result query
         query:QSqlQuery= self.db.getQuery()
         query.first()
-        last_num = query.value(0) 
 
-        # 1. Read last turn file
-        with open(os.path.join(os.getcwd(), "data", "last_num.json"), "r", encoding='utf-8') as archivo:
-            data = json.load(archivo)
+        if not (query.isNull(0)):
+            last_num = query.value(0) 
+            
+            # 1. Read last turn file
+            with open(os.path.join(os.getcwd(), "data", "last_num.json"), "r", encoding='utf-8') as archivo:
+                data = json.load(archivo)
 
-        # 2. Set the last num and time
-        data['num']=last_num
-        data['hour']= datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
-        print(data)
-        # 3. Rewrite the json file
-        with open(os.path.join(os.getcwd(), "data", "last_num.json"), "w", encoding='utf-8') as archivo:
-            json.dump(data, archivo)    
+            # 2. Set the last num and time
+            data['num']=last_num
+            data['hour']= datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
+            print(data)
+            # 3. Rewrite the json file
+            with open(os.path.join(os.getcwd(), "data", "last_num.json"), "w", encoding='utf-8') as archivo:
+                json.dump(data, archivo)    
 
     #Opens the options    
     def abrirOpciones(self):
@@ -276,8 +278,8 @@ class Selector(object):
 
         ##EVENTS
         self.llamar.clicked.connect(lambda: self.callLastNumAgain())
-        self.sinTurno.clicked.connect(lambda: self.llamarProximo(1))
-        self.conTurno.clicked.connect(lambda: self.llamarProximo(2))
+        self.sinTurno.clicked.connect(lambda: self.llamarProximo(2))
+        self.conTurno.clicked.connect(lambda: self.llamarProximo(1))
         self.settings.clicked.connect(lambda: self.abrirOpciones())
         self.exit.clicked.connect(lambda: self.cerrarSelectora())
     # setupUi

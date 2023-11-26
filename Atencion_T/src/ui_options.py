@@ -137,14 +137,17 @@ class SettingsWindow(object):
 
             #Write in the DB the flag of a new video
             self.db.queryExecution(VIDEO_WRITE_QUERY)
-
-            print("Archivo reemplazado exitosamente.")
-        except FileNotFoundError:
+            logging.info(f'Copied the video from{origen} to {server_folder_path} ')
+            self.popAdvice('Video reemplazado correctamente')
+        except FileNotFoundError as e:
             print("El archivo original no se encuentra o el directorio de destino no existe.")
-        except PermissionError:
+            logging.info(f'{e} Error')
+            self.popAdvice(e)
+        except PermissionError as e:
             print("Permiso denegado para copiar el archivo en el directorio de destino.")
+            logging.info(e)
 
-        logging.info(f'Copied the video from{origen} to {server_folder_path} ')
+        
 
 
     def resetTurnos(self):

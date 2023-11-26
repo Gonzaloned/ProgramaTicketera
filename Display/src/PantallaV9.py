@@ -73,45 +73,47 @@ class Pantalla(object):
 
     def showNew(self):
 
+        #If a advice is avaible, advice, otherwise call next/s
         #Check if need to advice
-        self.checkAdvice()
+        if not self.checkAdvice():
 
-        #if exists a call request
-        if self.checkNext():
+            #if exists a call request
+            if self.checkNext():
 
-            #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
-            self.refreshBoxList()
+                #actualize the list of widgets (0,1,2,3,4) to (4,0,1,2,3) 
+                self.refreshBoxList()
 
-            #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
-            childs= self.list_box[0].children()
+                #Get the childs of the FIRST Box QWidget [QHLayout,Qlabel(num),QLabel(caja)]
+                childs= self.list_box[0].children()
 
-            #Save num and caja labels
-            num:QLabel = childs[1]
-            caja:QLabel = childs[2]
+                #Save num and caja labels
+                num:QLabel = childs[1]
+                caja:QLabel = childs[2]
 
-            #Put info in labels
-            num.setText(f'{self.next_type} {str(self.next_number)}')
-            caja.setText(f'BOX {str(self.caller_box)}')
+                #Put info in labels
+                num.setText(f'{self.next_type} {str(self.next_number)}')
+                caja.setText(f'BOX {str(self.caller_box)}')
 
-            #delete actual layout
-            self.deleteItemsOfLayout(self.verticalLayout_7)
+                #delete actual layout
+                self.deleteItemsOfLayout(self.verticalLayout_7)
 
-            #Create ordered layout
-            self.createLayout(self.verticalLayout_7)
+                #Create ordered layout
+                self.createLayout(self.verticalLayout_7)
 
-            #Execute color animation on the FIRST box
-            self.boxAnimation(self.list_box[0])
+                #Execute color animation on the FIRST box
+                self.boxAnimation(self.list_box[0])
 
     def checkAdvice(self):
         advice_query= \
-        '''DECLARE @proximo_tipo INT;
+        '''BEGIN TRANSACTION
+        DECLARE @proximo_tipo INT;
         DECLARE @numero INT;
         DECLARE @advice_num INT;
 
         -- ESTA QUERY DEVUELVE EL PROXIMO NUMERO y EL TIPO
         SELECT TOP (1) @proximo_tipo=t.tipo, @numero=t.num
         FROM turnos_actual t INNER JOIN advice a ON t.num=a.num
-        WHERE (status=2) ORDER BY t.num;
+        WHERE (status=3) AND (t.num=a.num) ORDER BY t.num;
 
 
         -- ESTA DEVUELVE EL CONTADOR ESPECIFICO DEL TIPO Y LO GUARDA EN @advice_num
@@ -119,18 +121,20 @@ class Pantalla(object):
         IF @proximo_tipo=1
             SELECT TOP (1) @advice_num=contador_tipo_CT 
             FROM turnos_actual 
-            WHERE (status=2) 
+            WHERE (status=3) AND ( num = @numero ) 
             ORDER BY num;
         ELSE
             SELECT TOP (1) @advice_num=contador_tipo_ST 
             FROM turnos_actual 
-            WHERE (status=2) 
+            WHERE (status=3) AND ( num = @numero ) 
             ORDER BY num;    
 
         -- Eliminar aviso
-        DELETE  FROM advice WHERE num=@numero;
+        IF (@Numero IS NOT NULL)
+            DELETE  FROM advice WHERE num=@numero;
 
-        SELECT @advice_num;'''
+        SELECT @advice_num, @proximo_tipo
+        COMMIT TRANSACTION'''
         #If query executes ok
         if (self.db_handler.queryExecution(advice_query)):  
 
@@ -140,22 +144,33 @@ class Pantalla(object):
             #Get first value of query
             query.first()
 
-            #Save the num to look
-            last_num= query.value(0) 
-
             #If the value is not null
             if not(query.isNull(0)):
+                #Save the num to look
+                last_num= query.value(0) 
+                last_type= query.value(1)
 
+                if (last_type== 1): #IF last type == 1 CON TURNO
+                    last_type ='CT'  
+                else: #== 2 SIN TURNO
+                    last_type ='ST'  
+
+                last_text=f'{last_type} {last_num}'
+                print(f'''El numero a avisar es {last_text}''')
+                      
+                      
                 #Look for the founded num to animate the call again
-                self.lookForTheNum(last_num)
+                self.lookForTheNum(last_text)
+                return True
+            return False
 
     #This method searchs in the boxes for the num to advice and exec the call anim
-    def lookForTheNum(self,last_num):
+    def lookForTheNum(self,last_text):
         for elem in self.list_box:
             childs= elem.children() #Get childs of QWidget
             num:QLabel = childs[1] #Get label
             text:str= num.text()
-            if text.__contains__(str(last_num)):
+            if text.__contains__(str(last_text)):
                 self.boxAnimation(elem)
 
 
@@ -178,30 +193,21 @@ class Pantalla(object):
         '''
 
         if (self.db_handler.queryExecution(NEW_VIDEO_QUERY)):  #If query ok
+            print('video query maked')
             query= self.db_handler.getQuery()       #Get query
             query.first()  #Get first row
-            if not(query.isNull(0)): #If num <> null
-
+            if not(query.isNull(0)): #If num <> null         
                 #Log video changes
                 logging.info(f'Video Change, time:{datetime.datetime.now()}')
 
                 #Restart video
                 self.restartVideo() 
 
-
-
-
-
-    @Slot()
-    def _ensure_stopped(self):
-        if self._player.playbackState() != QMediaPlayer.StoppedState:
-            self._player.stop()
-
     def restartVideo(self):
 
         print('vid restart begins')
         #Stop the player
-        self._ensure_stopped()
+        self._player.stop()
 
         #Get the path #f'''\\\\{json_file['IP']}\\Ticketera\\Videos\\
         server_folder_path= f'{manejar_datos.getVideoPath()}NewVideo.mp4'
@@ -312,11 +318,10 @@ class Pantalla(object):
 
         COMMIT TRANSACTION;
         '''
-        #Create a query to get the next display
-        query= QSqlQuery(self.db)   #SELF.db is the connection QSqlDatabase already created
-        query.prepare(data_query) #Query brings on the next
 
-        if (query.exec()): #If query succeeds (GET THE NEXT NUMBER)         
+        if (self.db_handler.queryExecution(data_query)): #If query succeeds (GET THE NEXT NUMBER)        
+
+            query=self.db_handler.getQuery()
             query.first()   #Get the first row
 
             if not(query.isNull(0)): #If value is not null
@@ -367,7 +372,7 @@ class Pantalla(object):
             pixmap.loadFromData(response.content)
             self.temp_icon.setPixmap(pixmap)
             self.temp_icon.setScaledContents(False)
-            self.temp_icon.setAlignment(Qt.AlignTop | Qt.AlignRight)
+            self.temp_icon.setAlignment(Qt.AlignRight) #Qt.AlignTop |
 
 
         #Save the temp data of the json (In kelvin)
