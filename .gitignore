@@ -1,2 +1,2 @@
 # Ignorar archivos JSON
-*.json
+*server_data.json
