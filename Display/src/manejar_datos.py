@@ -1,5 +1,8 @@
+import datetime
 import os
 import json
+import logger_config
+import logging
 import textwrap
 def setPersonalData(name, caja):
     # 1. Leer el contenido actual del archivo JSON en una estructura de datos
@@ -34,12 +37,34 @@ def getLastTime():
         last_hour=json.load(file)
         return last_hour['hour']
     
-
+    
+#Generates LOCAL\\ NUM + NEWVIDEO
 def getVideoPath():
+    with open(os.path.join(os.getcwd(), "data", "actual_video.json"), "r", encoding='utf-8') as file:
+        json_file= json.load(file)
+        return f'''C:\\Ticketera\\Videos\\{json_file['VIDEO_NUM']}{json_file['VIDEO_NAME']}'''
+    
+#Saves NAME, NUM, DATE
+def setVideoPath(name):
+
+    with open(os.path.join(os.getcwd(), "data", "actual_video.json"), "r", encoding='utf-8') as file:
+        data = json.load(file)
+
+    data['VIDEO_NAME']= name
+    data['VIDEO_NUM']= str(int(data['VIDEO_NUM'])+1)
+    logging.info(f'saved {data["VIDEO_NUM"]}{data["VIDEO_NAME"]}')
+    data['DATE']= f'{datetime.datetime.now()}'
+
+    with open(os.path.join(os.getcwd(), "data", "actual_video.json"), "w", encoding='utf-8') as archivo:
+        json.dump(data, archivo)
+
+    
+def getVideoServerPath():
     with open(os.path.join(os.getcwd(), "data", "server_data.json"), "r", encoding='utf-8') as file:
         json_file= json.load(file)
         return f'''\\\\{json_file['IP']}\\Ticketera\\Videos\\'''
     
+
 def getConnectionString():
     with open(os.path.join(os.getcwd(), "data", "server_data.json"), "r", encoding='utf-8') as file:
         json_file= json.load(file)

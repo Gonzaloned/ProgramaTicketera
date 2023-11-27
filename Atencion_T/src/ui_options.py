@@ -128,7 +128,7 @@ class SettingsWindow(object):
         COMMIT TRANSACTION; 
         '''
         # Get server Path
-        server_folder_path = manejar_datos.getVideoPath()  
+        server_folder_path = manejar_datos.getVideoServerPath()  
         
         try:
         # Replace local file in shared
@@ -409,7 +409,9 @@ class SettingsWindow(object):
         scriptDir = os.path.dirname(os.path.realpath(__file__))
 
         #Set the Window icon
-        self.window.setWindowIcon(QIcon(scriptDir + os.path.sep + 'logoBlack.png'))
+        icon = QIcon()
+        icon.addFile(u":/fondos/img/fondos/window2.jpg", QSize(), QIcon.Normal, QIcon.Off)
+        self.window.setWindowIcon(icon)
         #self.ventana.setWindowFlags(Qt.FramelessWindowHint)   #Not show windows bar
         #self.ventana.setAttribute(Qt.WA_TranslucentBackground) #set translucent background
 

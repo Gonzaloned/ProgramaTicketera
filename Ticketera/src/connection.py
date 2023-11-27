@@ -13,7 +13,7 @@ import manejar_datos
 import logger_config
 import logging
 DRIVER='ODBC Driver 17 for SQL Server'
-SERVER_NAME = 'GONZALO\DBGON'
+SERVER_NAME = 'GONZALO\\DBGON'
 DATABASE_NAME = 'turnos'
 USERNAME = 'gon'
 PASSWORD = '123456'
@@ -39,10 +39,14 @@ class Connection():
             error_msg=("Database Error: %s"  % self.con.lastError().databaseText())
             print(error_msg)
             logging.error(error_msg)
-            exit(0)
 
         return self.con
 
+    def resetConnection(self):
+        logging.info("Restarting the connection...")
+        self.con.close()
+        self.createConnection()
+        
 
     def queryExecution(self,query):
 
@@ -51,7 +55,7 @@ class Connection():
         #If con not open, reconnect
         if not(self.con.isOpen()):
             logging.error("Incorrect con in query, retry")
-            self.createConnection()
+            self.resetConnection()
 
         #new query object  QSqlQuery(database target)
         self.qry= QSqlQuery(self.con)
@@ -63,6 +67,7 @@ class Connection():
             return True
         else:
             logging.error("Error in query")
+            self.resetConnection()
             return False
 
     def getQuery(self):

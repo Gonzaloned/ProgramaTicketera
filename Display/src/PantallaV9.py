@@ -1,5 +1,8 @@
 import datetime
+import logger_config
 import logging
+
+import os
 import shutil
 
 from PySide6.QtCore import *
@@ -205,25 +208,34 @@ class Pantalla(object):
 
     def restartVideo(self):
 
-        print('vid restart begins')
         #Stop the player
-        self._player.stop()
+        self._player.pause()
 
         #Get the path #f'''\\\\{json_file['IP']}\\Ticketera\\Videos\\
-        server_folder_path= f'{manejar_datos.getVideoPath()}NewVideo.mp4'
+        server_folder_path= os.path.join(manejar_datos.getVideoServerPath(), 'NewVideo.mp4')
 
         #Local video path
-        folder_local='C:\\Ticketera\\Videos\\VideoHospital.mp4'
+        manejar_datos.setVideoPath('NewVideo.mp4')
+        folder_local=manejar_datos.getVideoPath()
 
         try:
         # Replace local file with the server file
             shutil.copy(server_folder_path, folder_local)
             print("Archivo reemplazado exitosamente.")
-        except FileNotFoundError:
-            print("El archivo original no se encuentra o el directorio de destino no existe.")
-        except PermissionError:
-            print("Permiso denegado para copiar el archivo en el directorio de destino.")
+            logging.info('Archivo reemplazado exitosamente.')
 
+        except FileNotFoundError as e:
+            print("El archivo original no se encuentra o el directorio de destino no existe.")
+            logging.info(f'{e}. El archivo original no se encuentra o el directorio de destino no existe.')
+
+        except PermissionError as e:
+            print("Permiso denegado para copiar el archivo en el directorio de destino.")
+            logging.info(f'{e}. Permiso denegado para copiar el archivo en el directorio de destino.')
+
+        #Play      
+        QTimer.singleShot(4000,lambda:self.startVideo(folder_local))
+        
+    def startVideo(self,folder_local:str):
         #Create the link
         url= QUrl.fromLocalFile(folder_local)
 
@@ -231,9 +243,9 @@ class Pantalla(object):
         self._player.setSource(url)
 
         #Play      
-        QTimer.singleShot(4000,lambda:self._player.play())
-        
-        QTimer.singleShot(4000,lambda:print('VIDEO STARTED'))
+        self._player.stop()
+        self._player.play()
+        logging.info('Video Restarted')
 
     def initializeVideo(self):
 
@@ -272,9 +284,16 @@ class Pantalla(object):
         #Set the video output of the QMediaPlayer-> QVideoWidget
         self._player.setVideoOutput(self._video_widget)
 
-        #Generate the path to the video //GET OF A JSON
-        url = QUrl.fromLocalFile(f'{manejar_datos.getVideoPath()}VideoHospital.mp4')
-        print(url)
+        #Get the path of the video
+        video_path=manejar_datos.getVideoPath()
+        
+        url = QUrl.fromLocalFile(video_path)
+
+
+        if not(os.path.exists(video_path)):
+            logging.info('URL NOT VALID')
+            url = QUrl.fromLocalFile('C:\\Ticketera\\Videos\\VideoHospital.mp4')
+
         #Add to playlist
         self._playlist.append(url)
         self._playlist_index = len(self._playlist) - 1
@@ -367,13 +386,14 @@ class Pantalla(object):
 
         # Descargar la imagen desde la URL
         response = requests.get(icon_url)
-        if response.status_code == 200:
-            pixmap = QPixmap()
-            pixmap.loadFromData(response.content)
-            self.temp_icon.setPixmap(pixmap)
-            self.temp_icon.setScaledContents(False)
-            self.temp_icon.setAlignment(Qt.AlignRight) #Qt.AlignTop |
 
+        if response.ok:
+            pixmap = QPixmap()
+            pixmap.loadFromData(response.content)          
+            self.temp_icon.setPixmap(pixmap)
+        else:
+            logging.critical('Error in weather get')
+            
 
         #Save the temp data of the json (In kelvin)
         temp=data['main']['temp']
@@ -595,8 +615,8 @@ class Pantalla(object):
         self.temp_icon.setStyleSheet(u"border-image:url(https://openweathermap.org/img/w/02n.png);")
         self.temp_icon.setPixmap(QPixmap(u":/img/img/icons8-people-64.png"))
         self.temp_icon.setScaledContents(False)
-        self.temp_icon.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
-        self.temp_icon.setMargin(5)
+        self.temp_icon.setAlignment(Qt.AlignRight)#Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop
+        self.temp_icon.setMargin(0)
 
         self.horizontalLayout_10.addWidget(self.temp_icon, 0, Qt.AlignRight|Qt.AlignVCenter)
 
@@ -969,6 +989,10 @@ class Pantalla(object):
         #f to fit fullscreen
         self.adjustWindow(MainWindow)
 
+        #Set first weather img
+        #scriptDir = os.path.dirname(os.path.realpath(__file__))
+        #self.temp_icon.setPixmap(QImage(scriptDir + os.path.sep + '/img/window1.jpg'))
+        
         #if footer ends self.footerBarAnimation()
         self.animation.finished.connect(lambda: self.animation.start())
         

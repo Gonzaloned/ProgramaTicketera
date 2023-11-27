@@ -583,7 +583,11 @@ class Login(object):
         scriptDir = os.path.dirname(os.path.realpath(__file__))
 
         #Set the Window icon
-        self.window.setWindowIcon(QIcon(scriptDir + os.path.sep + 'logoBlack.png'))
+        icon = QIcon()
+        icon.addFile(u":/fondos/img/fondos/window2.jpg", QSize(), QIcon.Normal, QIcon.Off)
+        self.window.setWindowIcon(icon)
+
+        #self.window.setWindowIcon(QIcon(scriptDir + os.path.sep + 'window_icon.ico'))
         
         #Create the db handler
         self.db = Connection()
@@ -594,6 +598,7 @@ class Login(object):
         self.regToLogin.clicked.connect( lambda: self.stack.setCurrentWidget(self.pag_login))
         self.access_btn.clicked.connect( lambda: self.loginUser())
         self.register_btn.clicked.connect( lambda: self.registerUser())
+        
 
     # setupUi
 

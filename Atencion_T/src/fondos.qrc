@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="fondos">
+    <file>img/fondos/window1.ico</file>
+    <file>img/fondos/window1.png</file>
+    <file>img/fondos/window2.ico</file>
+    <file>img/fondos/window2.jpg</file>
     <file>img/fondos/anuncioTicketera.jpg</file>
     <file>img/fondos/acceso.png</file>
     <file>img/fondos/fondo.jpg</file>
