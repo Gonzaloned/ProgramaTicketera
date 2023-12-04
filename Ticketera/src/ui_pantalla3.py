@@ -3,7 +3,7 @@ import datetime
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from PyQt6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
+from PySide6.QtSql import QSqlQuery, QSqlDatabase, QSqlQueryModel
 from connection import Connection
 import pantalla1_rc
 from ui_pop import Pop
@@ -71,6 +71,13 @@ class Pantalla3(object):
                 
                 #Add num to Ticket params
                 param_list.append(str(round(numero_agregado)))
+
+                #Add type to Ticket params
+                if tipo==1:
+                    type_letters='CT'
+                else:
+                    type_letters='ST'                    
+                param_list.append(type_letters)
 
                 try:
                     subprocess.Popen(['node', printer_file, *param_list], creationflags=subprocess.CREATE_NO_WINDOW)

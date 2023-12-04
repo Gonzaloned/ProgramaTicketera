@@ -1,1 +1,1 @@
-{"IP":"10.10.93.222", "DRIVER":"{SQL Server}", "SERVER":"GONZALO\\DBGON", "DATABASE":"turnos","USERNAME":"ticketera", "PASSWORD":"123456","PORT":"1433","TRUSTED_CONNECTION":"yes"}
+{"IP":"10.10.93.112", "DRIVER":"{SQL Server}", "SERVER":"DBTICKETERA", "DATABASE":"turnos","USERNAME":"ticketera", "PASSWORD":"Hospital123","PORT":"1433","TRUSTED_CONNECTION":"no"}

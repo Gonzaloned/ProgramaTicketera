@@ -11,15 +11,16 @@ async function imprimirTicket() {
   });
   
   num= args[0]
+  type= args[1]
   printer.setTextSize(2,2)
   console.log('Argumentos recibidos:', args);
   printer.alignCenter();
-  printer.println('NUM '+ num);
+  printer.println('NUMERO '+type +num);
   printer.println("");
 
   try {
     // Usar await dentro de una función async
-    await printer.printImage('./src/img/logo2.png')
+    await printer.printImage('./img/logo2.png')
     printer.cut();
     
     let execute = printer.execute()
