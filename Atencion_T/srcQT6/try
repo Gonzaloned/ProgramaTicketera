@@ -1,0 +1,12 @@
+import os
+import manejar_datos
+import shutil
+
+# Ruta de tu archivo .mp4 en el escritorio
+archivo_mp4 = 'C:\\Users\\gon\\Desktop\\videoPrueba.mp4'
+
+# Ruta de la carpeta compartida en la dirección IP 192.168.0.55
+carpeta_compartida = '\\\\192.168.56.1\\videosTicketera\\'
+
+# Copiar el archivo .mp4 a la carpeta compartida
+shutil.copy(archivo_mp4, carpeta_compartida)
