@@ -409,8 +409,9 @@ class Pantalla(object):
         
         #MP3 Path
         path='./soundplayer.py'
-        subprocess.Popen(['python', path])
-
+        #subprocess.Popen(['python', path])
+        subprocess.Popen(['python', path],creationflags=subprocess.CREATE_NO_WINDOW,shell=True)
+        
         #Change the color between blue and white
         #blue	background-color: rgb(4, 42, 79);color:white;
         #white 	background-color: rgb(204, 204, 204); color:rgb(4, 42, 79);
@@ -985,9 +986,9 @@ class Pantalla(object):
         self.timerNum.start(4000)
         
         #f to refresh time
-        self.timerWeather = QTimer()
-        self.timerWeather.timeout.connect(lambda: self.refreshTime())
-        self.timerWeather.start(30000)
+        self.timerT = QTimer()
+        self.timerT.timeout.connect(lambda: self.refreshTime())
+        self.timerT.start(30000)
         
         #f to refresh weather
         self.timerWeather = QTimer()

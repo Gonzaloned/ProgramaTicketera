@@ -29,9 +29,15 @@ class Calculadora(object):
             # Obtiene el tamaño de la pantalla
         screen = QGuiApplication.primaryScreen().availableGeometry()
 
+        relative_width=int(screen.width()*0.9)
+        relative_height=int(screen.height()*0.9)
+
         # Calcula las coordenadas para centrar la calc
-        x = (screen.width() - self.calc.width()) // 2
-        y = (screen.height() - self.calc.height()) // 2
+        x = (screen.width() - relative_width) // 2
+        y = (screen.height() - relative_height) // 2
+
+        #Seteo el tamaño de la calculadora segun el tamaño de la pantalla
+        self.calc.setFixedSize(relative_width,relative_height)
 
         # Mueve la calc a las coordenadas centradas
         self.calc.move(x, y)
@@ -373,7 +379,6 @@ class Calculadora(object):
 
         #Vars
         #Save this wind
-        self.calc= main
         self.centrarVentana()
 
         #Create DNI label
