@@ -39,6 +39,8 @@ def getLastTime():
     
     
 #Generates LOCAL\\ NUM + NEWVIDEO
+#Logic -> IF new video added from SELECTOR, then uploads the NewVideo.mp4 to SERVER C:\Tick\Vid\NVid.. , finally the display
+#         checks for a video changes
 def getVideoPath():
     with open(os.path.join(os.getcwd(), "data", "actual_video.json"), "r", encoding='utf-8') as file:
         json_file= json.load(file)

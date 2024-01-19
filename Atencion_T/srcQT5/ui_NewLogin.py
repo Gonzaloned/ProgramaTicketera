@@ -24,11 +24,15 @@ class Login(object):
 
     #Start a main program       
     def startProgram(self):
-        vent= QMainWindow()
-        ui= Selector()
-        ui.setupUi(vent) #pass window and DB
-        vent.show() #Show
+        self.ventWindow= QMainWindow()
+        self.selectora= Selector()
+        self.selectora.setupUi(self.ventWindow) #pass window and DB
+        self.ventWindow.show() #Show
         self.window.close()
+
+    def keyPressEvent(self, event):
+        if event.key() == 16777220:  # Código de la tecla "Enter"
+            self.loginUser()
 
     def registerUser(self):
         #Save the field values to local vars

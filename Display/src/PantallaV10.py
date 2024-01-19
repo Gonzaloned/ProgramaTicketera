@@ -289,9 +289,8 @@ class Pantalla(object):
         
         url = QUrl.fromLocalFile(video_path)
 
-
         if not(os.path.exists(video_path)):
-            logging.info('URL NOT VALID')
+            logging.info('Base video not changed')
             url = QUrl.fromLocalFile('C:\\Ticketera\\Videos\\VideoHospital.mp4')
 
         #Add to playlist

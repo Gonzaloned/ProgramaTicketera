@@ -33,9 +33,9 @@ class SettingsWindow(object):
         QTimer.singleShot(6000, lambda: self.pop_publicity.close())
 
     def verHistorial(self):
+
         QUERY=f'''SELECT [dni],[hora],[tipo],[atiende_usuario]\n
                 FROM [turnos].[dbo].[turnos_actual]'''
-
 
         #Rows=0
         self.tableWidget.setRowCount(0)
@@ -61,7 +61,13 @@ class SettingsWindow(object):
                 item_hora.setTextAlignment(Qt.AlignmentFlag.AlignCenter) #Set the align with flag
                 self.tableWidget.setItem(rows, 1, item_hora) #Insert the item
 
-                item_tipo= QTableWidgetItem(str(query_data.value(2))) #Create a table widget item
+                #If type num is 1 CT if 2 ST
+                if (query_data.value(2) == 1):
+                    stringTipo='CT'
+                else:
+                    stringTipo='ST'
+                
+                item_tipo= QTableWidgetItem(stringTipo) #Create a table widget item
                 item_tipo.setTextAlignment(Qt.AlignmentFlag.AlignCenter) #Set the align with flag
                 self.tableWidget.setItem(rows, 2, item_tipo) #Insert the item
 

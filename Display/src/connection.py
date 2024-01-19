@@ -50,11 +50,9 @@ class Connection():
 
     def queryExecution(self,query):
 
-        print(query)
-
         #If con not open, reconnect
         if not(self.con.isOpen()):
-            logging.error("Incorrect con in query, retry")
+            logging.error(f"Incorrect con in query,{query} retry")
             self.resetConnection()
 
         #new query object  QSqlQuery(database target)
@@ -66,7 +64,7 @@ class Connection():
             print('Query realizada exitosamente')
             return True
         else:
-            logging.error("Error in query")
+            logging.error("Error in query", query)
             self.resetConnection()
             return False
 
