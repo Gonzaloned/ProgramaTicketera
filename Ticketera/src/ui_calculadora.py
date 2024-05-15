@@ -2,7 +2,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from ui_pantalla3 import Pantalla3
-
+from connection import Connection
 class Calculadora(object):
 
     def animateOn(self):
@@ -43,30 +43,32 @@ class Calculadora(object):
         self.calc.move(x, y)
 
     def checkDNI(self):
-        self.window3= QMainWindow()
-        self.ui_screen3 = Pantalla3()
+        #If the connection is ok
+        if (self.db.checkConnection()):
+            self.window3= QMainWindow()
+            self.ui_screen3 = Pantalla3()
 
-        #Create win3 sending the dni and the new MainWindow object
-        self.ui_screen3.setupUi(self.window3,self.dni, self.db)
+            #Create win3 sending the dni and the new MainWindow object
+            self.ui_screen3.setupUi(self.window3,self.dni, self.db)
 
-        #Create a new Graphic effect in window 3
-        self.eff = QGraphicsOpacityEffect(self.window3)
-        #Set the opacity in the effect
-        self.eff.setOpacity(0.0)
-        #Set the graphics effect in the window
-        self.window3.setGraphicsEffect(self.eff)
+            #Create a new Graphic effect in window 3
+            self.eff = QGraphicsOpacityEffect(self.window3)
+            #Set the opacity in the effect
+            self.eff.setOpacity(0.0)
+            #Set the graphics effect in the window
+            self.window3.setGraphicsEffect(self.eff)
 
-        #Create a timer to close calc
-        QTimer.singleShot(1000, lambda: self.calc.close())
+            #Create a timer to close calc
+            QTimer.singleShot(1000, lambda: self.calc.close())
 
-        #Display fs w3 and start animation
-        self.window3.showFullScreen()
-        self.window3.setWindowModality(Qt.ApplicationModal)
-        self.window3.raise_()
-        self.animateOn()
-        
+            #Display fs w3 and start animation
+            self.window3.showFullScreen()
+            self.window3.setWindowModality(Qt.ApplicationModal)
+            self.window3.raise_()
+            self.animateOn()
+            
 
-    def setupUi(self, main:QMainWindow, database):
+    def setupUi(self, main:QMainWindow, database:Connection):
         self.calc= main
         self.db = database
         if not main.objectName():

@@ -43,17 +43,24 @@ class Connection():
         return self.con
 
     def resetConnection(self):
-        logging.info("Restarting the connection...")
+        logging.info("The connection to db has been restarted")
         self.con.close()
         self.createConnection()
         
+
+    def checkConnection(self):
+        if (self.con.isValid()):
+            return True
+        else:
+            self.resetConnection()
+
 
     def queryExecution(self,query):
 
         print(query)
 
         #If con not open, reconnect
-        if not(self.con.isOpen()):
+        if not(self.con.isValid()):
             logging.error("Incorrect con in query, retry")
             self.resetConnection()
 

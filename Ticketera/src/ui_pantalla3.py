@@ -28,90 +28,100 @@ class Pantalla3(object):
         self.anim.start()
 
     def solicitarAtencion(self,tipo):
-
-        #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
-        time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
-        
-        if tipo==1:
-            contador_tipo='contador_tipo_CT'
-        if tipo==2:
-            contador_tipo='contador_tipo_ST'
-        #Query
-        QUERY= f'''BEGIN TRANSACTION;
-
-        --Creo variable para guardar siguiente indice
-        DECLARE @SiguienteIndice INT;
-        
-        -- Guardo el siguiente indice del tipo (MAXINDICETIPO+1)
-        SELECT @SiguienteIndice=COALESCE(MAX({contador_tipo}), 0) + 1 FROM turnos_actual;
-
-        -- Insertar un nuevo turno a ser llamado
-        INSERT INTO turnos_actual(dni,hora,tipo,status,{contador_tipo}) VALUES({self.dni},'{time_now}',{tipo},1,@SiguienteIndice);
-
-        -- Recuperar el ultimo num insertado
-        SELECT @SiguienteIndice;
-
-        COMMIT TRANSACTION;
-        '''
-
-        #Execute the query
-        if (self.db.queryExecution(QUERY)):
-            #Get the executed query
-            query_data= self.db.getQuery()       
-            if(query_data.first()):
-
-                #Save the added num to print the ticket
-                numero_agregado:float=query_data.value(0)
-
-                    # Ejecuta el script de Node.js desde Python
-                printer_file= r'.\ticketera.js'
-
-                #Parameters list to call NodePrinter
-                param_list=[]
-                
-                #Add num to Ticket params
-                param_list.append(str(round(numero_agregado)))
-
-                #Add type to Ticket params
-                if tipo==1:
-                    type_letters='CT'
-                else:
-                    type_letters='ST'                    
-                param_list.append(type_letters)
-
-                try:
-                    subprocess.Popen(['node', printer_file, *param_list], creationflags=subprocess.CREATE_NO_WINDOW)
-                    print("Script de Node.js ejecutado con éxito desde Python.")
-                except subprocess.CalledProcessError as e:
-                    logging.error(e)
-                    print("Error al ejecutar el script de Node.js:", e)
-                except FileNotFoundError:
-                    logging.error("File not found")
-                    print("File not found")
-            else:
-                logging.error("the num has not been loaded")
-                print('hubo error')
-                
-
-            #Abro nueva ventana
-            self.pop_window = QMainWindow()
+        self.btn1.setEnabled(False)
+        self.btn2.setEnabled(False)
+        if(self.db.checkConnection()):   
+            print('Entre a hacer query') 
+            #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
+            time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
             
-            #Creo template y seteo el estilo en ventana
-            self.pop = Pop()
-            self.pop.setupUi(self.pop_window)
+            if tipo==1:
+                contador_tipo='contador_tipo_CT'
+            if tipo==2:
+                contador_tipo='contador_tipo_ST'
+            #Query
+            QUERY= f'''BEGIN TRANSACTION;
 
-            #No frame, no background, show
-            self.pop_window.setWindowFlags(Qt.FramelessWindowHint)
-            self.pop_window.setAttribute(Qt.WA_TranslucentBackground)
+            --Creo variable para guardar siguiente indice
+            DECLARE @SiguienteIndice INT;
+            
+            -- Guardo el siguiente indice del tipo (MAXINDICETIPO+1)
+            SELECT @SiguienteIndice=COALESCE(MAX({contador_tipo}), 0) + 1 FROM turnos_actual;
 
-            #Set the pop window main and the others -NO clickeable- until the pop closes
-            self.pop_window.setWindowModality(Qt.ApplicationModal)
+            -- Insertar un nuevo turno a ser llamado
+            INSERT INTO turnos_actual(dni,hora,tipo,status,{contador_tipo}) VALUES({self.dni},'{time_now}',{tipo},1,@SiguienteIndice);
 
-            #Show pop with the opening animation
-            self.pop_window.show()
-            self.animateOn(self.pop_window)
+            -- Recuperar el ultimo num insertado
+            SELECT @SiguienteIndice;
 
-            QTimer.singleShot(7000, lambda: self.closeAll())
+            COMMIT TRANSACTION;
+            '''
+
+            #Execute the query
+            if (self.db.queryExecution(QUERY)):
+                #Get the executed query
+                query_data= self.db.getQuery()       
+                if(query_data.first()):
+
+                    #Save the added num to print the ticket
+                    numero_agregado:float=query_data.value(0)
+
+                        # Ejecuta el script de Node.js desde Python
+                    printer_file= r'.\ticketera.js'
+
+                    #Parameters list to call NodePrinter
+                    param_list=[]
+                    
+                    #Add num to Ticket params
+                    param_list.append(str(round(numero_agregado)))
+
+                    #Add type to Ticket params
+                    if tipo==1:
+                        type_letters='CT'
+                    else:
+                        type_letters='ST'                    
+                    param_list.append(type_letters)
+
+                    try:
+                        subprocess.Popen(['node', printer_file, *param_list], creationflags=subprocess.CREATE_NO_WINDOW)
+                        print("Script de Node.js ejecutado con éxito desde Python.")
+                    except subprocess.CalledProcessError as e:
+                        logging.error(e)
+                        print("Error al ejecutar el script de Node.js:", e)
+                    except FileNotFoundError:
+                        logging.error("File not found")
+                        print("File not found")
+                else:
+                    logging.error("the num has not been loaded")
+                    print('hubo error')
+                    
+
+                #Abro nueva ventana
+                self.pop_window = QMainWindow()
+                
+                #Creo template y seteo el estilo en ventana
+                self.pop = Pop()
+                self.pop.setupUi(self.pop_window)
+
+                #No frame, no background, show
+                self.pop_window.setWindowFlags(Qt.FramelessWindowHint)
+                self.pop_window.setAttribute(Qt.WA_TranslucentBackground)
+
+                #Set the pop window main and the others -NO clickeable- until the pop closes
+                self.pop_window.setWindowModality(Qt.ApplicationModal)
+
+                #Show pop with the opening animation
+                self.pop_window.show()
+                self.animateOn(self.pop_window)
+
+                QTimer.singleShot(7000, lambda: self.closeAll())
+
+        #If the con is not open
+        else:
+            print('Volvi a llamar a solicitar atencion con 5s')
+            QTimer.singleShot(5000, lambda: self.solicitarAtencion(tipo))
+
+
 
     def closeAll(self):
         self.window3.close()

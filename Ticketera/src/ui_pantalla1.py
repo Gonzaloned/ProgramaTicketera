@@ -11,7 +11,6 @@ from ui_pantalla3 import Pantalla3
 
 class Pantalla1(object):    
 
-
     def animateOn(self, win: QMainWindow):
         self.eff = QGraphicsOpacityEffect(win)
         self.eff.setOpacity(0.3)
@@ -208,6 +207,11 @@ class Pantalla1(object):
         QMetaObject.connectSlotsByName(main)
 
         self.db= Connection()
+
+        #Timer to check connection is active
+        dbTimer= QTimer()
+        dbTimer.timeout.connect(lambda:self.db.checkConnection())
+        dbTimer.start(10000)
     # setupUi
 
     def retranslateUi(self, main):
