@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="qz-tray.js"></script>
+<script>
+    qz.websocket.connect().then(() => {
+        return qz.printers.find('EPSON TM-T88V Receipt');
+    }).then((found) => {
+        var config = qz.configs.create(found);
+        var data = [{
+            type: 'pixel',
+            format: 'html',
+            flavor: 'plain', // or 'plain' if the data is raw HTML
+            data: '<h1> AL fin </h1>'
+        }];
+    qz.print(config, data).catch(function(e) { console.error(e); });
+
+    })
+    
+</script>
+
+</html>

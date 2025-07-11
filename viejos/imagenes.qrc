@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="gon">
+    <file>img/fondo.jpg</file>
+    <file>img/logo.jpeg</file>
+    <file>../PaginaFront/media/asd.jpg</file>
+  </qresource>
+</RCC>

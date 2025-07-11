@@ -6,7 +6,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import *
-from connection import Connection
+from ConectorDB import ConectorDB
 import pantalla1_rc
 from ui_pop import Pop
 
@@ -26,12 +26,10 @@ class Pantalla3(object):
 
     def solicitarAtencion(self,tipo):
         #Create a db
-        db=Connection()
+        db=ConectorDB()
 
-        #Get the time now() => time_now.strftime('%Y-%m-%d %H:%M:%S')
+
         time_now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.000')
-        
-        #Query
         QUERY= f"INSERT INTO turnos_actual(dni,hora,tipo,status) VALUES({self.dni},'{time_now}',{tipo},1)"
 
         print(QUERY)

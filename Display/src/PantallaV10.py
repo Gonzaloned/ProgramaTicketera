@@ -196,7 +196,7 @@ class Pantalla(object):
         '''
 
         if (self.db_handler.queryExecution(NEW_VIDEO_QUERY)):  #If query ok
-            print('video query maked')
+
             query= self.db_handler.getQuery()       #Get query
             query.first()  #Get first row
             if not(query.isNull(0)): #If num <> null         
@@ -1005,10 +1005,6 @@ class Pantalla(object):
 
         #f to fit fullscreen
         self.adjustWindow(MainWindow)
-
-        #Set first weather img
-        #scriptDir = os.path.dirname(os.path.realpath(__file__))
-        #self.temp_icon.setPixmap(QImage(scriptDir + os.path.sep + '/img/window1.jpg'))
         
         #if footer ends self.footerBarAnimation()
         self.animation.finished.connect(lambda: self.animation.start())

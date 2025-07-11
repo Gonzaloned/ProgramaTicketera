@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import *
 import pantalla1_rc
-from ui_calculadora import Calculadora
-from ui_pantalla3 import Pantalla3
+from ui_calculadora import TecladoDNI
+from SeleccionTurno import Pantalla3
 
 class Pantalla1(object):    
 
@@ -55,7 +55,7 @@ class Pantalla1(object):
         #self.animateOn(self.window3)
 
     def mostrar2(self):
-        self.calc= Calculadora()
+        self.calc= TecladoDNI()
         self.calc_Win= QMainWindow()
         self.calc.setupUi(self.calc_Win,self.calc_Win)
         self.calc_Win.setWindowFlags(Qt.FramelessWindowHint)

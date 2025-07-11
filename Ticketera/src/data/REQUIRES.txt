@@ -1,0 +1,2 @@
+PARA CORRER EL .JS
+NODE -> npm install node-thermal-printer Y npm install printer
